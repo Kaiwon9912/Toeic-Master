@@ -1,13 +1,13 @@
-// dbConfig.js
 const config = {
-    user: 'sa', // Thay thế bằng tên người dùng của bạn
-    password: '123456', // Thay thế bằng mật khẩu của bạn
-    server: 'MSI', // Tên server
+    user: 'sa',
+    password: '123',
+    server: 'MSI', // có thể là 'localhost' hoặc địa chỉ IP
     database: 'ToeicData',
     options: {
-        encrypt: true, // Sử dụng nếu bạn kết nối qua SSL
-        trustServerCertificate: true, // Chỉ sử dụng cho môi trường phát triển
-    },
-};
-
-module.exports = config;
+     
+      trustServerCertificate: true // Nếu kết nối cục bộ, để true
+    }
+  };
+  
+  module.exports = config;
+  

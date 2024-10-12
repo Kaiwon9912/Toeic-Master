@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const sql = require('mssql');
-const config = require('./dbconfig'); // Đảm bảo bạn đã cấu hình đúng thông tin kết nối đến cơ sở dữ liệu
+const config = require('./dbconfig'); 
 
 const app = express();
 const port = 3000;
@@ -12,7 +12,7 @@ app.use(cors()); // Cho phép tất cả các origin
 // Middleware để parse JSON
 app.use(express.json());
 
-// Kết nối đến cơ sở dữ liệu
+
 sql.connect(config)
     .then(pool => {
         console.log('Kết nối thành công đến SQL Server');
@@ -88,7 +88,7 @@ sql.connect(config)
             try {
                 const result = await pool.request()
                     .input('part', sql.Int, part)
-                    .query('SELECT TOP 1 * FROM Questions WHERE Part = @part ORDER BY NEWID()'); // Lấy ngẫu nhiên 1 câu hỏi
+                    .query('SELECT TOP 1 * FROM Questions WHERE PartID = @part ORDER BY NEWID()'); // Lấy ngẫu nhiên 1 câu hỏi
                 res.json(result.recordset);
             } catch (err) {
                 res.status(500).send(err.message);
@@ -106,6 +106,78 @@ sql.connect(config)
                 res.status(500).send(err.message);
             }
         });
+        app.get('/api/user-question-stats/:userId', async (req, res) => {
+            const { userId } = req.params;
+            try {
+                const result = await pool.request()
+                    .input('userId', sql.Int, userId)
+                    .query(`SELECT * FROM GetUserQuestionStats(@userId)`);
+        
+                res.json(result.recordset); // Trả về dữ liệu dưới dạng JSON
+            } catch (error) {
+                res.status(500).send(error.message);
+            }
+        });
+        app.get("/api/random-group/:partId", async (req, res) => {
+            const partId = parseInt(req.params.partId);
+        
+            if (isNaN(partId)) {
+                return res.status(400).json({ error: "Invalid PartID" });
+            }
+        
+            try {
+             
+                const request = new sql.Request();
+                request.input("PartID", sql.Int, partId);
+        
+                const result = await request.execute("GetRandomQuestionsByPart");
+        
+                res.json(result.recordset); 
+            } catch (err) {
+                console.error("Error executing stored procedure:", err);
+                res.status(500).send("Internal Server Error");
+            }
+        });
+ 
+        app.get('/api/lessons', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Lessons');
+                res.json(result.recordset);
+            } catch (err) {
+                res.status(500).send(err.message);
+            }
+        });
+        app.get('/api/lessons/:id', async (req, res) => {
+            const { id } = req.params;
+            try {
+                const result = await pool.request()
+                    .input('id', sql.Int, id) // Đảm bảo rằng id là số nguyên
+                    .query('SELECT * FROM Lessons WHERE LessonID = @id'); 
+                if (result.recordset.length === 0) {
+                    return res.status(404).send('Lesson not found'); // Nếu không tìm thấy bài học
+                }
+                res.json(result.recordset[0]); // Trả về bài học đầu tiên
+            } catch (err) {
+                res.status(500).send(err.message);
+            }
+        });
+        app.get('/api/questions/lesson/:id', async (req, res) => {
+            const { id } = req.params; // Lấy id từ tham số đường dẫn
+            try {
+                const result = await pool.request()
+                    .input('id', sql.Int, id) // Đảm bảo rằng id là số nguyên
+                    .query('SELECT * FROM Questions WHERE LessonID = @id'); 
+                
+                if (result.recordset.length === 0) {
+                    return res.status(404).send('No questions found for this lesson'); // Nếu không tìm thấy câu hỏi
+                }
+                
+                res.json(result.recordset); // Trả về danh sách câu hỏi
+            } catch (err) {
+                res.status(500).send(err.message); // Xử lý lỗi
+            }
+        });
+
        
         
     })

@@ -38,9 +38,9 @@ function Home()
                     <a href="#/vocabulary" className="w-1/2 p-2 text-lg text-white rounded-full bg-blue3">
                         Từ vựng
                     </a>
-                    <li className="w-1/2 p-2 text-lg text-white rounded-full bg-blue3">
-                       Ngữ pháp
-                    </li>
+                    <a href="#/lessons" className="w-1/2 p-2 text-lg text-white rounded-full bg-blue3">
+                    Bài học
+                    </a>
                 </ul>
              
                 
