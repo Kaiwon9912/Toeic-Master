@@ -88,7 +88,7 @@ sql.connect(config)
             try {
                 const result = await pool.request()
                     .input('part', sql.Int, part)
-                    .query('SELECT TOP 1 * FROM Questions WHERE PartID = @part ORDER BY NEWID()'); // Lấy ngẫu nhiên 1 câu hỏi
+                    .query('SELECT TOP 1 * FROM Questions WHERE PartID = 5 and ExamQuestion =0 ORDER BY NEWID()'); // Lấy ngẫu nhiên 1 câu hỏi
                 res.json(result.recordset);
             } catch (err) {
                 res.status(500).send(err.message);
@@ -100,7 +100,7 @@ sql.connect(config)
             try {
                 const result = await pool.request()
                     .input('part', sql.Int, part)
-                    .query('SELECT  * FROM Questions WHERE Part = @part '); 
+                    .query('SELECT  * FROM Questions WHERE Part = @part'); 
                 res.json(result.recordset);
             } catch (err) {
                 res.status(500).send(err.message);
