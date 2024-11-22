@@ -7,8 +7,10 @@ import VocabularyPage from './pages/VocabularyPage';
 
 import QuestionPart from './pages/QuestionPart';
 import ReadingPage from './pages/ReadingPage';
-import LessonList from './pages/LessonList'; 
-import LessonDetail from './pages/LessonDetail'; 
+import LessonList from './pages/lessonsPages/LessonList';
+import ListeningPage from './pages/listeningPages/ListeningPage';
+import LessonDetail from './pages/lessonsPages/LessonDetail';
+import Part from './pages/listeningPages/Part';
 function App() {
   return (
     <>
@@ -38,12 +40,27 @@ function App() {
               </MainLayout>
             }
           />
+          <Route
+            path="/listening"
+            element={
+              <MainLayout>
+                <ListeningPage />
+              </MainLayout>
+            }
+          />
           {/* Thêm route động cho từng part của QuestionPage */}
           <Route
             path="/reading/part/:part"
             element={
               <MainLayout>
                 <QuestionPart />
+              </MainLayout>
+            }
+          />
+          <Route path="/listening/:part"
+            element={
+              <MainLayout>
+                <Part />
               </MainLayout>
             }
           />

@@ -1,0 +1,58 @@
+.listening-page {
+    margin-left: 20rem; /* Thay đổi khoảng cách lề trái thành 5rem */
+    display: flex; /* Sử dụng Flexbox */
+    flex-wrap: wrap; /* Cho phép các ô xuống dòng nếu không đủ chỗ */
+    justify-content: center; /* Căn giữa các ô */
+    gap: 1rem; /* Khoảng cách giữa các ô */
+}
+
+.stat-box {
+    background-color: #f9f9f9; /* Màu nền cho ô */
+    transition: box-shadow 0.3s; /* Hiệu ứng chuyển động khi hover */
+    width: calc(25% - 1rem); /* Chiều dài ô để có 4 ô trên 1 hàng */
+    min-width: 400px; /* Đặt chiều rộng tối thiểu cho ô */
+    border-radius: 10px; /* Bo tròn góc */
+    display: flex; /* Sử dụng Flexbox cho ô */
+    flex-direction: column; /* Đặt hướng dọc */
+    justify-content: flex-start; /* Đảm bảo nội dung ở đầu ô */
+}
+
+.part-image {
+    width: 100%; /* Đặt chiều rộng hình ảnh 100% để phù hợp với ô */
+    height: 200px; /* Thiết lập chiều cao cố định */
+    object-fit: cover; /* Đảm bảo hình ảnh được cắt tỉ lệ phù hợp */
+    border-radius: 8px; /* Bo tròn các góc của hình ảnh */
+    margin-bottom: 1rem; /* Khoảng cách giữa hình ảnh và tiêu đề */
+}
+
+.stat-box:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Tăng độ bóng khi hover */
+}
+
+.title {
+    color: #333; /* Màu chữ tiêu đề */
+}
+
+.content, .total-questions {
+    color: #555; /* Màu chữ cho nội dung */
+}
+
+.correct-answers {
+    color: green; /* Màu xanh lá cây cho số câu đúng */
+}
+
+.stat-box:nth-child(1) {
+    background-color: #e3f2fd; /* Xanh nhạt cho Part 1 */
+}
+
+.stat-box:nth-child(2) {
+    background-color: #fce4ec; /* Hồng nhạt cho Part 2 */
+}
+
+.stat-box:nth-child(3) {
+    background-color: #e8f5e9; /* Xanh lá nhạt cho Part 3 */
+}
+
+.stat-box:nth-child(4) {
+    background-color: #fff3e0; /* Cam nhạt cho Part 4 */
+}

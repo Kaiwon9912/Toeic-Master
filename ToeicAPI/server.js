@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const sql = require('mssql');
-const config = require('./dbconfig'); 
+const config = require('./dbconfig');
 
 const app = express();
 const port = 3000;
@@ -80,7 +80,7 @@ sql.connect(config)
             } catch (err) {
                 res.status(500).send(err.message);
             }
-            
+
         });
         //APi lấy câu hỏi ngẫu nhiên theo part
         app.get('/api/question/part/:part/random', async (req, res) => {
@@ -100,7 +100,7 @@ sql.connect(config)
             try {
                 const result = await pool.request()
                     .input('part', sql.Int, part)
-                    .query('SELECT  * FROM Questions WHERE Part = @part'); 
+                    .query('SELECT  * FROM Questions WHERE Part = @part');
                 res.json(result.recordset);
             } catch (err) {
                 res.status(500).send(err.message);
@@ -112,7 +112,7 @@ sql.connect(config)
                 const result = await pool.request()
                     .input('userId', sql.Int, userId)
                     .query(`SELECT * FROM GetUserQuestionStats(@userId)`);
-        
+
                 res.json(result.recordset); // Trả về dữ liệu dưới dạng JSON
             } catch (error) {
                 res.status(500).send(error.message);
@@ -120,25 +120,25 @@ sql.connect(config)
         });
         app.get("/api/random-group/:partId", async (req, res) => {
             const partId = parseInt(req.params.partId);
-        
+
             if (isNaN(partId)) {
                 return res.status(400).json({ error: "Invalid PartID" });
             }
-        
+
             try {
-             
+
                 const request = new sql.Request();
                 request.input("PartID", sql.Int, partId);
-        
+
                 const result = await request.execute("GetRandomQuestionsByPart");
-        
-                res.json(result.recordset); 
+
+                res.json(result.recordset);
             } catch (err) {
                 console.error("Error executing stored procedure:", err);
                 res.status(500).send("Internal Server Error");
             }
         });
- 
+
         app.get('/api/lessons', async (req, res) => {
             try {
                 const result = await pool.request().query('SELECT * FROM Lessons');
@@ -152,7 +152,7 @@ sql.connect(config)
             try {
                 const result = await pool.request()
                     .input('id', sql.Int, id) // Đảm bảo rằng id là số nguyên
-                    .query('SELECT * FROM Lessons WHERE LessonID = @id'); 
+                    .query('SELECT * FROM Lessons WHERE LessonID = @id');
                 if (result.recordset.length === 0) {
                     return res.status(404).send('Lesson not found'); // Nếu không tìm thấy bài học
                 }
@@ -166,20 +166,20 @@ sql.connect(config)
             try {
                 const result = await pool.request()
                     .input('id', sql.Int, id) // Đảm bảo rằng id là số nguyên
-                    .query('SELECT * FROM Questions WHERE LessonID = @id'); 
-                
+                    .query('SELECT * FROM Questions WHERE LessonID = @id');
+
                 if (result.recordset.length === 0) {
                     return res.status(404).send('No questions found for this lesson'); // Nếu không tìm thấy câu hỏi
                 }
-                
+
                 res.json(result.recordset); // Trả về danh sách câu hỏi
             } catch (err) {
                 res.status(500).send(err.message); // Xử lý lỗi
             }
         });
 
-       
-        
+
+
     })
     .catch(err => console.error('Kết nối thất bại:', err));
 

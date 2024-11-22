@@ -1,0 +1,123 @@
+.part2 {
+    margin-left: 10rem;
+    margin-top: 3rem;
+    margin-right: 10rem;
+    margin-bottom: 5rem;
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các card bọc lại khi không đủ không gian */
+    justify-content: center; /* Căn giữa các card */
+    gap: 20px; /* Khoảng cách giữa các card */
+    position: relative; /* Để quản lý vị trí của phần tử con */
+}
+
+.header-container {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: space-between; /* Giữa các phần tử */
+    margin-bottom: 20px; /* Khoảng cách dưới */
+}
+
+.intro-box {
+    border: 1px solid #ccc; /* Đường viền khung */
+    padding: 15px; /* Khoảng cách bên trong khung */
+    margin-bottom: 20px; /* Khoảng cách dưới khung */
+    background-color: #f9f9f9; /* Màu nền nhẹ cho khung */
+    border-radius: 5px; /* Bo góc cho khung */
+}
+
+.intro-box h3 {
+    margin-top: 0; /* Xóa khoảng cách trên tiêu đề */
+}
+
+.filter {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end; /* Căn trái cho phần filter */
+}
+
+.filter label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.filter select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.question-card {
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 500px; /* Đặt chiều rộng cố định cho card */
+    text-align: center;
+}
+
+.prompt {
+    width: 100%;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555; /* Màu chữ cho câu "Pick your best answer" */
+}
+
+.answers {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+label {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px; /* Khoảng cách giữa các câu trả lời */
+}
+
+.correct {
+    background-color: green; /* Màu nền cho đáp án đúng */
+    color: white; /* Màu chữ cho đáp án đúng */
+}
+
+.incorrect {
+    background-color: red; /* Màu nền cho đáp án sai */
+    color: white; /* Màu chữ cho đáp án sai */
+}
+
+.pagination {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    position: static; /* Đặt vị trí động */
+}
+
+.pagination button {
+    background-color: #007bff; /* Màu nền */
+    color: white; /* Màu chữ */
+    border: none; /* Không có viền */
+    border-radius: 5px; /* Bo tròn góc */
+    padding: 10px 15px; /* Khoảng cách bên trong */
+    margin: 0 10px; /* Khoảng cách giữa các nút */
+    cursor: pointer; /* Đổi con trỏ khi hover */
+    font-size: 16px; /* Kích thước chữ */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+.pagination button:hover {
+    background-color: #0056b3; /* Màu khi hover */
+}
+
+.pagination button:disabled {
+    background-color: #ccc; /* Màu nền cho nút vô hiệu hóa */
+    cursor: not-allowed; /* Đổi con trỏ khi nút vô hiệu hóa */
+}
+
+.pagination span {
+    font-size: 16px; /* Kích thước chữ cho thông tin trang */
+    margin: 0 10px; /* Khoảng cách giữa thông tin và nút */
+}
