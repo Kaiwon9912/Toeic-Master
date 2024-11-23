@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ListeningPage.css';
+import Header from '../../components/header';
+import Footer from '../../components/Footer';
+
 import part1Image from '../../../public/listen_pic_title/part1.jpg';
 import part2Image from '../../../public/listen_pic_title/part2.jpg';
 import part3Image from '../../../public/listen_pic_title/part3.jpg';
@@ -49,7 +52,10 @@ function ListeningPage() {
     ];
 
     return (
-        <div className="listening-page grid grid-cols-2 gap-4 p-4">
+        <>
+          <Header/>  
+          <div className="listening-page grid grid-cols-2 gap-4 p-4">
+            
             {stats.map((stat, index) => (
                 <div
                     className="stat-box border p-4 rounded-lg shadow-lg"
@@ -65,6 +71,9 @@ function ListeningPage() {
                 </div>
             ))}
         </div>
+            <Footer/>
+        </>
+       
     );
 }
 

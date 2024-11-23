@@ -1,90 +1,22 @@
 import { useState } from 'react';
-import Home from './pages/Home';
-import './App.css';
-import MainLayout from './layout/mainLayout';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
-import VocabularyPage from './pages/VocabularyPage';
 
-import QuestionPart from './pages/QuestionPart';
-import ReadingPage from './pages/ReadingPage';
-import LessonList from './pages/lessonsPages/LessonList';
+import './App.css';
+
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+
+import Home from './pages/HomePage/Home';
 import ListeningPage from './pages/listeningPages/ListeningPage';
-import LessonDetail from './pages/lessonsPages/LessonDetail';
-import Part from './pages/listeningPages/Part';
+import ReadingPage from './pages/readingPage/ReadingPage';
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <MainLayout>
-                <Home />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/vocabulary"
-            element={
-              <MainLayout>
-                <VocabularyPage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/reading"
-            element={
-              <MainLayout>
-                <ReadingPage />
-              </MainLayout>
-            }
-          />
-          <Route
-            path="/listening"
-            element={
-              <MainLayout>
-                <ListeningPage />
-              </MainLayout>
-            }
-          />
-          {/* Thêm route động cho từng part của QuestionPage */}
-          <Route
-            path="/reading/part/:part"
-            element={
-              <MainLayout>
-                <QuestionPart />
-              </MainLayout>
-            }
-          />
-          <Route path="/listening/:part"
-            element={
-              <MainLayout>
-                <Part />
-              </MainLayout>
-            }
-          />
-          {/* Route cho danh sách bài học */}
-          <Route
-            path="/lessons"
-            element={
-              <MainLayout>
-                <LessonList />
-              </MainLayout>
-            }
-          />
-          {/* Route cho chi tiết bài học */}
-          <Route
-            path="/lessons/:id"
-            element={
-              <MainLayout>
-                <LessonDetail />
-              </MainLayout>
-            }
-          />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+    <Routes><Route path="/" element={<Home/>} /></Routes>
+    <Routes><Route path="/listening" element={<ListeningPage/>} /></Routes>
+    <Routes><Route path="/reading" element={<ReadingPage/>} /></Routes>
+    <Routes><Route path="/test" element={<Home/>} /></Routes>
+    <Routes><Route path="/login" element={<Home/>} /></Routes>
+    <Routes><Route path="/lessons" element={<Home/>} /></Routes>
+  </Router>
   );
 }
 
