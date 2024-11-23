@@ -17,7 +17,7 @@ sql.connect(config)
     .then(pool => {
         console.log('Kết nối thành công đến SQL Server');
 
-        // API để lấy tất cả các chủ đề
+        //API để lấy tất cả các chủ đề
         app.get('/api/topics', async (req, res) => {
             try {
                 const result = await pool.request().query('SELECT * FROM Topics');
@@ -94,7 +94,7 @@ sql.connect(config)
                 res.status(500).send(err.message);
             }
         });
-        // Lấy câu hỏi theo từng part
+        //Lấy câu hỏi theo từng part
         app.get('/api/question/part/:part', async (req, res) => {
             const { part } = req.params;
             try {
@@ -172,11 +172,46 @@ sql.connect(config)
                     return res.status(404).send('No questions found for this lesson'); // Nếu không tìm thấy câu hỏi
                 }
 
-                res.json(result.recordset); // Trả về danh sách câu hỏi
+                res.json(result.recordset); // Trả về danh sách cu hỏi
             } catch (err) {
                 res.status(500).send(err.message); // Xử lý lỗi
             }
         });
+
+
+
+
+
+
+        // API để lấy tất cả các bài học
+        app.get('/api/lessons', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Lessons');
+                console.log('Dữ liệu lessons:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu lessons:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+        // API để lấy tất cả các part
+        app.get('/api/parts', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Parts');
+                console.log('Dữ liệu part:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu parts:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+
+
+
+
+
 
 
 

@@ -10,12 +10,6 @@ const LessonDetail = () => {
 
     let content;
     switch (id) {
-        case 'Writing':
-            content = <Writing />;
-            break;
-        case 'Speaking':
-            content = <Speaking />;
-            break;
         case 'Listening':
             content = <Listening />;
             break;
