@@ -9,4 +9,5 @@ const ImageCard = (props) =>{
       </div>
     );
 
-}; export default ImageCard;
+} ;
+export default ImageCard;
