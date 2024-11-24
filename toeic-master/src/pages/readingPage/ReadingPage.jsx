@@ -8,8 +8,8 @@ import axios from "axios";
 
 function ReadingPage() {
   const userId = 1; // Cố định userId là 1
-  const { data: stats, loading, error } = useFetch(
-    `http://localhost:3000/api/user-question-stats/${userId}`
+  const { data: parts, loading, error } = useFetch(
+    `http://localhost:3000/api/parts`
   );
 
   // State quản lý Part và câu hỏi
@@ -35,7 +35,7 @@ function ReadingPage() {
     } else if (partNumber === 5) {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/question/part/${partNumber}/random`
+          `http://localhost:3000/api/questions/part/${partNumber}/random`
         );
         setQuestions([response.data]); // Lưu câu hỏi đơn lẻ
       } catch (error) {
@@ -74,25 +74,36 @@ function ReadingPage() {
       <div className="flex">
         {/* Sidebar với danh sách các phần */}
         <div className="h-[100vh]">
+    {parts.map((part, index) => (
+      <div key={part.PartID}>
+        {/* Điều kiện để hiển thị tiêu đề Reading hoặc Listening */}
+        {part.PartID === 1 && (
+          <p className="text-2xl bg-blue-800 w-96 text-white px-2 uppercase">
+            Listening
+          </p>
+        )}
+        {part.PartID === 5 && (
           <p className="text-2xl bg-blue-800 w-96 text-white px-2 uppercase">
             Reading
           </p>
-          {stats.map((stat) => (
-            <div
-              key={stat.PartID}
-              className="cursor-pointer"
-              onClick={() => setSelectedPart(stat.PartID)} // Chọn Part
-            >
-              <PartCard
-                id={stat.PartID}
-                title={stat.Title}
-                number={stat.TotalQuestions}
-                learned={stat.CompletedQuestions}
-                incorrect={stat.IncorrectQuestions}
-              />
-            </div>
-          ))}
+        )}
+
+        {/* Hiển thị danh sách các Part */}
+        <div
+          className="cursor-pointer"
+          onClick={() => setSelectedPart(part.PartID)} // Chọn Part
+        >
+          <PartCard
+            id={part.PartID}
+            title={part.Title}
+            number={part.TotalQuestions}
+            learned={part.CompletedQuestions}
+            incorrect={part.IncorrectQuestions}
+          />
         </div>
+      </div>
+    ))}
+  </div>
 
         {/* Nội dung câu hỏi */}
         <div className="Question flex-1">
