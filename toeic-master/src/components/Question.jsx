@@ -39,7 +39,7 @@ const Question = ({ onAnswerUpdate, data }) => {
                 { selectedAnswer&& !question.ExamQuestion && (
                     <div className='my-8 h-36 w-full'>
                         <p className='bg-blue-400 text-white h-36 p-4 rounded-xl'>
-                            Giải thích: {question.Explaination}
+                            Giải thích: {question.Explanation}
                         </p>
                  
                     </div>
