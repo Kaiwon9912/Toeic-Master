@@ -1,13 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const sql = require('mssql');
-const config = require('./db/dbconfig');
+const config = require('./dbconfig');
 
 // Import các route
-const topicsRoutes = require('./routes/topics');
+const topicsRoutes = require('./routes/topic');
 const vocabularyRoutes = require('./routes/vocabulary');
 const questionsRoutes = require('./routes/questions');
-
+const partsRoutes = require('./routes/parts');
+const examsRoutes = require('./routes/exams');
 const app = express();
 const port = 3000;
 
@@ -21,10 +22,11 @@ sql.connect(config)
     .catch(err => console.error('Kết nối thất bại:', err));
 
 // Sử dụng các route
-app.use('/api/topics', topicsRoutes);
+app.use('/api/topic', topicsRoutes);
 app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/questions', questionsRoutes);
-
+app.use('/api/parts', partsRoutes);
+app.use('/api/exams', examsRoutes);
 // Khởi động server
 app.listen(port, () => {
     console.log(`Server đang chạy tại http://localhost:${port}`);

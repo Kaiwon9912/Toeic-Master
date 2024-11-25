@@ -8,7 +8,7 @@ function PartCard(props)
           
             <div className="items-center text-xl p-2  flex justify-between ">
                 Part {props.id}: {props.title}
-                <div className="relative w-12 h-12 flex items-center justify-center">
+                <div className="relative w-12 h-12 flex items-center zjustify-center">
 
             <div className="w-full max-w-sm">
             <div className="flex items-center">

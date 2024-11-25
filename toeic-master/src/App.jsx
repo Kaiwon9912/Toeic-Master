@@ -7,6 +7,8 @@ import AdminHome from './pages/adminPage/adminHome';
 import VocabularyA from './pages/adminPage/vocabularyA'; 
 import LessonA from './pages/adminPage/lessonA'; 
 import ExamsA from './pages/adminPage/examsA';
+import QuestionPart from './pages/readingPage/QuestionPart';
+
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/listening" element={<ListeningPage />} />
-        <Route path="/reading" element={<ReadingPage />} />
+        <Route path="/reading" element={<ReadingPage/>} />
+        <Route path="/reading/part/:part" element={<QuestionPart />} />
         <Route path="/test" element={<Home />} />
         <Route path="/lessons" element={<Home />} />
         <Route path="/login" element={<AdminHome />} />  {/* AdminHome cho login */}
