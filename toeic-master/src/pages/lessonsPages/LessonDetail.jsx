@@ -1,5 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import Header from '../../components/header';
+import Footer from '../../components/Footer';
+
 import Writing from './Writing'; // Adjust the import path as necessary
 import Speaking from './Speaking'; // Adjust the import path as necessary
 import Listening from './Listening'; // Adjust the import path as necessary
@@ -21,8 +24,12 @@ const LessonDetail = () => {
     }
 
     return (
-        <div className="p-5">
-            {content}
+        <div className="flex flex-col min-h-screen"> {/* Sử dụng min-h-screen để đảm bảo chiều cao tối thiểu */}
+            <Header />
+            <div className="flex-grow p-5 overflow-auto">
+                {content}
+            </div>
+            <Footer />
         </div>
     );
 };

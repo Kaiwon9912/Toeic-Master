@@ -72,8 +72,10 @@ CREATE TABLE Questions (
 
 CREATE TABLE Parts(
 	PartID INT PRIMARY KEY,
-	Title NVARCHAR(MAX)
+	Title NVARCHAR(MAX),
+	MediaURL NVARCHAR(MAX),
 )
+
 
 CREATE TABLE Lessons (
     LessonID INT PRIMARY KEY IDENTITY(1,1),
@@ -82,6 +84,7 @@ CREATE TABLE Lessons (
 	QuestionType NVARCHAR(MAX),
 	Guide NVARCHAR(MAX),
 	PartID int,
+	MediaURL
 	FOREIGN KEY (PartID) REFERENCES Parts(PartID)
 );
 
@@ -306,14 +309,14 @@ EXEC GetRandomGroupByPart @PartID = 6;
 
 
 -- Thêm dữ liệu vào bảng Parts
-INSERT INTO Parts (PartID, Title) VALUES 
-(1, 'Part 1: Photo'),
-(2, 'Part 2: Details'),
-(3, 'Part 3: Conversations'),
-(4, 'Part 4: Short Talks'),
-(5, 'Part 5: Incomplete Sentences'),
-(6, 'Part 6: Text Completion'),
-(7, 'Part 7: Single - Double - Triple Passages');
+INSERT INTO Parts (PartID, Title, MediaURL) VALUES 
+(1, 'Part 1: Photo', 'https://youtu.be/pc3sNvK122U?si=aMA3-oXgXz6n-dhK'),
+(2, 'Part 2: Details', 'https://youtu.be/0rzfRgMucaQ?si=2uLM0olK5xad4oA3'),
+(3, 'Part 3: Conversations', 'https://youtu.be/EuySLyz_MBI?si=ox10zD9Bbx0uPWW5'),
+(4, 'Part 4: Short Talks', 'https://youtu.be/CewLSTMFdNM?si=TMZZ2GUZKRTnzlXB'),
+(5, 'Part 5: Incomplete Sentences', 'https://youtu.be/2VS_wqkhjGc?si=vKQYQUErvlz6TiJ9'),
+(6, 'Part 6: Text Completion', 'https://youtu.be/uWiOyGfr2Yo?si=ANY9ycjRRAW9uJvl'),
+(7, 'Part 7: Single - Double - Triple Passages', 'https://youtu.be/mogmactoZok?si=tTM66aG_4Z9xtDbA');
 
 -- Thêm dữ liệu vào bảng Lessons
 INSERT INTO Lessons (Title, Content, QuestionType, Guide, PartID) VALUES 

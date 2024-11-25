@@ -9,22 +9,10 @@ function Reading() {
     const [currentPart, setCurrentPart] = useState('');
     const [lessons, setLessons] = useState({});
     const [parts, setParts] = useState([]);
-
-    // Hàm để lấy dữ liệu các phần từ API
-    const fetchParts = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/api/parts');
-            console.log('Dữ liệu phản hồi cho các phần:', response.data);
-            setParts(response.data); // Cập nhật state parts với dữ liệu lấy được
-            // Gọi hàm lấy bài học sau khi đã có phần
-            fetchLessons(response.data.slice(-3)); // Lấy bài học của 3 phần cuối cùng
-        } catch (error) {
-            console.error('Lỗi khi lấy các phần:', error.message);
-        }
-    };
+    const [currentMediaURL, setCurrentMediaURL] = useState('');
 
     // Hàm để lấy dữ liệu bài học từ API
-    const fetchLessons = async (lastThreeParts) => {
+    const fetchLessons = async () => {
         try {
             const response = await axios.get('http://localhost:3000/api/lessons');
             if (!Array.isArray(response.data) || response.data.length === 0) {
@@ -32,30 +20,44 @@ function Reading() {
             }
 
             const formattedLessons = response.data.reduce((acc, lesson) => {
-                const partKey = lesson.PartID; // Sử dụng PartID trực tiếp
-                if (lastThreeParts.find(part => part.PartID === partKey)) { // Kiểm tra nếu phần nằm trong 3 phần cuối
-                    if (!acc[partKey]) {
-                        acc[partKey] = [];
-                    }
-                    acc[partKey].push({
-                        title: lesson.Title,
-                        content: {
-                            questionType: lesson.QuestionType,
-                            guide: lesson.Guide.split('\n')
-                        }
-                    });
+                const partKey = lesson.PartID;
+                if (!acc[partKey]) {
+                    acc[partKey] = [];
                 }
+                acc[partKey].push({
+                    title: lesson.Title,
+                    content: {
+                        questionType: lesson.QuestionType,
+                        guide: lesson.Guide.split('\n')
+                    }
+                });
                 return acc;
             }, {});
 
-            setLessons(formattedLessons); // Cập nhật bài học với các phần cuối cùng
+            const limitedLessons = Object.keys(formattedLessons).slice(4, 7).reduce((acc, key) => {
+                acc[key] = formattedLessons[key];
+                return acc;
+            }, {});
+
+            setLessons(limitedLessons);
         } catch (error) {
             console.error('Lỗi khi lấy bài học:', error.message);
         }
     };
 
-    // Gọi hàm fetch khi component mount
+    // Hàm để lấy dữ liệu các phần từ API
+    const fetchParts = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/parts');
+            console.log('Dữ liệu phản hồi cho các phần:', response.data);
+            setParts(response.data);
+        } catch (error) {
+            console.error('Lỗi khi lấy các phần:', error.message);
+        }
+    };
+
     useEffect(() => {
+        fetchLessons();
         fetchParts();
     }, []);
 
@@ -65,9 +67,10 @@ function Reading() {
         setCurrentPart(`part${partNumber}`);
     };
 
-    const handleLessonClick = (lessonName, content) => {
+    const handleLessonClick = (lessonName, content, mediaURL) => {
         setSelectedLesson(lessonName);
         setLessonContent(content);
+        setCurrentMediaURL(mediaURL);
         document.getElementById('lesson-content').scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -75,19 +78,19 @@ function Reading() {
         <div className="flex">
             <div className="w-1/4 p-4 ml-12">
                 <ul className="mt-4">
-                    {parts.slice(-3).map((part) => ( // Hiển thị 3 phần cuối cùng
+                    {parts.slice(4, 7).map((part) => (
                         <li key={part.PartID}>
                             <button
                                 onClick={() => togglePart(part.PartID)}
                                 className="block w-full text-left p-2 hover:bg-gray-300 rounded-lg transition duration-200 text-2xl font-bold">
-                                {part.Title} {/* Hiển thị tiêu đề của phần */}
+                                {part.Title}
                             </button>
                             {openPart === part.PartID && (
                                 <ul className="ml-4 mt-2">
                                     {lessons[part.PartID]?.map((lesson, lessonIndex) => (
                                         <li key={lessonIndex}>
                                             <button
-                                                onClick={() => handleLessonClick(lesson.title, lesson.content)}
+                                                onClick={() => handleLessonClick(lesson.title, lesson.content, part.MediaURL)}
                                                 className={`block p-2 hover:bg-gray-300 rounded-lg transition duration-200 text-xl text-left ${selectedLesson === lesson.title ? 'bg-gray-400' : ''}`}>
                                                 {lesson.title}
                                             </button>
@@ -103,10 +106,20 @@ function Reading() {
             <div className="w-3/4 p-4 ml-4" id="lesson-content">
                 {selectedLesson && (
                     <div className="mt-4">
-                        <h3 className="text-3xl font-bold text-center">{selectedLesson}</h3>
+                        <h3 className="text-3xl font-bold text-center mb-6">{selectedLesson}</h3> {/* Thêm margin-bottom */}
+                        {currentMediaURL && (
+                            <iframe
+                                width="100%"
+                                height="600"
+                                src={currentMediaURL.replace("youtu.be/", "youtube.com/embed/")}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allowFullScreen
+                            ></iframe>
+                        )}
                         <h4 className="text-2xl font-semibold mt-4"><strong>1. Question type</strong></h4>
                         <p className="text-xl">{lessonContent.questionType}</p>
-                        <h4 className="text-2xl font-semibold mt-4"><strong>2.  Guide to answer</strong></h4>
+                        <h4 className="text-2xl font-semibold mt-4"><strong>2. Guide to answer</strong></h4>
                         <ul className="list-none ml-5">
                             {lessonContent.guide && lessonContent.guide.map((item, index) => (
                                 <li key={index} className="text-xl mb-2">

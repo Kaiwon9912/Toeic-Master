@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './part4.css';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 
 const audioClips = [
     "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
@@ -355,112 +357,117 @@ function Part4() {
     };
 
     return (
-        <div className="part4">
-            <div className="header-container">
-                <div className="intro-box">
-                    <h3>Introduction to the Task</h3>
-                    <p>
-                        <strong>Instructions:</strong> You will complete several questions based on the content you have learned.
-                        Please select the most correct answer for each question.
-                    </p>
+        <>
+            <Header />
+            <div className="part4">
+                <div className="header-container">
+                    <div className="intro-box">
+                        <h3>Introduction to the Task</h3>
+                        <p>
+                            <strong>Instructions:</strong> You will complete several questions based on the content you have learned.
+                            Please select the most correct answer for each question.
+                        </p>
+                    </div>
+                    <div className="level-selection">
+                        <h4>Select Level:</h4>
+                        <select onChange={handleLevelChange} value={selectedLevel || ''}>
+                            <option value="">All Levels</option>
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                            <option value="4">Level 4</option>
+                            <option value="5">Level 5</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="level-selection">
-                    <h4>Select Level:</h4>
-                    <select onChange={handleLevelChange} value={selectedLevel || ''}>
-                        <option value="">All Levels</option>
-                        <option value="1">Level 1</option>
-                        <option value="2">Level 2</option>
-                        <option value="3">Level 3</option>
-                        <option value="4">Level 4</option>
-                        <option value="5">Level 5</option>
-                    </select>
-                </div>
-            </div>
 
-            <div className="questions-container">
-                <div className="row">
-                    {displayedGroups.map((group) => (
-                        <div className="question-groups" key={group[0].groupID}>
-                            <div className="header">
-                                <span>{`Câu ${group[0].id}`}</span>
-                                <audio id={`audio-${group[0].id}`} src={group[0].audio} controls />
-                            </div>
+                <div className="questions-container">
+                    <div className="row">
+                        {displayedGroups.map((group) => (
+                            <div className="question-groups" key={group[0].groupID}>
+                                <div className="header">
+                                    <span>{`Câu ${group[0].id}`}</span>
+                                    <audio id={`audio-${group[0].id}`} src={group[0].audio} controls />
+                                </div>
 
-                            <div className="question-cards">
-                                <div className='row'>
-                                    {group[0].image && (
-                                        <img src={group[0].image} alt={`Hình ảnh cho câu ${group[0].id}`} className="question-image" />
-                                    )}
-                                    <div className="question-text">
-                                        {group.map((question) => (
-                                            <div key={question.id}>
-                                                <h4>{question.questionText}</h4>
-                                                <div className="answers-container">
-                                                    {question.answers.map((answer) => {
-                                                        const isSelected = selectedAnswers[question.id] === answer;
-                                                        const isCorrect = answer === question.correctAnswer;
-                                                        let answerClass = '';
-
-                                                        // Chỉ tô màu nếu tất cả câu hỏi trong nhóm đã được trả lời
-                                                        if (group.every(q => completedQuestions[q.id])) {
-                                                            if (isSelected && isCorrect) {
-                                                                answerClass = 'correct'; // Tô xanh cho đáp án đúng đã chọn
-                                                            } else if (isSelected && !isCorrect) {
-                                                                answerClass = 'incorrect'; // Tô đỏ cho đáp án sai đã chọn
-                                                            } else if (isCorrect) {
-                                                                answerClass = 'correct'; // Tô xanh cho đáp án đúng
-                                                            }
-                                                        }
-
-                                                        return (
-                                                            <label key={answer} className={`answer-label ${answerClass}`}>
-                                                                <input
-                                                                    type="radio"
-                                                                    name={`question-${question.id}`}
-                                                                    value={answer}
-                                                                    checked={isSelected}
-                                                                    onChange={() => handleAnswerChange(question.id, answer)}
-                                                                    disabled={completedQuestions[question.id]}
-                                                                />
-                                                                {answer}
-                                                            </label>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {/* Hiển thị nút "Làm lại" chỉ khi tất cả câu hỏi trong nhóm đã được trả lời */}
-                                        {group.every(q => completedQuestions[q.id]) && (
-                                            <div style={{ marginTop: '20px' }}>
-                                                <button onClick={resetAllQuestions}>
-                                                    Làm lại
-                                                </button>
-                                            </div>
+                                <div className="question-cards">
+                                    <div className='row'>
+                                        {group[0].image && (
+                                            <img src={group[0].image} alt={`Hình ảnh cho câu ${group[0].id}`} className="question-image" />
                                         )}
+                                        <div className="question-text">
+                                            {group.map((question) => (
+                                                <div key={question.id}>
+                                                    <h4>{question.questionText}</h4>
+                                                    <div className="answers-container">
+                                                        {question.answers.map((answer) => {
+                                                            const isSelected = selectedAnswers[question.id] === answer;
+                                                            const isCorrect = answer === question.correctAnswer;
+                                                            let answerClass = '';
+
+                                                            // Chỉ tô màu nếu tất cả câu hỏi trong nhóm đã được trả lời
+                                                            if (group.every(q => completedQuestions[q.id])) {
+                                                                if (isSelected && isCorrect) {
+                                                                    answerClass = 'correct'; // Tô xanh cho đáp án đúng đã chọn
+                                                                } else if (isSelected && !isCorrect) {
+                                                                    answerClass = 'incorrect'; // Tô đỏ cho đáp án sai đã chọn
+                                                                } else if (isCorrect) {
+                                                                    answerClass = 'correct'; // Tô xanh cho đáp án đúng
+                                                                }
+                                                            }
+
+                                                            return (
+                                                                <label key={answer} className={`answer-label ${answerClass}`}>
+                                                                    <input
+                                                                        type="radio"
+                                                                        name={`question-${question.id}`}
+                                                                        value={answer}
+                                                                        checked={isSelected}
+                                                                        onChange={() => handleAnswerChange(question.id, answer)}
+                                                                        disabled={completedQuestions[question.id]}
+                                                                    />
+                                                                    {answer}
+                                                                </label>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {/* Hiển thị nút "Làm lại" chỉ khi tất cả câu hỏi trong nhóm đã được trả lời */}
+                                            {group.every(q => completedQuestions[q.id]) && (
+                                                <div style={{ marginTop: '20px' }}>
+                                                    <button onClick={resetAllQuestions}>
+                                                        Làm lại
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                </div>
+
+                <div className="pagination">
+                    <button className="page-button" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
+                        Đầu tiên
+                    </button>
+                    <button className="page-button" onClick={handlePrevPage} disabled={currentPage === 1}>
+                        Trước
+                    </button>
+                    <span className="page-info">{`Trang ${currentPage} / ${totalPages}`}</span>
+                    <button className="page-button" onClick={handleNextPage} disabled={currentPage === totalPages}>
+                        Sau
+                    </button>
+                    <button className="page-button" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
+                        Cuối cùng
+                    </button>
                 </div>
             </div>
+            <Footer />
+        </>
 
-            <div className="pagination">
-                <button className="page-button" onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                    Đầu tiên
-                </button>
-                <button className="page-button" onClick={handlePrevPage} disabled={currentPage === 1}>
-                    Trước
-                </button>
-                <span className="page-info">{`Trang ${currentPage} / ${totalPages}`}</span>
-                <button className="page-button" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                    Sau
-                </button>
-                <button className="page-button" onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages}>
-                    Cuối cùng
-                </button>
-            </div>
-        </div>
     );
 }
 
