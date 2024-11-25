@@ -9,6 +9,7 @@ function Listening() {
     const [currentPart, setCurrentPart] = useState('');
     const [lessons, setLessons] = useState({});
     const [parts, setParts] = useState([]);
+    const [currentMediaURL, setCurrentMediaURL] = useState('');
 
     // Hàm để lấy dữ liệu bài học từ API
     const fetchLessons = async () => {
@@ -19,7 +20,7 @@ function Listening() {
             }
 
             const formattedLessons = response.data.reduce((acc, lesson) => {
-                const partKey = lesson.PartID; // Sử dụng PartID trực tiếp
+                const partKey = lesson.PartID;
                 if (!acc[partKey]) {
                     acc[partKey] = [];
                 }
@@ -33,7 +34,6 @@ function Listening() {
                 return acc;
             }, {});
 
-            // Giới hạn chỉ lấy 4 phần đầu tiên
             const limitedLessons = Object.keys(formattedLessons).slice(0, 4).reduce((acc, key) => {
                 acc[key] = formattedLessons[key];
                 return acc;
@@ -50,13 +50,12 @@ function Listening() {
         try {
             const response = await axios.get('http://localhost:3000/api/parts');
             console.log('Dữ liệu phản hồi cho các phần:', response.data);
-            setParts(response.data); // Cập nhật state parts với dữ liệu lấy được
+            setParts(response.data);
         } catch (error) {
             console.error('Lỗi khi lấy các phần:', error.message);
         }
     };
 
-    // Gọi các hàm fetch khi component mount
     useEffect(() => {
         fetchLessons();
         fetchParts();
@@ -68,9 +67,10 @@ function Listening() {
         setCurrentPart(`part${partNumber}`);
     };
 
-    const handleLessonClick = (lessonName, content) => {
+    const handleLessonClick = (lessonName, content, mediaURL) => {
         setSelectedLesson(lessonName);
         setLessonContent(content);
+        setCurrentMediaURL(mediaURL);
         document.getElementById('lesson-content').scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -83,14 +83,14 @@ function Listening() {
                             <button
                                 onClick={() => togglePart(part.PartID)}
                                 className="block w-full text-left p-2 hover:bg-gray-300 rounded-lg transition duration-200 text-2xl font-bold">
-                                {part.Title} {/* Hiển thị tiêu đề của phần */}
+                                {part.Title}
                             </button>
                             {openPart === part.PartID && (
                                 <ul className="ml-4 mt-2">
                                     {lessons[part.PartID]?.map((lesson, lessonIndex) => (
                                         <li key={lessonIndex}>
                                             <button
-                                                onClick={() => handleLessonClick(lesson.title, lesson.content)}
+                                                onClick={() => handleLessonClick(lesson.title, lesson.content, part.MediaURL)}
                                                 className={`block p-2 hover:bg-gray-300 rounded-lg transition duration-200 text-xl text-left ${selectedLesson === lesson.title ? 'bg-gray-400' : ''}`}>
                                                 {lesson.title}
                                             </button>
@@ -106,7 +106,17 @@ function Listening() {
             <div className="w-3/4 p-4 ml-4" id="lesson-content">
                 {selectedLesson && (
                     <div className="mt-4">
-                        <h3 className="text-3xl font-bold text-center">{selectedLesson}</h3>
+                        <h3 className="text-3xl font-bold text-center mb-6">{selectedLesson}</h3> {/* Thêm margin-bottom */}
+                        {currentMediaURL && (
+                            <iframe
+                                width="100%"
+                                height="600"
+                                src={currentMediaURL.replace("youtu.be/", "youtube.com/embed/")}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allowFullScreen
+                            ></iframe>
+                        )}
                         <h4 className="text-2xl font-semibold mt-4"><strong>1. Question type</strong></h4>
                         <p className="text-xl">{lessonContent.questionType}</p>
                         <h4 className="text-2xl font-semibold mt-4"><strong>2. Guide to answer</strong></h4>
