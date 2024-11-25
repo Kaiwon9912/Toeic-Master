@@ -8,6 +8,9 @@ import VocabularyA from './pages/adminPage/vocabularyA';
 import LessonA from './pages/adminPage/lessonA'; 
 import ExamsA from './pages/adminPage/examsA';
 import QuestionPart from './pages/readingPage/QuestionPart';
+import LessonList from './pages/lessonsPages/LessonList';
+import Reading from './pages/lessonsPages/Reading';
+
 
 
 function App() {
@@ -19,7 +22,8 @@ function App() {
         <Route path="/reading" element={<ReadingPage/>} />
         <Route path="/reading/part/:part" element={<QuestionPart />} />
         <Route path="/test" element={<Home />} />
-        <Route path="/lessons" element={<Home />} />
+        <Route path="/lessons" element={<LessonList />} />
+        <Route path="/Reading" element={<Reading />} /> {/* bs thử kh chạy link  */} 
         <Route path="/login" element={<AdminHome />} />  {/* AdminHome cho login */}
         
         {/* Route cha cho Admin */}
