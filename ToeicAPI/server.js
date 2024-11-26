@@ -57,11 +57,11 @@ sql.connect(config)
                     .input('Name', sql.VarChar, Name)
                     .input('Description', sql.Text, Description)
                     .query('UPDATE Topics SET Name = @Name, Description = @Description WHERE TopicID = @topicID');
-                
+
                 if (result.rowsAffected[0] === 0) {
                     return res.status(404).send('Topic not found'); // Nếu không tìm thấy chủ đề
                 }
-                
+
                 res.status(200).send('Topic updated successfully'); // Trả về thông báo thành công
             } catch (err) {
                 res.status(500).send(`Error: ${err.message}`); // Xử lý lỗi
@@ -208,6 +208,56 @@ sql.connect(config)
                 res.status(500).send(err.message);
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // API lấy question groups
+        app.get('/api/question-groups', async (req, res) => {
+            try {
+                const result = await pool.request()
+                    .query('SELECT * FROM QuestionGroup');
+
+                console.log('Dữ liệu question groups:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu question groups:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+
+        //API lấy questions cho 4 phần listening
+        app.get('/api/questions/:partID', async (req, res) => {
+            const partID = req.params.partID; // Lấy partID từ URL
+
+            try {
+                const result = await pool.request()
+                    .input('PartID', sql.Int, partID) // Sử dụng input để bảo vệ khỏi SQL Injection
+                    .query('SELECT * FROM Questions WHERE PartID = @PartID');
+
+                console.log('Dữ liệu câu hỏi:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu câu hỏi:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+
+
 
     })
     .catch(err => console.error('Kết nối thất bại:', err));

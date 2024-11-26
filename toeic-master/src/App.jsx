@@ -32,12 +32,18 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/listening" element={<ListeningPage />} />
+        <Route path="/listening/:part" element={<Part />} />
+
         <Route path="/reading" element={<ReadingPage />} />
         <Route path="/reading/part/:part" element={<QuestionPart />} />
+
         <Route path="/test" element={<Home />} />
+
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
+
         <Route path="/Reading" element={<Reading />} /> {/* bs thử kh chạy link  */}
         <Route path="/login" element={<AdminHome />} />  {/* AdminHome cho login */}
 
