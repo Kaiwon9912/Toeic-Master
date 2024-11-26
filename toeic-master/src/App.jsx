@@ -23,13 +23,10 @@ import LessonA from './pages/adminPage/lessonA';
 import ExamsA from './pages/adminPage/examsA';
 import QuestionPart from './pages/readingPage/QuestionPart';
 
-import Reading from './pages/lessonsPages/Reading';
-
-
 
 function App() {
   return (
-    <Router>
+   <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/listening" element={<ListeningPage />} />

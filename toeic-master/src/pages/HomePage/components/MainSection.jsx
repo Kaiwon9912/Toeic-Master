@@ -14,7 +14,7 @@ const MainSection = () => {
            img = {"https://mylearningspringboard.com/wp-content/uploads/2012/02/Young-Boy-Reading-in-the-Library.jpg"}
            title ={"Kỹ năng đọc"}
            description = {"Luyện tập kỹ năng đọc TOEIC với các đoạn văn."}/></a>
-            <a href='#/test'> <ImageCard 
+            <a href='#/exam'> <ImageCard 
            img = {"https://www.thoughtco.com/thmb/tVaPl-XUEXp32eYG9Ql50vYah7Q=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-79253051-574e362c3df78ccee143a3a9.jpg"}
            title ={"Thi thử TOEIC"}
            description = {"Thi thử với thời gian và cấu trúc chuẩn TOEIC"}/></a>

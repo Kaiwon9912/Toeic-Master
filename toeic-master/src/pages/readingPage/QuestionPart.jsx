@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Question from '../../components/Question';
 import axios from 'axios';
 import MessageComponent from './MessageComponent';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 const Progress = ({ totalCount, correctCount }) => {
@@ -74,7 +74,7 @@ function QuestionPart() {
       } else if (partNumber === 5) {
         try {
           const response = await axios.get(
-            `http://localhost:3000/api/questions/part/${partNumber}/random`
+            `http://localhost:3000/api/questions/random/${partNumber}/0`
           );
           setQuestions([response.data]);
         } catch (error) {
