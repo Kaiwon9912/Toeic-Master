@@ -12,28 +12,34 @@ import ReadingPage from './pages/readingPage/ReadingPage';
 
 import LessonList from './pages/lessonsPages/LessonList';
 import LessonDetail from "./pages/lessonsPages/LessonDetail"
-
+import Part from "./pages/listeningPages/Part"
 
 
 import Topics from './pages/adminPage/topics';
 import AdminHome from './pages/adminPage/adminHome';
 import VocabularyA from './pages/adminPage/vocabularyA';
 import LessonA from './pages/adminPage/lessonA';
-import ExamsA from './pages/adminPage/examsA';
+import Reading from './pages/lessonsPages/Reading';
 import QuestionPart from './pages/readingPage/QuestionPart';
 import ExamControl from './AdminArea/pages/ExamControl';
-
+        <Route path="/listening/:part" element={<Part />} />
 function App() {
   return (
    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/listening" element={<ListeningPage />} />
+        <Route path="/listening/:part" element={<Part />} />
+
         <Route path="/reading" element={<ReadingPage />} />
         <Route path="/reading/part/:part" element={<QuestionPart />} />
+        <Route path="/listening/:part" element={<Part />} />
         <Route path="/test" element={<Home />} />
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
+
+        <Route path="/Reading" element={<Reading />} /> {/* bs thử kh chạy link  */}
         <Route path="/login" element={<AdminHome />} />  {/* AdminHome cho login */}
 
         {/* Route cha cho Admin */}

@@ -1,98 +1,36 @@
-import React, { useState } from 'react';
-import './part2.css'; // Đảm bảo bạn đã import tệp CSS
-import Header from '../../../components/Header';
+import React, { useEffect, useState } from 'react';
 import Footer from '../../../components/Footer';
+import axios from 'axios';
+import Header from '../../../components/Header';
+import './part2.css'; // Đảm bảo bạn đã import tệp CSS
 
-const audioClips = [
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-    "https://storage.googleapis.com/estudyme/toeic/2024/10/08/67636425.mp3",
-];
-
-const questions = [
-    {
-        id: 1,
-        audio: audioClips[0],
-        questionText: "What is this person doing?",
-        answers: [
-            "A A person is reading a book.",
-            "B A person is cooking.",
-            "C A person is walking."
-        ],
-        correctAnswer: "A A person is reading a book.",
-        level: 1
-    },
-    {
-        id: 2,
-        audio: audioClips[1],
-        questionText: "What is this person doing?",
-        answers: [
-            "A A person is watching TV.",
-            "B A person is talking.",
-            "C A person is working."
-        ],
-        correctAnswer: "B A person is talking.",
-        level: 1
-    },
-    {
-        id: 3,
-        audio: audioClips[2],
-        questionText: "What is this person doing?",
-        answers: [
-            "A A person is running.",
-            "B A person is sitting.",
-            "C A person is sleeping."
-        ],
-        correctAnswer: "C A person is sleeping.",
-        level: 1
-    },
-    ...Array.from({ length: 45 }, (_, index) => {
-        const correctAnswerIndex = Math.floor(Math.random() * 3);
-        const answers = [
-            `A Answer ${index + 4} - 1.`,
-            `B Answer ${index + 4} - 2.`,
-            `C Answer ${index + 4} - 3.`
-        ];
-        return {
-            id: index + 4,
-            audio: audioClips[(index + 3) % audioClips.length],
-            questionText: `What is this person doing in situation ${index + 4}?`,
-            answers: answers,
-            correctAnswer: answers[correctAnswerIndex],
-            level: Math.floor(Math.random() * 5) + 1
-        };
-    })
-];
 function Part2() {
+    const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [completedQuestions, setCompletedQuestions] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [showAnswers, setShowAnswers] = useState({});
-    const [selectedLevel, setSelectedLevel] = useState(null); // Thay đổi giá trị mặc định
+    const [selectedLevel, setSelectedLevel] = useState(null);
     const questionsPerPage = 18;
 
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            const partID = 2; // Thay đổi giá trị này để lấy câu hỏi cho phần khác
+            try {
+                const response = await axios.get(`http://localhost:3000/api/questions/${partID}`);
+                setQuestions(response.data); // Giả sử data là mảng câu hỏi
+            } catch (error) {
+                console.error('Lỗi khi lấy dữ liệu câu hỏi:', error);
+            }
+        };
+
+        fetchQuestions();
+    }, []);
+
+    // Lọc các câu hỏi có ExamQuestion là false
     const filteredQuestions = selectedLevel === null
-        ? questions // Hiển thị tất cả câu hỏi nếu không có cấp độ nào được chọn
-        : questions.filter(question => question.level === selectedLevel);
+        ? questions.filter(question => question.ExamQuestion === false) // Chỉ giữ câu hỏi có ExamQuestion = false
+        : questions.filter(question => question.Level === selectedLevel && question.ExamQuestion === false);
 
     const totalFilteredPages = Math.ceil(filteredQuestions.length / questionsPerPage);
     const startIndex = (currentPage - 1) * questionsPerPage;
@@ -123,8 +61,8 @@ function Part2() {
 
     const handleLevelChange = (event) => {
         const value = event.target.value;
-        setSelectedLevel(value ? Number(value) : null); // Cập nhật selectedLevel
-        setCurrentPage(1); // Đặt lại về trang đầu khi thay đổi cấp độ
+        setSelectedLevel(value ? Number(value) : null);
+        setCurrentPage(1);
     };
 
     return (
@@ -153,48 +91,67 @@ function Part2() {
                     </div>
                 </div>
                 {displayedQuestions.map((question) => (
-                    <div key={question.id} className="question-card">
+                    <div key={question.QuestionID} className="question-card">
                         <div className="header">
-                            <span>{`Question ${question.id}`}</span>
-                            <audio id={`audio-${question.id}`} src={question.audio} controls />
+                            <span>{`Question ${question.QuestionID}`}</span>
+                            <audio id={`audio-${question.QuestionID}`} src={question.QuestionAudio} controls />
                         </div>
                         <p className='prompt'>
-                            {selectedAnswers[question.id] ? question.questionText : "Pick your best answer"}
+                            {selectedAnswers[question.QuestionID] ? question.QuestionText : "Pick your best answer"}
                         </p>
                         <div className="answers">
-                            {question.answers.map((answer) => {
-                                const isCorrect = answer === question.correctAnswer;
-                                const isSelected = selectedAnswers[question.id] === answer;
-                                const answerClass = completedQuestions[question.id]
-                                    ? (isSelected ? (isCorrect ? 'correct' : 'incorrect') : (isCorrect ? 'correct' : ''))
-                                    : '';
-
-                                return (
-                                    <label
-                                        key={answer}
-                                        style={{ flex: 1, textAlign: 'center' }}
-                                        className={answerClass}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name={`question-${question.id}`}
-                                            value={answer}
-                                            checked={isSelected}
-                                            onChange={() => handleAnswerChange(question.id, answer)}
-                                            disabled={completedQuestions[question.id]}
-                                        />
-                                        {completedQuestions[question.id] && showAnswers[question.id] ? answer : answer.charAt(0)}
-                                    </label>
-                                );
-                            })}
+                            <label style={{ flex: 1, textAlign: 'center' }}>
+                                <input
+                                    type="radio"
+                                    name={`question-${question.QuestionID}`}
+                                    value="A"
+                                    checked={selectedAnswers[question.QuestionID] === question.AnswerA}
+                                    onChange={() => handleAnswerChange(question.QuestionID, question.AnswerA)}
+                                    disabled={completedQuestions[question.QuestionID]}
+                                />
+                                {completedQuestions[question.QuestionID] && showAnswers[question.QuestionID] ? question.AnswerA : 'A'}
+                            </label>
+                            <label style={{ flex: 1, textAlign: 'center' }}>
+                                <input
+                                    type="radio"
+                                    name={`question-${question.QuestionID}`}
+                                    value="B"
+                                    checked={selectedAnswers[question.QuestionID] === question.AnswerB}
+                                    onChange={() => handleAnswerChange(question.QuestionID, question.AnswerB)}
+                                    disabled={completedQuestions[question.QuestionID]}
+                                />
+                                {completedQuestions[question.QuestionID] && showAnswers[question.QuestionID] ? question.AnswerB : 'B'}
+                            </label>
+                            <label style={{ flex: 1, textAlign: 'center' }}>
+                                <input
+                                    type="radio"
+                                    name={`question-${question.QuestionID}`}
+                                    value="C"
+                                    checked={selectedAnswers[question.QuestionID] === question.AnswerC}
+                                    onChange={() => handleAnswerChange(question.QuestionID, question.AnswerC)}
+                                    disabled={completedQuestions[question.QuestionID]}
+                                />
+                                {completedQuestions[question.QuestionID] && showAnswers[question.QuestionID] ? question.AnswerC : 'C'}
+                            </label>
+                            <label style={{ flex: 1, textAlign: 'center' }}>
+                                <input
+                                    type="radio"
+                                    name={`question-${question.QuestionID}`}
+                                    value="D"
+                                    checked={selectedAnswers[question.QuestionID] === question.AnswerD}
+                                    onChange={() => handleAnswerChange(question.QuestionID, question.AnswerD)}
+                                    disabled={completedQuestions[question.QuestionID]}
+                                />
+                                {completedQuestions[question.QuestionID] && showAnswers[question.QuestionID] ? question.AnswerD : 'D'}
+                            </label>
                         </div>
-                        {completedQuestions[question.id] && (
+                        {completedQuestions[question.QuestionID] && (
                             <div style={{ marginTop: '20px' }}>
-                                <button onClick={() => resetQuestion(question.id)} style={{ marginRight: '10px' }}>
+                                <button onClick={() => resetQuestion(question.QuestionID)} style={{ marginRight: '10px' }}>
                                     Reset
                                 </button>
-                                <button onClick={() => setShowAnswers((prev) => ({ ...prev, [question.id]: !prev[question.id] }))}>
-                                    {showAnswers[question.id] ? 'Hide Answer' : 'Show Answer'}
+                                <button onClick={() => setShowAnswers((prev) => ({ ...prev, [question.QuestionID]: !prev[question.QuestionID] }))}>
+                                    {showAnswers[question.QuestionID] ? 'Hide Answer' : 'Show Answer'}
                                 </button>
                             </div>
                         )}

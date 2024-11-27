@@ -23,7 +23,65 @@ sql.connect(config)
                 const result = await pool.request().query('SELECT * FROM Topics');
                 res.json(result.recordset);
             } catch (err) {
-                res.status(500).send(err.message);
+                res.status(500).send(`Lỗi: ${err.message}`);
+            }
+        });
+
+        // API để lấy tất cả các bài học
+        app.get('/api/lessons', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Lessons');
+                res.json(result.recordset); // Trả về tất cả dữ liệu từ bảng Lessons
+            } catch (err) {
+                res.status(500).send(`Lỗi: ${err.message}`);
+            }
+        });
+
+        // API để lấy tất cả các bài thi
+        app.get('/api/exams', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Exams');
+                res.json(result.recordset); // Trả về tất cả dữ liệu từ bảng Exams
+            } catch (err) {
+                res.status(500).send(`Lỗi: ${err.message}`);
+            }
+        });
+
+        // API để cập nhật một chủ đề
+        app.put('/api/topics/:topicID', async (req, res) => {
+            const { topicID } = req.params;
+            const { Name, Description } = req.body;
+            try {
+                // Cập nhật thông tin chủ đề theo TopicID
+                const result = await pool.request()
+                    .input('topicID', sql.Int, topicID)
+                    .input('Name', sql.VarChar, Name)
+                    .input('Description', sql.Text, Description)
+                    .query('UPDATE Topics SET Name = @Name, Description = @Description WHERE TopicID = @topicID');
+
+                if (result.rowsAffected[0] === 0) {
+                    return res.status(404).send('Topic not found'); // Nếu không tìm thấy chủ đề
+                }
+
+                res.status(200).send('Topic updated successfully'); // Trả về thông báo thành công
+            } catch (err) {
+                res.status(500).send(`Error: ${err.message}`); // Xử lý lỗi
+            }
+        });
+
+        // API xóa chủ đề 
+        app.delete('/api/topics/:topicID', async (req, res) => {
+            const { topicID } = req.params;
+            try {
+                const result = await pool.request()
+                    .input('topicID', pool.Int, topicID)
+                    .query('DELETE FROM Topics WHERE TopicID = @topicID');
+                if (result.rowsAffected[0] === 0) {
+                    return res.status(404).send('Topic not found');
+                }
+                res.status(200).send('Topic deleted successfully');
+            } catch (err) {
+                res.status(500).send(`Error: ${err.message}`);
             }
         });
 
@@ -150,7 +208,54 @@ sql.connect(config)
                 res.status(500).send(err.message);
             }
         });
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // API lấy question groups
+        app.get('/api/question-groups', async (req, res) => {
+            try {
+                const result = await pool.request()
+                    .query('SELECT * FROM QuestionGroup');
+
+                console.log('Dữ liệu question groups:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu question groups:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+
+        //API lấy questions cho 4 phần listening
+        app.get('/api/questions/:partID', async (req, res) => {
+            const partID = req.params.partID; // Lấy partID từ URL
+
+            try {
+                const result = await pool.request()
+                    .input('PartID', sql.Int, partID) // Sử dụng input để bảo vệ khỏi SQL Injection
+                    .query('SELECT * FROM Questions WHERE PartID = @PartID');
+
+                console.log('Dữ liệu câu hỏi:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu câu hỏi:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
 
 
 
