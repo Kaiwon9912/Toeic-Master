@@ -40,7 +40,6 @@ function App() {
         <Route path="/reading/part/:part" element={<QuestionPart />} />
 
         <Route path="/test" element={<Home />} />
-
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
 

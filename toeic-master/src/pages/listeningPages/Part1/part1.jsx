@@ -156,17 +156,17 @@ const Part1 = () => {
                 ))}
                 <div className="pagination">
                     <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1}>
-                        Trang Đầu
+                        First
                     </button>
                     <button onClick={handlePrevPage} disabled={currentPage === 1}>
-                        Trang Trước
+                        Previous
                     </button>
                     <span>{`Trang ${currentPage} / ${totalFilteredPages}`}</span>
                     <button onClick={handleNextPage} disabled={currentPage === totalFilteredPages}>
-                        Trang Tiếp
+                        Next
                     </button>
                     <button onClick={() => setCurrentPage(totalFilteredPages)} disabled={currentPage === totalFilteredPages}>
-                        Trang Cuối
+                        Last
                     </button>
                 </div>
             </div>

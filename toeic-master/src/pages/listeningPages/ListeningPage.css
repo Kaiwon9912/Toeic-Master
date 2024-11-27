@@ -1,58 +1,195 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9fafb;
+    color: #333; /* Màu chữ chính */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header and Footer Styles */
+header, footer {
+    background-color: #4f89c4; /* Màu nền xanh nhẹ */
+    color: white; /* Màu chữ trắng */
+    text-align: center;
+    padding: 20px;
+}
+
+/* Page Layout */
 .listening-page {
-    margin-left: 20rem; /* Thay đổi khoảng cách lề trái thành 5rem */
-    display: flex; /* Sử dụng Flexbox */
-    flex-wrap: wrap; /* Cho phép các ô xuống dòng nếu không đủ chỗ */
-    justify-content: center; /* Căn giữa các ô */
-    gap: 1rem; /* Khoảng cách giữa các ô */
-}
-
-.stat-box {
-    background-color: #f9f9f9; /* Màu nền cho ô */
-    transition: box-shadow 0.3s; /* Hiệu ứng chuyển động khi hover */
-    width: calc(25% - 1rem); /* Chiều dài ô để có 4 ô trên 1 hàng */
-    min-width: 400px; /* Đặt chiều rộng tối thiểu cho ô */
-    border-radius: 10px; /* Bo tròn góc */
-    display: flex; /* Sử dụng Flexbox cho ô */
-    flex-direction: column; /* Đặt hướng dọc */
-    justify-content: flex-start; /* Đảm bảo nội dung ở đầu ô */
-}
-
-.part-image {
-    width: 100%; /* Đặt chiều rộng hình ảnh 100% để phù hợp với ô */
-    height: 200px; /* Thiết lập chiều cao cố định */
-    object-fit: cover; /* Đảm bảo hình ảnh được cắt tỉ lệ phù hợp */
-    border-radius: 8px; /* Bo tròn các góc của hình ảnh */
-    margin-bottom: 1rem; /* Khoảng cách giữa hình ảnh và tiêu đề */
-}
-
-.stat-box:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Tăng độ bóng khi hover */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .title {
-    color: #333; /* Màu chữ tiêu đề */
+    font-size: 32px;
+    color: #4f89c4; /* Màu xanh nhẹ cho tiêu đề */
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-.content, .total-questions {
-    color: #555; /* Màu chữ cho nội dung */
+.page-description {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #666; /* Màu xám cho mô tả */
 }
 
-.correct-answers {
-    color: green; /* Màu xanh lá cây cho số câu đúng */
+/* Grid Layout for Part Cards */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
 }
 
-.stat-box:nth-child(1) {
-    background-color: #e3f2fd; /* Xanh nhạt cho Part 1 */
+.stat-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
 }
 
-.stat-box:nth-child(2) {
-    background-color: #fce4ec; /* Hồng nhạt cho Part 2 */
+/* Hover Effects for stat-box */
+.stat-box:hover {
+    transform: scale(1.05); /* Slightly enlarge the box */
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15); /* Increase shadow effect */
+    background-color: #6db3f2; /* Lighter blue on hover */
+    color: white; /* Change text color to white */
 }
 
-.stat-box:nth-child(3) {
-    background-color: #e8f5e9; /* Xanh lá nhạt cho Part 3 */
+/* Hover Effects for Title inside stat-box */
+.stat-box:hover .title-stat {
+    color: #fff; /* Change title color to white */
 }
 
-.stat-box:nth-child(4) {
-    background-color: #fff3e0; /* Cam nhạt cho Part 4 */
+/* Hover Effects for Images */
+.stat-box:hover .part-image {
+    filter: brightness(0.8); /* Diminish the brightness of the image */
+}
+
+.part-image {
+    width: 100%;  /* Full width of the container */
+    height: 200px;  /* Fixed height for uniformity */
+    object-fit: cover;  /* Ensure the image is cropped to fit the container */
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.title-stat {
+    font-size: 24px;
+    color: #4f89c4; /* Màu xanh nhẹ cho tiêu đề phần */
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.content {
+    font-size: 16px;
+    color: #555; /* Màu xám nhạt cho nội dung */
+    margin-bottom: 10px;
+}
+
+.duration {
+    font-size: 14px;
+    color: #888; /* Màu xám đậm hơn cho thời gian */
+    margin-bottom: 10px;
+}
+
+.correct-answers,
+.total-questions {
+    font-size: 14px;
+    color: #666; /* Màu xám cho số câu trả lời */
+    margin-bottom: 5px;
+}
+
+/* Button Styles */
+button {
+    padding: 12px;
+    background-color: #4f89c4; /* Màu xanh nhẹ */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #6db3f2; /* Lighter blue on hover */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #4f89c4; /* Màu xanh nhẹ */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* No results message */
+.no-results {
+    font-size: 18px;
+    color: #888; /* Màu xám cho thông báo không có kết quả */
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Back to Top button */
+.back-to-top {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #4f89c4;  /* Màu xanh nhẹ */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-top:hover {
+    background-color: #6db3f2; /* Lighter blue on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr 1fr; /* 2 columns layout */
+    }
+
+    .stat-box {
+        padding: 15px;
+    }
+
+    .title-stat {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr; /* Single column layout */
+    }
+
+    .title-stat {
+        font-size: 18px;
+    }
 }
