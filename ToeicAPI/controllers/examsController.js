@@ -52,4 +52,114 @@ exports.getAllExams = async (req, res) => {
     }
 };
 
+exports.createExam = async (req, res) => {
+    const { examId, examName, description, durationInMinutes } = req.body;
 
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('examId', sql.VarChar(100), examId)
+            .input('examName', sql.NVarChar(100), examName)
+            .input('description', sql.NVarChar(sql.MAX), description || null)
+            .input('durationInMinutes', sql.Int, durationInMinutes || null)
+            .query(`
+                INSERT INTO Exams (ExamID, ExamName, Description, DurationInMinutes)
+                VALUES (@examId, @examName, @description, @durationInMinutes)
+            `);
+
+        res.status(201).json({ message: 'Exam created successfully!' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
+exports.addQuestionToExam = async (req, res) => {
+    const { examId, questionId } = req.body;
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('examId', sql.VarChar(100), examId)
+            .input('questionId', sql.Int, questionId)
+            .query(`
+                INSERT INTO ExamDetail (ExamID, QuestionID)
+                VALUES (@examId, @questionId)
+            `);
+
+        res.status(201).json({ message: 'Question added to exam successfully!' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
+exports.getExamDetails = async (req, res) => {
+    const { examId } = req.params;
+
+    try {
+        const pool = await sql.connect();
+        const examResult = await pool.request()
+            .input('examId', sql.VarChar(100), examId)
+            .query(`SELECT * FROM Exams WHERE ExamID = @examId`);
+
+        const questionsResult = await pool.request()
+            .input('examId', sql.VarChar(100), examId)
+            .query(`
+                SELECT q.* 
+                FROM Questions q
+                INNER JOIN ExamDetail ed ON q.QuestionID = ed.QuestionID
+                WHERE ed.ExamID = @examId
+            `);
+
+        if (examResult.recordset.length === 0) {
+            return res.status(404).json({ message: 'Exam not found' });
+        }
+
+        res.json({
+            exam: examResult.recordset[0],
+            questions: questionsResult.recordset,
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+exports.deleteExam = async (req, res) => {
+    const { examId } = req.params;
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('examId', sql.VarChar(100), examId)
+            .query(`
+                DELETE FROM Exams WHERE ExamID = @examId
+            `);
+
+        res.status(200).json({ message: 'Exam deleted successfully!' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
+exports.addQuestionToExam = async (req, res) => {
+    const { examId, questionId } = req.body;
+    console.log('Received examId:', examId, 'questionId:', questionId); // Log nhận được dữ liệu từ client
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('examId', sql.VarChar(100), examId)
+            .input('questionId', sql.Int, questionId)
+            .query(`
+                INSERT INTO ExamDetail (ExamID, QuestionID)
+                VALUES (@examId, @questionId)
+            `);
+        
+        console.log('Insert result:', result);  // Log kết quả truy vấn
+        res.status(201).json({ message: 'Question added to exam successfully!' });
+    } catch (err) {
+        console.error('Database error:', err.message);  // Log chi tiết lỗi nếu có
+        res.status(500).json({ error: err.message });
+    }
+};

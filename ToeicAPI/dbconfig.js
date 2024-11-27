@@ -1,12 +1,7 @@
 const config = {
   user: 'sa',
-<<<<<<< HEAD
-  password: '123456',
-  server: 'DESKTOP-S7I5A9E', // có thể là 'localhost' hoặc địa chỉ IP
-=======
   password: '123',
-  server: 'DESKTOP-KVMLTGB', // có thể là 'localhost' hoặc địa chỉ IP
->>>>>>> f1bd7dccb275353191fdd981d994f21aa182e38d
+  server: 'MSI', // có thể là 'localhost' hoặc địa chỉ IP
   database: 'ToeicData',
   options: {
 

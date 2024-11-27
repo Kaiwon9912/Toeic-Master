@@ -13,7 +13,6 @@ function PartItem(props)
 
             <p className="text-xl"><i class="fa-solid fa-question text-purple-600 w-5 "></i> Số câu hỏi: {props.number} </p>
             <p className="text-xl"><i class="fa-solid fa-check text-green-400 w-5 "></i> Số câu đã làm: {props.learned} </p>
-            <p className="text-xl"><i class="fa-solid fa-xmark text-red-500 w-5"></i>Số câu sai: {props.correct} </p>
             <p className="text-xl"><i class="fa-solid fa-xmark text-red-500 w-5"></i>Số câu sai: {props.incorrect} </p>
 
 

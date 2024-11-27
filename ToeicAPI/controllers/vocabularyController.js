@@ -41,6 +41,63 @@ exports.getVocabularyByTopic = async (req, res) => {
     }
 };
 
+exports.createWord = async (req, res) => {
+    const { word, translation, topicId } = req.body;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('word', sql.VarChar, word)
+            .input('translation', sql.NVarChar, translation)
+            .input('topicId', sql.VarChar, topicId)
+            .query('INSERT INTO Vocabulary (Word, Translation, TopicID) VALUES (@word, @translation, @topicId)');
+        res.status(201).send('Word created successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+exports.getWordById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query('SELECT * FROM Vocabulary WHERE WordID = @id');
+        res.json(result.recordset[0]);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+exports.updateWord = async (req, res) => {
+    const { id } = req.params;
+    const { word, translation, topicId } = req.body;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('word', sql.VarChar, word)
+            .input('translation', sql.NVarChar, translation)
+            .input('topicId', sql.VarChar, topicId)
+            .query('UPDATE Vocabulary SET Word = @word, Translation = @translation, TopicID = @topicId WHERE WordID = @id');
+        res.send('Word updated successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+exports.deleteWord = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('id', sql.Int, id)
+            .query('DELETE FROM Vocabulary WHERE WordID = @id');
+        res.send('Word deleted successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
 
 
         

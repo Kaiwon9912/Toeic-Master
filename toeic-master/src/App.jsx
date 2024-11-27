@@ -6,7 +6,6 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/HomePage/Home';
 
 import ListeningPage from './pages/listeningPages/ListeningPage';
-import Part from "./pages/listeningPages/Part"
 
 import ReadingPage from './pages/readingPage/ReadingPage';
 
@@ -22,7 +21,7 @@ import VocabularyA from './pages/adminPage/vocabularyA';
 import LessonA from './pages/adminPage/lessonA';
 import ExamsA from './pages/adminPage/examsA';
 import QuestionPart from './pages/readingPage/QuestionPart';
-
+import ExamControl from './AdminArea/pages/ExamControl';
 
 function App() {
   return (
@@ -35,7 +34,6 @@ function App() {
         <Route path="/test" element={<Home />} />
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
-        <Route path="/Reading" element={<Reading />} /> {/* bs thử kh chạy link  */}
         <Route path="/login" element={<AdminHome />} />  {/* AdminHome cho login */}
 
         {/* Route cha cho Admin */}
@@ -43,7 +41,8 @@ function App() {
           <Route path="topics" element={<Topics />} /> {/* Route cho Topics */}
           <Route path="vocabulary" element={<VocabularyA />} /> {/* Route cho Vocabulary */}
           <Route path="lesson" element={<LessonA />} /> {/* Route cho Lesson */}
-          <Route path="exams" element={<ExamsA />} /> {/* Route cho Exams */}
+
+          <Route path="exams" element={<ExamControl />} /> {/* Route cho Exams */}
         </Route>
 
         {/* Các route khác có thể thêm vào đây */}
