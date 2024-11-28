@@ -164,7 +164,7 @@ sql.connect(config)
                 res.status(500).send(err.message);
             }
         });
-   
+
         app.get("/api/random-group/:partId", async (req, res) => {
             const partId = parseInt(req.params.partId);
 
@@ -209,15 +209,41 @@ sql.connect(config)
             }
         });
 
+        // API để lấy tất cả người dùng
+        app.get('/api/users', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Users');
+                console.log('Dữ liệu users:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu users:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
 
 
-
-
-
-
-
-
-
+        // API để lấy tất cả các bài học
+        app.get('/api/lessons', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Lessons');
+                console.log('Dữ liệu lessons:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu lessons:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+        // API để lấy tất cả các part
+        app.get('/api/parts', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Parts');
+                console.log('Dữ liệu part:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu parts:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
 
 
 
@@ -257,6 +283,27 @@ sql.connect(config)
         });
 
 
+
+
+
+        // API để reset mật khẩu của người dùng
+        app.post('/api/users/reset-password/:userId', async (req, res) => {
+            const { userId } = req.params;
+            const { newPassword } = req.body; // Lấy mật khẩu mới từ body
+
+            try {
+                // Thực hiện truy vấn SQL để cập nhật mật khẩu
+                await pool.request()
+                    .input('newPassword', sql.VarChar, newPassword)
+                    .input('userId', sql.VarChar, userId) // Cần thay đổi kiểu dữ liệu nếu cần
+                    .query('UPDATE Users SET PasswordHash = @newPassword WHERE Username = @userId');
+
+                res.status(200).send('Mật khẩu đã được reset thành công.');
+            } catch (err) {
+                console.error('Lỗi khi reset mật khẩu:', err.message);
+                res.status(500).send(err.message);
+            }
+        });
 
 
     })

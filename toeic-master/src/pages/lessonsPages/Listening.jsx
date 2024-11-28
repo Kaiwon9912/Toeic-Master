@@ -2,150 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const styles = {
-    container: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: '20px',
-      background: 'linear-gradient(to right, #6EE7B7, #3B82F6)',  // Gradient background
-      borderRadius: '20px',
-      boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-      height: '100vh',
-      overflow: 'hidden',
-    },
-    sidebar: {
-      width: '280px',
-      backgroundColor: '#ffffff',
-      padding: '20px',
-      borderRadius: '15px',
-      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-      overflowY: 'auto',
-      height: '100%',
-      marginRight: '20px',
-    },
-    content: {
-      flex: 1,
-      padding: '20px',
-      backgroundColor: '#ffffff',
-      borderRadius: '15px',
-      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-      overflowY: 'auto',
-      maxHeight: 'calc(100vh - 40px)',  // Fix overflow and ensure it fits in viewport
-      marginTop: '20px',
-    },
-    title: {
-      fontSize: '30px',
-      fontWeight: 'bold',
-      color: '#1e40af',
-      marginBottom: '20px',
-      textAlign: 'center',
-      textTransform: 'uppercase',
-    },
-    partButton: {
-      width: '100%',
-      padding: '12px',
-      backgroundColor: '#f3f4f6',
-      textAlign: 'left',
-      fontSize: '18px',
-      fontWeight: 'bold',
-      borderRadius: '8px',
-      marginBottom: '10px',
-      border: 'none',
-      cursor: 'pointer',
-      transition: 'background-color 0.3s ease, transform 0.2s ease',
-    },
-    partButtonHovered: {
-      backgroundColor: '#E0F7FA',
-      transform: 'scale(1.05)',
-    },
-    lessonCard: {
-      backgroundColor: '#ffffff',
-      borderRadius: '10px',
-      boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
-      marginBottom: '15px',
-      padding: '20px',
-      cursor: 'pointer',
-      transition: 'background-color 0.3s ease, transform 0.2s ease',
-    },
-    lessonCardSelected: {
-      backgroundColor: '#f1f5f9',
-    },
-    iframe: {
-      width: '100%',
-      height: '500px',
-      border: 'none',
-      borderRadius: '12px',
-      boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-    },
-    guideList: {
-      listStyleType: 'none',
-      paddingLeft: '20px',
-      fontSize: '16px',
-    },
-    guideItem: {
-      marginBottom: '10px',
-    },
-    linkButton: {
-      backgroundColor: '#1e40af',
-      color: 'white',
-      padding: '12px 20px',
-      borderRadius: '25px',
-      textDecoration: 'none',
-      display: 'inline-block',
-      textAlign: 'center',
-      transition: 'background-color 0.3s ease, transform 0.2s ease',
-    },
-    linkButtonHover: {
-      backgroundColor: '#3B82F6',
-      transform: 'scale(1.05)',
-    },
-    sectionCard: {
-      backgroundColor: '#f9fafb',
-      borderRadius: '12px',
-      padding: '15px',
-      boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)',
-    },
-    sectionTitle: {
-      fontSize: '22px',
-      fontWeight: '600',
-      marginBottom: '10px',
-      color: '#1e40af',
-    },
-    sectionText: {
-      fontSize: '16px',
-      lineHeight: '1.6',
-      color: '#333',
-    },
-    accordionContainer: {
-      paddingLeft: '20px',
-      marginTop: '10px',
-    },
-    accordionItem: {
-      marginBottom: '8px',
-      padding: '5px 0',
-      cursor: 'pointer',
-    },
-    accordionText: {
-      fontSize: '16px',
-      color: '#555',
-    },
-    buttonContainer: {
-      textAlign: 'right',
-      marginTop: '20px',
-    },
-    lessonContentContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px',
-    },
-    videoWrapper: {
-      marginBottom: '20px',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-  };
-  
-
 function Listening() {
   const [openPart, setOpenPart] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState('');
@@ -194,6 +50,7 @@ function Listening() {
 
   const togglePart = (partID) => {
     setOpenPart(openPart === partID ? null : partID);
+    setCurrentPart(`part${partID}`); // Cập nhật currentPart chỉ khi partNumber hợp lệ
   };
 
   const handleLessonClick = (lessonName, content, mediaURL) => {
@@ -204,14 +61,14 @@ function Listening() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.sidebar}>
-        <h3 style={styles.title}>Lessons</h3>
+    <div className="flex justify-between p-5 bg-gradient-to-r from-green-300 to-blue-500 rounded-lg shadow-lg h-screen overflow-hidden">
+      <div className="w-72 bg-white p-5 rounded-lg shadow-md overflow-y-auto mr-5">
+        <h3 className="text-2xl font-bold text-blue-800 mb-5 text-center uppercase">Lessons</h3>
         {parts.slice(0, 4).map((part) => (
           <div key={part.PartID}>
             <button
               onClick={() => togglePart(part.PartID)}
-              style={openPart === part.PartID ? { ...styles.partButton, ...styles.partButtonHovered } : styles.partButton}
+              className={`w-full py-3 bg-gray-100 text-left text-lg font-bold rounded-lg mb-2 transition-all duration-300 ${openPart === part.PartID ? 'bg-teal-200 transform scale-105' : ''}`}
             >
               {part.Title}
             </button>
@@ -221,9 +78,9 @@ function Listening() {
                   <div
                     key={index}
                     onClick={() => handleLessonClick(lesson.title, lesson.content, part.MediaURL)}
-                    style={selectedLesson === lesson.title ? { ...styles.lessonCard, ...styles.lessonCardSelected } : styles.lessonCard}
+                    className={`bg-white rounded-lg shadow-md p-5 mb-3 cursor-pointer transition-all duration-300 ${selectedLesson === lesson.title ? 'bg-gray-200' : ''}`}
                   >
-                    <h4>{lesson.title}</h4>
+                    <h4 className="text-lg">{lesson.title}</h4>
                   </div>
                 ))}
               </div>
@@ -232,16 +89,16 @@ function Listening() {
         ))}
       </div>
 
-      <div style={styles.content} id="lesson-content">
+      <div className="flex-grow bg-white p-5 rounded-lg shadow-md overflow-y-auto" id="lesson-content">
         {selectedLesson && (
-          <div style={styles.lessonContentContainer}>
-            <h3 style={styles.title}>{selectedLesson}</h3>
+          <div className="flex flex-col gap-5">
+            <h3 className="text-2xl font-bold text-blue-800 mb-5">{selectedLesson}</h3>
 
             {/* Video Content */}
             {currentMediaURL && (
-              <div style={styles.videoWrapper}>
+              <div className="flex justify-center mb-5">
                 <iframe
-                  style={styles.iframe}
+                  className="w-full h-96 rounded-lg shadow-md"
                   src={currentMediaURL.replace("youtu.be/", "youtube.com/embed/")}
                   title="YouTube video player"
                   allowFullScreen
@@ -250,26 +107,26 @@ function Listening() {
             )}
 
             {/* Question Type Section */}
-            <div style={styles.sectionCard}>
-              <h4 style={styles.sectionTitle}>1. Question type</h4>
-              <p style={styles.sectionText}>{lessonContent.questionType}</p>
+            <div className="bg-gray-100 rounded-lg p-4 shadow-md">
+              <h4 className="text-xl font-semibold text-blue-800 mb-2">1. Question type</h4>
+              <p className="text-gray-700">{lessonContent.questionType}</p>
             </div>
 
             {/* Guide Section */}
-            <div style={styles.sectionCard}>
-              <h4 style={styles.sectionTitle}>2. Guide to answer</h4>
-              <div style={styles.accordionContainer}>
+            <div className="bg-gray-100 rounded-lg p-4 shadow-md">
+              <h4 className="text-xl font-semibold text-blue-800 mb-2">2. Guide to answer</h4>
+              <div className="pl-5">
                 {lessonContent.guide && lessonContent.guide.map((item, index) => (
-                  <div key={index} style={styles.accordionItem}>
-                    <p style={styles.accordionText}>- {item}</p>
+                  <div key={index} className="mb-2">
+                    <p className="text-gray-600">- {item}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Call to Action Button */}
-            <div style={styles.buttonContainer}>
-              <Link to={`/listening/${currentPart}`} style={styles.linkButton}>
+            <div className="text-right mt-5">
+              <Link to={`/listening/${currentPart}`} className="bg-blue-800 text-white py-2 px-5 rounded-full transition-all duration-300 hover:bg-blue-700">
                 Take an example
               </Link>
             </div>

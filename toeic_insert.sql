@@ -1,4 +1,14 @@
-﻿INSERT INTO Topics (TopicID,Name, Image ) VALUES 
+﻿
+
+
+USE ToeicData 
+
+
+
+
+
+
+INSERT INTO Topics (TopicID,Name, Image ) VALUES 
 ('TP01', N'Travel', 'travel.jpg'), 
 ('TP02',N'Business', 'business.jpg'), 
 ('TP03',N'Education', 'education.jpg'), 
@@ -62,6 +72,8 @@ INSERT INTO Users (Username, PasswordHash, FullName, Email, Role)
 VALUES
 -- User 1
 (N'user1', '1', N'Nguyen Van A', N'user1@gmail.com', 0)
+
+
 
 
 
@@ -237,6 +249,104 @@ INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionTe
 ('Part4009', 4, 4, NULL, '1. How should feedback be given during the meeting?', NULL, 'Constructively', 'Negatively', 'Indifferently', 'All of the above', 'A', 1, NULL),
 ('Part4009', 4, 4, NULL, '2. When should questions be asked?', NULL, 'During the presentation', 'At the end', 'Whenever', 'Not at all', 'B', 1, NULL),
 ('Part4009', 4, 4, NULL, '3. Why is it important to follow up after the meeting?', NULL, 'To ensure tasks are completed', 'To gather opinions', 'To avoid misunderstandings', 'All of the above', 'D', 1, NULL);
+
+
+
+
+
+
+
+
+
+-- Thêm dữ liệu vào bảng QuestionGroup với QuestionGroupID là 'Part6'
+INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
+VALUES ('PART6001', NULL, 'To: samsmith@digitallT.com<br/>From: sharronb@email.com<br/>Date: September 24<br/>Subject: Business Contract<br/><br/>Dear Mr. Smith,<br/>I am Sharron Biggs, CEO and founder of BiggsGraphics. I recently came across your advertisement (1) _____ partnership of a graphic design company for a number of your projects. BiggsGraphics has (2) _____ experience working with various small businesses and companies in designing advertising campaigns, logos, and websites. (3) _____ Our website www.biggs-graphics.com also has some information about our company.<br/><br/>I’m interested in working with your company on your projects and hope we can build a beneficial partnership. I look forward (4) _____ your reply.<br/><br/>Sincerely, Sharron Biggs<br/>CEO, BiggsGraphics');
+
+-- Thêm dữ liệu vào bảng Questions cho các câu hỏi với QuestionGroupID là 'Part6'
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6001', 6, 1, NULL, 'I recently came across your advertisement (1) _____ partnership of a graphic design company for a number of your projects.', NULL, 'seek', 'to seek', 'seeking', 'are seeking', 'C', 0, N'Đây là câu mệnh đề rút gọn. Câu đầy đủ là "I recently came across your advertisement which sought partnership of a graphic company for a number of your projects."'),
+
+('PART6001', 6, 1, NULL, 'BiggsGraphics has (2) _____ experience working with various small businesses and companies in designing advertising campaigns, logos, and websites.', NULL, 'extensive', 'restricted', 'generous', 'limitless', 'A', 0, N'Dựa vào ngữ cảnh, "extensive" (phong phú, nhiều) là đáp án đúng.'),
+
+('PART6001', 6, 1, NULL, '(3) _____ Our website www.biggs-graphics.com also has some information about our company.', NULL, 'I would really appreciate the opportunity to work with you.', 'I heard that Digital IT is a great company.', 'In fact, our designs are often copied by other companies.', 'I have attached a number of our past designs to illustrate what we specialize in.', 'D', 0, N'Dựa vào ngữ cảnh câu, đáp án D là hợp lý.'),
+
+('PART6001', 6, 1, NULL, 'I look forward (4) _____ your reply.', NULL, 'at', 'to', 'with', 'from', 'B', 0, 'Cấu trúc: "look forward to" + Ving hoặc danh từ.');
+
+
+-- Thêm dữ liệu vào bảng QuestionGroup với nội dung Employee Spring Training
+INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
+VALUES ('PART6002', NULL, 
+'Lawrence Paper is dedicated to helping all of its employees fulfill their potential. That is why we have once again organized 2 days of spring training.<br/>Human Resources has put together a wide range of topics for this year’s workshops, (1) _____ sales techniques, computer skills, communication strategies, and goal setting. We still have two workshop time slots available, so if there is something you’ve been dying to learn about, please let us know.<br/>It’s quite possible we (2) _____ it into this year’s spring training.<br/>(3) _____ Feel free to (4) _____ any ideas you might have to Nancy Kensington in the human resources department.<br/>NLKensington@lawrencepaper.com');
+-- Thêm câu hỏi vào bảng Questions cho QuestionGroupID là 'PART6002'
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6002', 6, 1, NULL, 'Human Resources has put together a wide range of topics for this year’s workshops, (1) _____ sales techniques, computer skills, communication strategies, and goal setting.', NULL, 'distributing', 'locating', 'including', 'advancing', 'C', 0, N'Trong ngữ cảnh này, "including" là đáp án chính xác vì nó biểu thị việc liệt kê các chủ đề.'),
+('PART6002', 6, 1, NULL, 'It’s quite possible we (2) _____ it into this year’s spring training.', NULL, 'were incorporating', 'should incorporate', 'are incorporating', 'could incorporate', 'D', 0, N'Đáp án đúng là "could incorporate" vì câu thể hiện khả năng trong tương lai.'),
+('PART6002', 6, 1, NULL, '(3) _____ Feel free to _____ any ideas you might have to Nancy Kensington in the human resources department.', NULL, 'If we get many suggestions, we could also hold a workshop on the following weekend, December 4th.', 'We’ll be finalizing our choices by the end of the week.', 'A large amount of time and energy has gone into organizing this conference.', 'Inviting friends and family to these events is always encouraged.', 'B', 0, N'Đáp án B là hợp lý vì "finalizing" có nghĩa là hoàn thiện lựa chọn.'),
+('PART6002', 6, 1, NULL, '_____ Feel free to (4) _____ any ideas you might have to Nancy Kensington in the human resources department.', NULL, 'create', 'request', 'submit', 'transfer', 'C', 0, N'Đáp án "submit" là từ thích hợp vì nó biểu thị việc gửi gắm ý tưởng cho người khác.');
+
+
+-- Thêm dữ liệu vào bảng QuestionGroup với nội dung Pizza Chef Wanted
+INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
+VALUES ('PART6003', NULL, 
+'Papa Gino’s is hiring, and all (1) _____ applicants will be considered. (2) _____ Even if you have no experience, training will be provided if you meet our requirements. To meet our requirements, you must have a (3) _____ health card, reliable transportation, and be able to work evenings and weekends. Please apply in person at Papa Gino’s on state and Pine, (4) _____ look forward to meeting you.');
+
+-- Thêm câu hỏi vào bảng Questions với QuestionGroupID là 'PART6003' và ExamQuestion = 1
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6003', 6, 1, NULL, 'Papa Gino’s is hiring, and all (1) _____ applicants will be considered.', NULL, 'qualify', 'qualifying', 'qualified', 'to qualify', 'C', 1, N'Dựa vào ngữ cảnh, "qualified" là đáp án đúng, vì câu đề cập đến các ứng viên đủ điều kiện.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6003', 6, 1, NULL, '(2) _____ Even if you have no experience, training will be provided if you meet our requirements.', NULL, 'We are looking for candidates that have some experience in Italian food.', 'We are looking for candidates that have experience fishing.', 'We are looking for people who can fish.', 'We are looking for people who want to practice.', 'B', 1, N'Đáp án B là chính xác vì yêu cầu công việc có liên quan đến việc làm với thực phẩm Ý.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6003', 6, 1, NULL, 'To meet our requirements, you must have a (3) _____ health card, reliable transportation, and be able to work evenings and weekends.', NULL, 'valid', 'working', 'effective', 'strong', 'A', 1, N'Đáp án A "valid" là chính xác vì yêu cầu là có thẻ sức khỏe hợp lệ.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6003', 6, 1, NULL, 'Please apply in person at Papa Gino’s on state and Pine, (4) _____ look forward to meeting you.', NULL, 'She', 'They', 'We', 'He', 'C', 1, N'Đáp án C "We" là chính xác vì đây là thông báo từ công ty, sử dụng đại từ nhân xưng "We".');
+
+-- Thêm dữ liệu vào bảng QuestionGroup với nội dung Vander Properties
+INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
+VALUES ('PART6004', NULL, 
+'Vander Properties has been serving Houston for over 29 years. It is through our commitment to providing the highest degree of expertise market knowledge and (1) _______ service that we are recognized as an industry leader. We specialize in (2) _____ and corporate real estate here in the Denver area. (3) _____ you are looking to buy a new home or start a new business, we are the people you should be talking with. With our office centrally located downtown, we have our eyes on the whole city. Browse our site for listing, or give us a call today (4) _____.');
+
+-- Thêm câu hỏi vào bảng Questions với QuestionGroupID là 'PART6004' và ExamQuestion = 1
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6004', 6, 1, NULL, 'It is through our commitment to providing the highest degree of expertise market knowledge and (1) _______ service that we are recognized as an industry leader.', NULL, 'personalize', 'personalizes', 'personalizing', 'personalized', 'D', 1, N'Đáp án D "personalized" là chính xác vì cần một tính từ mô tả dịch vụ cá nhân hóa.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6004', 6, 1, NULL, 'We specialize in (2) _____ and corporate real estate here in the Denver area.', NULL, 'productive', 'promoted', 'residential', 'relevant', 'C', 1, N'Đáp án C "residential" là chính xác vì Vander Properties chuyên về bất động sản nhà ở.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6004', 6, 1, NULL, '(3) _____ you are looking to buy a new home or start a new business, we are the people you should be talking with.', NULL, 'Whether', 'Even if', 'Even though', 'Whenever', 'A', 1, N'Đáp án A "Whether" là chính xác vì câu sử dụng "whether...or" để diễn tả hai khả năng.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES 
+('PART6004', 6, 1, NULL, 'Browse our site for listing, or give us a call today (4) _____.', NULL, 'Take a drive out of town and come see us today.', 'We appreciate your assistance.', 'Of course, drop-ins are always welcome.', 'Please let us know your availability.', 'C', 1, N'Đáp án C "Of course, drop-ins are always welcome." là chính xác vì đây là câu mở đầu chào đón khách hàng.');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

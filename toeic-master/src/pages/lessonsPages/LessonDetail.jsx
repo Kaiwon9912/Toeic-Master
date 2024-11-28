@@ -24,12 +24,11 @@ const LessonDetail = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen"> {/* Sử dụng min-h-screen để đảm bảo chiều cao tối thiểu */}
+        <div className="flex flex-col min-h-screen"> {/* Sử dụng min-h-screen */}
             <Header />
             <div className="flex-grow p-5 overflow-auto">
                 {content}
             </div>
-            <Footer />
         </div>
     );
 };

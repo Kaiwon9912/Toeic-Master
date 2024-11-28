@@ -71,14 +71,15 @@ const AdminHome = () => {
             <Link to="/admin/lesson" style={styles.sidebarLink}>Lessons</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/exams" style={styles.sidebarLink}>Exams</Link> 
+            <Link to="/admin/account" style={styles.sidebarLink}>Account</Link>
           </li>
           <li style={styles.sidebarListItem}>
-          
+            <Link to="/admin/exams" style={styles.sidebarLink}>Exams</Link>
           </li>
+
         </ul>
       </div>
-      
+
       {/* Main Content */}
       <div style={styles.mainContent}>
         {/* Nội dung các route con sẽ được hiển thị ở đây */}

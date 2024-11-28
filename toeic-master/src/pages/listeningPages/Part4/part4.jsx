@@ -101,7 +101,6 @@ function Part4() {
 
     return (
         <>
-            <Header />
             <div className="part4">
                 <div className="header-container">
                     <div className="intro-box">
@@ -213,7 +212,6 @@ function Part4() {
                     </div>
                 )}
             </div>
-            <Footer />
         </>
     );
 }

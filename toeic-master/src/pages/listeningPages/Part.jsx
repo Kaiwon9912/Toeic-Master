@@ -4,6 +4,7 @@ import Part1 from './Part1/part1';
 import Part2 from './Part2/part2';
 import Part3 from './Part3/part3';
 import Part4 from './Part4/part4';
+import Header from '../../components/header';
 
 function Part() {
     const { part } = useParams(); // Lấy tham số part từ URL
@@ -27,8 +28,11 @@ function Part() {
     }
 
     return (
-        <div>
-            {content}
+        <div className="flex flex-col min-h-screen"> {/* Sử dụng min-h-screen */}
+            <Header />
+            <div className="flex-grow p-5 overflow-auto">
+                {content}
+            </div>
         </div>
     );
 }

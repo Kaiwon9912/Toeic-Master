@@ -14,18 +14,23 @@ import LessonList from './pages/lessonsPages/LessonList';
 import LessonDetail from "./pages/lessonsPages/LessonDetail"
 import Part from "./pages/listeningPages/Part"
 
+import VocabularyPage from './pages/VocabularyPage';
 
 import Topics from './pages/adminPage/topics';
 import AdminHome from './pages/adminPage/adminHome';
 import VocabularyA from './pages/adminPage/vocabularyA';
 import LessonA from './pages/adminPage/lessonA';
+import Account from './pages/adminPage/account';
 import Reading from './pages/lessonsPages/Reading';
 import QuestionPart from './pages/readingPage/QuestionPart';
 import ExamControl from './AdminArea/pages/ExamControl';
-        <Route path="/listening/:part" element={<Part />} />
+
+
+
+
 function App() {
   return (
-   <Router>
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
 
@@ -34,8 +39,10 @@ function App() {
 
         <Route path="/reading" element={<ReadingPage />} />
         <Route path="/reading/part/:part" element={<QuestionPart />} />
-        <Route path="/listening/:part" element={<Part />} />
+
+        <Route path="/vocabulary" element={<VocabularyPage />} />
         <Route path="/test" element={<Home />} />
+
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
 
@@ -47,7 +54,7 @@ function App() {
           <Route path="topics" element={<Topics />} /> {/* Route cho Topics */}
           <Route path="vocabulary" element={<VocabularyA />} /> {/* Route cho Vocabulary */}
           <Route path="lesson" element={<LessonA />} /> {/* Route cho Lesson */}
-
+          <Route path="account" element={<Account />} /> {/* Route cho Exams */}
           <Route path="exams" element={<ExamControl />} /> {/* Route cho Exams */}
         </Route>
 

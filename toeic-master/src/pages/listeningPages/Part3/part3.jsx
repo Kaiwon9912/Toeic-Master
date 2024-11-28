@@ -101,7 +101,6 @@ function Part3() {
 
     return (
         <>
-            <Header />
             <div className="part3">
                 <div className="header-container">
                     <div className="intro-box">
@@ -215,7 +214,6 @@ function Part3() {
                     </div>
                 )}
             </div>
-            <Footer />
         </>
     );
 }
