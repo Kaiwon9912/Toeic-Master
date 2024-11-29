@@ -14,7 +14,7 @@ import LessonList from './pages/lessonsPages/LessonList';
 import LessonDetail from "./pages/lessonsPages/LessonDetail"
 import Part from "./pages/listeningPages/Part"
 
-import VocabularyPage from './pages/VocabularyPage';
+import VocabularyPage from './pages/vocabulary/VocabularyPage';
 
 import Topics from './pages/adminPage/topics';
 import AdminHome from './pages/adminPage/adminHome';
