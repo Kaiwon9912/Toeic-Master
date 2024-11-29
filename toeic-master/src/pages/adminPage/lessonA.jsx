@@ -14,27 +14,28 @@ const Lessons = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentLesson, setCurrentLesson] = useState({ Title: '', Content: '', QuestionType: '', Guide: '', PartID: '' });
 
+  const fetchLessons = async () => {
+    setLoading(true); // Đặt loading thành true trước khi gọi API
+    try {
+      const response = await axios.get('http://localhost:3000/api/lessons');
+      setLessons(response.data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false); // Đặt loading thành false sau khi gọi API xong
+    }
+  };
+
+  const fetchParts = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/parts');
+      setParts(response.data);
+    } catch (error) {
+      console.error('Error fetching parts:', error.message);
+    }
+  };
+
   useEffect(() => {
-    const fetchLessons = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/lessons');
-        setLessons(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    const fetchParts = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/parts');
-        setParts(response.data);
-      } catch (error) {
-        console.error('Error fetching parts:', error.message);
-      }
-    };
-
     fetchLessons();
     fetchParts(); // Gọi hàm để lấy dữ liệu Parts
   }, []);
@@ -71,19 +72,28 @@ const Lessons = () => {
   };
 
   const saveLesson = async () => {
-    if (isEditMode) {
-      await axios.put(`http://localhost:3000/api/lessons/${currentLesson.PartID}`, currentLesson);
-      setLessons(lessons.map(lesson => (lesson.PartID === currentLesson.PartID ? currentLesson : lesson)));
-    } else {
-      const response = await axios.post('http://localhost:3000/api/lessons', currentLesson);
-      setLessons([...lessons, response.data]);
+    try {
+      if (isEditMode) {
+        await axios.put(`http://localhost:3000/api/lessons/${currentLesson.LessonID}`, currentLesson);
+      } else {
+        await axios.post('http://localhost:3000/api/lessons', currentLesson);
+      }
+      // Gọi lại API để lấy dữ liệu mới
+      fetchLessons();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Lỗi khi lưu bài học:', error.message);
     }
-    setIsModalOpen(false);
   };
 
   const deleteLesson = async (lessonId) => {
-    await axios.delete(`http://localhost:3000/api/lessons/${lessonId}`);
-    setLessons(lessons.filter(lesson => lesson.PartID !== lessonId));
+    try {
+      await axios.delete(`http://localhost:3000/api/lessons/${lessonId}`);
+      // Gọi lại API để lấy dữ liệu mới
+      fetchLessons();
+    } catch (error) {
+      console.error('Lỗi khi xóa bài học:', error.message);
+    }
   };
 
   return (
@@ -100,6 +110,7 @@ const Lessons = () => {
         <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">ID</th>
               <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Title</th>
               <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Content</th>
               <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Question type</th>
@@ -111,6 +122,7 @@ const Lessons = () => {
           <tbody>
             {currentItems.map((lesson, index) => (
               <tr key={index}>
+                <td className="py-3 text-center border-b border-gray-300">{lesson.LessonID}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.Title}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.Content}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.QuestionType}</td>
@@ -118,7 +130,7 @@ const Lessons = () => {
                 <td className="py-3 text-center border-b border-gray-300">{lesson.PartID}</td>
                 <td className="py-3 text-center border-b border-gray-300">
                   <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-2" onClick={() => openModal(lesson)}>Edit</button>
-                  <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => deleteLesson(lesson.PartID)}>Delete</button>
+                  <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => deleteLesson(lesson.LessonID)}>Delete</button>
                 </td>
               </tr>
             ))}

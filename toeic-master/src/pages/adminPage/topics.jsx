@@ -9,26 +9,27 @@ const Topics = () => {
   const [deleteSuccess, setDeleteSuccess] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const topicsPerPage = 5;
+  const topicsPerPage = 10;
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [topicToDelete, setTopicToDelete] = useState(null);
   const [newTopic, setNewTopic] = useState({ Name: '', Image: '' });
 
-  useEffect(() => {
-    const fetchTopics = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/topics');
-        setTopics(response.data);
-        setTotalPages(Math.ceil(response.data.length / topicsPerPage));
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-        setTimeout(() => setError(null), 5000);
-      }
-    };
 
+  const fetchTopics = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/topics');
+      setTopics(response.data);
+      setTotalPages(Math.ceil(response.data.length / topicsPerPage));
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+      setTimeout(() => setError(null), 5000);
+    }
+  };
+
+  useEffect(() => {
     fetchTopics();
   }, []);
 
@@ -37,7 +38,6 @@ const Topics = () => {
       try {
         await axios.delete(`http://localhost:3000/api/topics/${topicToDelete.TopicID}`);
         setTopics(prevTopics => prevTopics.filter((topic) => topic.TopicID !== topicToDelete.TopicID));
-        setDeleteSuccess('Topic deleted successfully!');
         setTimeout(() => setDeleteSuccess(''), 3000);
         setIsDeleteModalOpen(false);
       } catch (err) {
@@ -57,6 +57,7 @@ const Topics = () => {
       const response = await axios.put(`http://localhost:3000/api/topics/${editingTopic.TopicID}`, editingTopic);
       setTopics(topics.map(topic => topic.TopicID === editingTopic.TopicID ? response.data : topic));
       setEditingTopic(null);
+      fetchTopics();
     } catch (err) {
       setError(err.message);
       setTimeout(() => setError(null), 5000);
@@ -96,6 +97,7 @@ const Topics = () => {
       setTopics([...topics, response.data]);
       setIsAddModalOpen(false);
       setNewTopic({ Name: '', Image: '' });
+      fetchTopics();
     } catch (err) {
       setError(err.message);
       setTimeout(() => setError(null), 5000);

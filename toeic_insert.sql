@@ -71,7 +71,15 @@ INSERT INTO Vocabulary (Word, Translation, TopicID) VALUES
 INSERT INTO Users (Username, PasswordHash, FullName, Email, Role)
 VALUES
 -- User 1
-(N'user1', '1', N'Nguyen Van A', N'user1@gmail.com', 0)
+(N'user1', '1', N'Nguyen Van A', N'user1@gmail.com', 0),
+-- User 2
+(N'user2', '2', N'Tran Thi B', N'user2@gmail.com', 1),
+-- User 3
+(N'user3', '3', N'Le Van C', N'user3@gmail.com', 0),
+-- User 4
+(N'user4', '4', N'Pham Thi D', N'user4@gmail.com', 1),
+-- User 5
+(N'user5', '5', N'Nguyen Van E', N'user5@gmail.com', 0);
 
 
 

@@ -17,26 +17,6 @@ sql.connect(config)
     .then(pool => {
         console.log('Kết nối thành công đến SQL Server');
 
-        // API để lấy tất cả các chủ đề
-        app.get('/api/topics', async (req, res) => {
-            try {
-                const result = await pool.request().query('SELECT * FROM Topics');
-                res.json(result.recordset);
-            } catch (err) {
-                res.status(500).send(`Lỗi: ${err.message}`);
-            }
-        });
-
-        // API để lấy tất cả các bài học
-        app.get('/api/lessons', async (req, res) => {
-            try {
-                const result = await pool.request().query('SELECT * FROM Lessons');
-                res.json(result.recordset); // Trả về tất cả dữ liệu từ bảng Lessons
-            } catch (err) {
-                res.status(500).send(`Lỗi: ${err.message}`);
-            }
-        });
-
         // API để lấy tất cả các bài thi
         app.get('/api/exams', async (req, res) => {
             try {
@@ -47,99 +27,18 @@ sql.connect(config)
             }
         });
 
-        // API để cập nhật một chủ đề
-        app.put('/api/topics/:topicID', async (req, res) => {
-            const { topicID } = req.params;
-            const { Name, Description } = req.body;
+        // API để lấy tất cả các part
+        app.get('/api/parts', async (req, res) => {
             try {
-                // Cập nhật thông tin chủ đề theo TopicID
-                const result = await pool.request()
-                    .input('topicID', sql.Int, topicID)
-                    .input('Name', sql.VarChar, Name)
-                    .input('Description', sql.Text, Description)
-                    .query('UPDATE Topics SET Name = @Name, Description = @Description WHERE TopicID = @topicID');
-
-                if (result.rowsAffected[0] === 0) {
-                    return res.status(404).send('Topic not found'); // Nếu không tìm thấy chủ đề
-                }
-
-                res.status(200).send('Topic updated successfully'); // Trả về thông báo thành công
-            } catch (err) {
-                res.status(500).send(`Error: ${err.message}`); // Xử lý lỗi
-            }
-        });
-
-        // API xóa chủ đề 
-        app.delete('/api/topics/:topicID', async (req, res) => {
-            const { topicID } = req.params;
-            try {
-                const result = await pool.request()
-                    .input('topicID', pool.Int, topicID)
-                    .query('DELETE FROM Topics WHERE TopicID = @topicID');
-                if (result.rowsAffected[0] === 0) {
-                    return res.status(404).send('Topic not found');
-                }
-                res.status(200).send('Topic deleted successfully');
-            } catch (err) {
-                res.status(500).send(`Error: ${err.message}`);
-            }
-        });
-
-        // API để thêm một chủ đề mới
-        app.post('/api/topics', async (req, res) => {
-            const { Name, Description } = req.body;
-            try {
-                const result = await pool.request()
-                    .input('Name', sql.VarChar, Name)
-                    .input('Description', sql.Text, Description)
-                    .query('INSERT INTO Topics (Name, Description) VALUES (@Name, @Description)');
-                res.status(201).send(`Chủ đề đã được thêm với ID: ${result.rowsAffected}`);
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
-        });
-
-        // API để lấy tất cả từ vựng
-        app.get('/api/vocabulary', async (req, res) => {
-            try {
-                const result = await pool.request().query('SELECT * FROM Vocabulary');
+                const result = await pool.request().query('SELECT * FROM Parts');
+                console.log('Dữ liệu part:', result.recordset); // Log dữ liệu trả về
                 res.json(result.recordset);
             } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu parts:', err.message); // Log lỗi
                 res.status(500).send(err.message);
             }
         });
 
-        // API để thêm một từ mới
-        app.post('/api/vocabulary', async (req, res) => {
-            const { Word, Translation, TopicID, PartOfSpeech, Pronunciation, ExampleSentence } = req.body;
-            try {
-                const result = await pool.request()
-                    .input('Word', sql.VarChar, Word)
-                    .input('Translation', sql.VarChar, Translation)
-                    .input('TopicID', sql.Int, TopicID)
-                    .input('PartOfSpeech', sql.VarChar, PartOfSpeech)
-                    .input('Pronunciation', sql.VarChar, Pronunciation)
-                    .input('ExampleSentence', sql.Text, ExampleSentence)
-                    .query('INSERT INTO Vocabulary (Word, Translation, TopicID, PartOfSpeech, Pronunciation, ExampleSentence) VALUES (@Word, @Translation, @TopicID, @PartOfSpeech, @Pronunciation, @ExampleSentence)');
-                res.status(201).send(`Từ đã được thêm với ID: ${result.rowsAffected}`);
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
-        });
-
-        // API để lấy danh sách từ vựng theo TopicID
-        app.get('/api/vocabulary/topic/:topicId', async (req, res) => {
-            const { topicId } = req.params;
-            try {
-                const result = await pool.request()
-                    .input('TopicID', sql.Int, topicId)
-                    .query('SELECT * FROM Vocabulary WHERE TopicID = @TopicID');
-                res.json(result.recordset);
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
-
-        });
         //APi lấy câu hỏi ngẫu nhiên theo part
         app.get('/api/question/part/:part/random', async (req, res) => {
             const { part } = req.params;
@@ -186,64 +85,201 @@ sql.connect(config)
             }
         });
 
-        app.get('/api/lessons', async (req, res) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // API để lấy tất cả từ vựng
+        app.get('/api/vocabulary', async (req, res) => {
             try {
-                const result = await pool.request().query('SELECT * FROM Lessons');
+                const result = await pool.request().query('SELECT * FROM Vocabulary');
                 res.json(result.recordset);
             } catch (err) {
                 res.status(500).send(err.message);
             }
         });
-        app.get('/api/lessons/:id', async (req, res) => {
-            const { id } = req.params;
+
+        // API để thêm một từ mới
+        app.post('/api/vocabulary', async (req, res) => {
+            const { Word, Translation, TopicID } = req.body; // Giả định rằng chỉ có 3 trường này cần thiết cho phép thêm
+
             try {
                 const result = await pool.request()
-                    .input('id', sql.Int, id) // Đảm bảo rằng id là số nguyên
-                    .query('SELECT * FROM Lessons WHERE LessonID = @id');
-                if (result.recordset.length === 0) {
-                    return res.status(404).send('Lesson not found'); // Nếu không tìm thấy bài học
+                    .input('Word', sql.VarChar, Word)
+                    .input('Translation', sql.NVarChar, Translation) // Sử dụng NVarChar cho tiếng Việt
+                    .input('TopicID', sql.VarChar, TopicID) // Điều chỉnh kiểu dữ liệu nếu TopicID là chuỗi
+                    .query(`
+                INSERT INTO Vocabulary (Word, Translation, TopicID) 
+                VALUES (@Word, @Translation, @TopicID)
+            `);
+
+                res.status(201).send(`Từ đã được thêm với ID: ${result.rowsAffected}`);
+            } catch (err) {
+                res.status(500).send(err.message);
+            }
+        });
+        // API để sửa một từ
+        app.put('/api/vocabulary/:id', async (req, res) => {
+            const { Word, Translation, TopicID } = req.body; // Các trường cần sửa
+            const id = req.params.id; // Lấy ID từ tham số URL
+
+            try {
+                const result = await pool.request()
+                    .input('Word', sql.VarChar, Word)
+                    .input('Translation', sql.NVarChar, Translation)
+                    .input('TopicID', sql.VarChar, TopicID)
+                    .input('ID', sql.Int, id) // Giả định ID là kiểu Int
+                    .query(`
+                UPDATE Vocabulary 
+                SET Word = @Word, Translation = @Translation, TopicID = @TopicID 
+                WHERE WordID = @ID
+            `);
+
+                if (result.rowsAffected[0] === 0) {
+                    return res.status(404).send('Không tìm thấy từ để sửa.');
                 }
-                res.json(result.recordset[0]); // Trả về bài học đầu tiên
+
+                res.send('Từ đã được sửa thành công.');
             } catch (err) {
                 res.status(500).send(err.message);
             }
         });
 
-        // API để lấy tất cả người dùng
-        app.get('/api/users', async (req, res) => {
+        // API để xóa một từ
+        app.delete('/api/vocabulary/:id', async (req, res) => {
+            const id = req.params.id; // Lấy ID từ tham số URL
+
             try {
-                const result = await pool.request().query('SELECT * FROM Users');
-                console.log('Dữ liệu users:', result.recordset); // Log dữ liệu trả về
-                res.json(result.recordset);
+                const result = await pool.request()
+                    .input('ID', sql.Int, id) // Giả định ID là kiểu Int
+                    .query(`
+                DELETE FROM Vocabulary 
+                WHERE WordID = @ID
+            `);
+
+                if (result.rowsAffected[0] === 0) {
+                    return res.status(404).send('Không tìm thấy từ để xóa.');
+                }
+
+                res.send('Từ đã được xóa thành công.');
             } catch (err) {
-                console.error('Lỗi khi lấy dữ liệu users:', err.message); // Log lỗi
                 res.status(500).send(err.message);
             }
         });
 
 
-        // API để lấy tất cả các bài học
-        app.get('/api/lessons', async (req, res) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // API để lấy tất cả các chủ đề
+        app.get('/api/topics', async (req, res) => {
             try {
-                const result = await pool.request().query('SELECT * FROM Lessons');
-                console.log('Dữ liệu lessons:', result.recordset); // Log dữ liệu trả về
+                const result = await pool.request().query('SELECT * FROM Topics');
                 res.json(result.recordset);
             } catch (err) {
-                console.error('Lỗi khi lấy dữ liệu lessons:', err.message); // Log lỗi
-                res.status(500).send(err.message);
+                res.status(500).send(`Lỗi: ${err.message}`);
             }
         });
-        // API để lấy tất cả các part
-        app.get('/api/parts', async (req, res) => {
+
+        // API: Cập nhật một chủ đề
+        app.put('/api/topics/:topicID', async (req, res) => {
+            const { topicID } = req.params; // Lấy topicID từ URL
+            const { Name, Image } = req.body; // Lấy Name và Image từ body của request
+
             try {
-                const result = await pool.request().query('SELECT * FROM Parts');
-                console.log('Dữ liệu part:', result.recordset); // Log dữ liệu trả về
-                res.json(result.recordset);
+                // Cập nhật thông tin chủ đề theo TopicID
+                const result = await pool.request()
+                    .input('topicID', sql.VarChar, topicID) // Đảm bảo TopicID là VarChar
+                    .input('Name', sql.NVarChar, Name) // Sử dụng NVarChar cho Unicode
+                    .input('Image', sql.VarChar, Image)
+                    .query('UPDATE Topics SET Name = @Name, Image = @Image WHERE TopicID = @topicID');
+
+                if (result.rowsAffected[0] === 0) {
+                    return res.status(404).send('Topic not found'); // Nếu không tìm thấy chủ đề
+                }
+
+                res.status(200).send('Topic updated successfully'); // Trả về thông báo thành công
             } catch (err) {
-                console.error('Lỗi khi lấy dữ liệu parts:', err.message); // Log lỗi
-                res.status(500).send(err.message);
+                res.status(500).send(`Error: ${err.message}`); // Xử lý lỗi
             }
         });
+
+        // API xóa chủ đề 
+        app.delete('/api/topics/:topicID', async (req, res) => {
+            const { topicID } = req.params;
+            try {
+                const result = await pool.request()
+                    .input('topicID', sql.NVarChar, topicID)
+                    .query('DELETE FROM Topics WHERE TopicID = @topicID');
+                if (result.rowsAffected[0] === 0) {
+                    return res.status(404).send('Topic not found');
+                }
+                res.status(200).send('Topic deleted successfully');
+            } catch (err) {
+                res.status(500).send(`Error: ${err.message}`);
+            }
+        });
+
+        /// API: Thêm một chủ đề mới
+        app.post('/api/topics', async (req, res) => {
+            const { TopicID, Name, Image } = req.body; // Lấy TopicID, Name, và Image từ body của request
+            try {
+                const result = await pool.request()
+                    .input('TopicID', sql.VarChar, TopicID)
+                    .input('Name', sql.NVarChar, Name) // Sử dụng NVarChar cho Unicode
+                    .input('Image', sql.VarChar, Image)
+                    .query('INSERT INTO Topics (TopicID, Name, Image) VALUES (@TopicID, @Name, @Image)');
+
+                res.status(201).send(`Chủ đề đã được thêm với ID: ${TopicID}`); // Trả về ID của chủ đề mới
+            } catch (err) {
+                res.status(500).send(err.message); // Xử lý lỗi
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -286,6 +322,40 @@ sql.connect(config)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // API để lấy tất cả người dùng
+        app.get('/api/users', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Users');
+                console.log('Dữ liệu users:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu users:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
         // API để reset mật khẩu của người dùng
         app.post('/api/users/reset-password/:userId', async (req, res) => {
             const { userId } = req.params;
@@ -304,6 +374,140 @@ sql.connect(config)
                 res.status(500).send(err.message);
             }
         });
+
+        // API xóa người dùng
+        app.delete('/api/users/:username', async (req, res) => {
+            const username = req.params.username; // Lấy username từ tham số
+
+            try {
+                // Thực hiện truy vấn SQL để xóa người dùng
+                const result = await pool.request()
+                    .input('username', sql.VarChar, username) // Cần thay đổi kiểu dữ liệu nếu cần
+                    .query('DELETE FROM Users WHERE Username = @username');
+
+                // Kiểm tra số dòng bị ảnh hưởng
+                if (result.rowsAffected[0] > 0) {
+                    res.status(200).json({ message: 'Người dùng đã được xóa thành công!' });
+                } else {
+                    res.status(404).json({ message: 'Người dùng không tìm thấy!' });
+                }
+            } catch (err) {
+                console.error('Lỗi khi xóa người dùng:', err.message);
+                res.status(500).json({ error: 'Lỗi khi xóa người dùng: ' + err.message });
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // API để lấy tất cả các bài học
+        app.get('/api/lessons', async (req, res) => {
+            try {
+                const result = await pool.request().query('SELECT * FROM Lessons');
+                console.log('Dữ liệu lessons:', result.recordset); // Log dữ liệu trả về
+                res.json(result.recordset);
+            } catch (err) {
+                console.error('Lỗi khi lấy dữ liệu lessons:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+        // API để thêm bài học
+        app.post('/api/lessons', async (req, res) => {
+            const { Title, Content, QuestionType, Guide, PartID } = req.body;
+
+            try {
+                const result = await pool.request()
+                    .input('Title', sql.VarChar, Title)
+                    .input('Content', sql.Text, Content)
+                    .input('QuestionType', sql.VarChar, QuestionType)
+                    .input('Guide', sql.Text, Guide)
+                    .input('PartID', sql.Int, PartID) // Đảm bảo kiểu dữ liệu khớp
+                    .query(`
+                INSERT INTO Lessons (Title, Content, QuestionType, Guide, PartID)
+                OUTPUT INSERTED.LessonID AS LessonID
+                VALUES (@Title, @Content, @QuestionType, @Guide, @PartID)
+            `);
+
+                // Kiểm tra xem có kết quả không
+                if (result.rowsAffected[0] > 0) {
+                    const lessonId = result.recordset[0].LessonID; // Lấy ID của bài học mới
+                    res.status(201).json({ message: 'Bài học đã được thêm thành công!', LessonID: lessonId });
+                } else {
+                    res.status(500).json({ error: 'Có lỗi xảy ra khi thêm bài học.' });
+                }
+            } catch (err) {
+                console.error('Lỗi khi thêm bài học:', err.message);
+                res.status(500).json({ error: 'Lỗi khi thêm bài học: ' + err.message });
+            }
+        });
+
+        // API để sửa bài học
+        app.put('/api/lessons/:id', async (req, res) => {
+            const { id } = req.params;
+            const { Title, Content, QuestionType, Guide, PartID } = req.body;
+
+            try {
+                const result = await pool.request()
+                    .input('Title', sql.VarChar, Title)
+                    .input('Content', sql.Text, Content)
+                    .input('QuestionType', sql.VarChar, QuestionType)
+                    .input('Guide', sql.Text, Guide)
+                    .input('PartID', sql.Int, PartID) // Đảm bảo kiểu dữ liệu khớp với cơ sở dữ liệu
+                    .input('LessonID', sql.Int, id) // Sử dụng kiểu Int nếu LessonID là số
+                    .query('UPDATE Lessons SET Title = @Title, Content = @Content, QuestionType = @QuestionType, Guide = @Guide, PartID = @PartID WHERE LessonID = @LessonID');
+
+                if (result.rowsAffected[0] > 0) {
+                    res.status(200).json({ message: 'Bài học đã được cập nhật thành công!' });
+                } else {
+                    res.status(404).json({ message: 'Bài học không tìm thấy!' });
+                }
+            } catch (err) {
+                console.error('Lỗi khi sửa bài học:', err.message);
+                res.status(500).json({ error: 'Lỗi khi sửa bài học: ' + err.message });
+            }
+        });
+
+        // API để xóa bài học
+        app.delete('/api/lessons/:id', async (req, res) => {
+            const { id } = req.params;
+
+            try {
+                const result = await pool.request()
+                    .input('LessonID', sql.VarChar, id) // Thay đổi kiểu dữ liệu nếu cần thiết
+                    .query('DELETE FROM Lessons WHERE LessonID = @LessonID');
+
+                if (result.rowsAffected[0] > 0) {
+                    res.status(200).json({ message: 'Bài học đã được xóa thành công!' });
+                } else {
+                    res.status(404).json({ message: 'Bài học không tìm thấy!' });
+                }
+            } catch (err) {
+                console.error('Lỗi khi xóa bài học:', err.message);
+                res.status(500).json({ error: 'Lỗi khi xóa bài học: ' + err.message });
+            }
+        });
+
+
+
+
+
+
+
+
+
+
 
 
     })
