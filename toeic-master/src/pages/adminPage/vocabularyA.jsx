@@ -14,9 +14,10 @@ const Vocabulary = () => {
   const [wordInfo, setWordInfo] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editWord, setEditWord] = useState({ Word: '', Translation: '', TopicID: '' });
-  const [topics, setTopics] = useState([]); // State for topics
-  const [totalPages, setTotalPages] = useState(0); // State for total pages of topics
-  const topicsPerPage = 15; // Adjust as needed
+  const [topics, setTopics] = useState([]);
+  const [selectedTopic, setSelectedTopic] = useState(''); // State cho topic đã chọn
+  const [totalPages, setTotalPages] = useState(0);
+  const topicsPerPage = 15;
 
   useEffect(() => {
     const fetchVocabulary = async () => {
@@ -102,7 +103,7 @@ const Vocabulary = () => {
   };
 
   const handleEditClick = (word) => {
-    setEditWord(word); // Set the word to edit
+    setEditWord(word);
     setIsEditModalOpen(true);
   };
 
@@ -127,8 +128,14 @@ const Vocabulary = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = vocabulary.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPagesVocabulary = Math.ceil(vocabulary.length / itemsPerPage);
+
+  // Lọc từ vựng dựa trên topic đã chọn
+  const filteredVocabulary = selectedTopic
+    ? vocabulary.filter(word => word.TopicID === selectedTopic)
+    : vocabulary;
+
+  const currentItems = filteredVocabulary.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPagesVocabulary = Math.ceil(filteredVocabulary.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPagesVocabulary) {
@@ -145,11 +152,25 @@ const Vocabulary = () => {
   return (
     <div className="p-5 bg-gray-100 rounded-lg ">
       <h1 className="text-center text-3xl text-blue-800 mb-5">Vocabulary list</h1>
+
+      {/* Dropdown for Topic Filtering */}
+      <select
+        value={selectedTopic}
+        onChange={e => setSelectedTopic(e.target.value)}
+        className="border border-gray-300 p-2 mb-3 w-1/4 rounded"
+      >
+        <option value="">All Topics</option>
+        {topics.map(topic => (
+          <option key={topic.TopicID} value={topic.TopicID}>{topic.Name}</option>
+        ))}
+      </select>
+
       {successMessage && (
         <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded shadow-md">
           {successMessage}
         </div>
       )}
+
       <table className="w-full border-collapse bg-white rounded-lg overflow-hidden">
         <thead>
           <tr>
@@ -303,7 +324,7 @@ const Vocabulary = () => {
             />
             <select
               name="TopicID"
-              value={editWord.TopicID} // Set the current TopicID
+              value={editWord.TopicID}
               onChange={handleEditChange}
               className="border border-gray-300 p-2 rounded w-full mb-4"
             >
