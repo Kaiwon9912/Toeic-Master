@@ -27,6 +27,7 @@ app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/questions', questionsRoutes);
 app.use('/api/parts', partsRoutes);
 app.use('/api/exams', examsRoutes);
+
 // Khởi động server
 app.listen(port, () => {
     console.log(`Server đang chạy tại http://localhost:${port}`);

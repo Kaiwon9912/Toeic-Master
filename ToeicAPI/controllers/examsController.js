@@ -163,3 +163,63 @@ exports.addQuestionToExam = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+
+exports.getResultByUser = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('UserID', sql.Int, userId)
+        .query('SELECT * FROM ExamResults WHERE UserID = @UserID');
+      if (result.recordset.length === 0) {
+        return res.status(404).send('Không tìm thấy kết quả thi');
+      }
+      res.status(200).json(result.recordset);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Lỗi khi lấy kết quả thi của người dùng');
+    }
+  };
+  
+  // Thêm kết quả thi mới
+  exports.createExamResult = async (req, res) => {
+    const { userId, examId, score } = req.body;
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('UserID', sql.Int, userId)
+        .input('ExamID', sql.VarChar, examId)
+        .input('Score', sql.Int, score)
+        .query(`
+          INSERT INTO ExamResults (UserID, ExamID, Score)
+          VALUES (@UserID, @ExamID, @Score)
+          SELECT SCOPE_IDENTITY() AS ResultID
+        `);
+      res.status(201).json({ resultID: result.recordset[0].ResultID });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Lỗi khi thêm kết quả thi');
+    }
+  };
+  
+  // Cập nhật kết quả thi
+  exports.updateExamResult = async (req, res) => {
+    const resultId = req.params.resultId;
+    const { score } = req.body;
+    try {
+      const pool = await poolPromise;
+      const result = await pool.request()
+        .input('ResultID', sql.Int, resultId)
+        .input('Score', sql.Int, score)
+        .query('UPDATE ExamResults SET Score = @Score WHERE ResultID = @ResultID');
+      if (result.rowsAffected[0] === 0) {
+        return res.status(404).send('Không tìm thấy kết quả thi để cập nhật');
+      }
+      res.status(200).send('Cập nhật kết quả thi thành công');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Lỗi khi cập nhật kết quả thi');
+    }
+  };
+  

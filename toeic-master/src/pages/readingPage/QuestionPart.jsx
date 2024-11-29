@@ -1,168 +1,141 @@
-import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import Question from '../../components/Question';
-import axios from 'axios';
-import MessageComponent from './MessageComponent';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Question from "../../components/Question";
 
-const Progress = ({ totalCount, correctCount }) => {
-  return (
-    <div className="p-5 w-full shadow-xl border rounded-lg mb-4">
-      <h3 className="font-bold text-lg">Tiến trình</h3>
-      <p>
-        Đã trả lời <span className="font-bold">{totalCount}</span> câu hỏi, 
-        trong đó <span className="text-green-500 font-bold">{correctCount}</span> câu đúng.
-      </p>
-    </div>
-  );
-};
-
-const AnswerHistory = ({ history }) => {
-  return (
-    <div className="p-5 bg-gray-100 rounded-lg mb-4 h-96 overflow-scroll">
-      <h4 className="font-bold">Lịch sử trả lời</h4>
-      <ul className="space-y-2">
-        {history.map((item, index) => (
-          <li
-            key={index}
-            className={`p-2 rounded-lg ${item.correct ? 'bg-green-300' : 'bg-red-300'}`}
-          >
-            Câu {index + 1}: {item.correct ? 'Đúng' : 'Sai'}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-const RandomFact = ({ facts }) => {
-  const randomIndex = Math.floor(Math.random() * facts.length);
-  return (
-    <div className="p-4 bg-blue-100 rounded-lg mb-4">
-      <p className="font-bold text-blue-900">Bạn có biết?</p>
-      <p>{facts[randomIndex]}</p>
-    </div>
-  );
-};
-
-function QuestionPart() {
-  const { part } = useParams();
+const ExamPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
-  const [isSelected, setIsSelected] = useState(false);
-  const [content, setContent] = useState('');
-  const [correctCount, setCorrectCount] = useState(0);
-  const [totalCount, setTotalCount] = useState(0);
-  const [history, setHistory] = useState([]);
-  const [answeredCount, setAnsweredCount] = useState(0); // Số câu hỏi đã trả lời
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState("");  // State để lưu content của GroupQuestionID
 
-  const fetchQuestions = async () => {
-    const partNumber = Number(part);
-    if (partNumber) {
-      if (partNumber === 6) {
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/api/questions/random-group/${partNumber}`
-          );
-          if (response.data.length > 0) {
-            setContent(response.data[0].Content);
-            setQuestions(response.data);
-          }
-        } catch (error) {
-          console.error('Error fetching questions:', error);
-        }
-      } else if (partNumber === 5) {
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/api/questions/random/${partNumber}/0`
-          );
-          setQuestions([response.data]);
-        } catch (error) {
-          console.error('Error fetching question:', error);
-        }
-      }
-    } else {
-      console.error('Part is not a valid number:', part);
-    }
-  };
+  // Lấy thông tin bài thi từ state khi điều hướng
+  const examData = location.state?.examData;
 
+  // Nếu không có thông tin bài thi, chuyển về trang chủ
   useEffect(() => {
-    fetchQuestions();
-  }, []);
-
-  const handleAnswerUpdate = (isCorrect) => {
-    setTotalCount((prev) => prev + 1);
-    setAnsweredCount((prev) => prev + 1); // Tăng số câu hỏi đã trả lời
-    setIsSelected(true);
-    setHistory((prev) => [...prev, { correct: isCorrect }]); // Cập nhật lịch sử
-    if (isCorrect) {
-      setCorrectCount((prev) => prev + 1);
+    if (!examData) {
+      navigate("/");
     }
-  };
+  }, [examData, navigate]);
 
-  const handleNext = () => {
-    setIsSelected(false);
-    window.scrollTo({ top: 0, behavior: 'auto' });
-    fetchQuestions();
+  // Gọi API để lấy danh sách câu hỏi của bài thi và content nếu có GroupQuestionID
+  useEffect(() => {
+    if (examData) {
+      const fetchQuestionsAndContent = async () => {
+        try {
+          setLoading(true);
+
+          // Fetch câu hỏi của bài thi
+          const questionResponse = await fetch(
+            `http://localhost:3000/api/questions/exam/${examData.ExamID}`
+          );
+          const questionData = await questionResponse.json();
+          setQuestions(questionData);
+
+          // Kiểm tra nếu có GroupQuestionID và fetch Content của nó
+          if (examData.GroupQuestionID) {
+            const groupQuestionResponse = await fetch(
+              `http://localhost:3000/api/questions/group-question/${examData.GroupQuestionID}`
+            );
+            const groupQuestionData = await groupQuestionResponse.json();
+            setContent(groupQuestionData.content);  // Lưu content vào state
+          }
+
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching questions:", error);
+          setLoading(false);
+        }
+      };
+
+      fetchQuestionsAndContent();
+    }
+  }, [examData]);
+
+  // Xử lý khi chọn đáp án
+  const handleAnswerUpdate = (answer) => {
+    const questionId = questions[currentQuestionIndex].id;
+
+    // Cập nhật câu trả lời
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: answer, // Lưu đáp án đã chọn
+    }));
+
+    // Chuyển sang câu tiếp theo
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
   };
 
   return (
-    <>
-    <Header/>
-     <div className="w-auto md:w-[64rem] m-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="col-span-1 space-y-4">
-        <Progress totalCount={totalCount} correctCount={correctCount} />
-        <AnswerHistory history={history} />
-        <RandomFact
-          facts={[
-            'Học từ sai lầm là cách nhanh nhất để cải thiện.',
-            'Hãy thử đọc thật kỹ câu hỏi trước khi trả lời.',
-            'Đừng bỏ qua các chi tiết nhỏ trong câu hỏi!',
-          ]}
-        />
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-1/4 bg-white shadow-lg p-4">
+        <h2 className="text-xl font-bold mb-4">{examData?.ExamName}</h2>
+        <p className="mb-4">
+          <b>Số câu đã làm:</b> {Object.keys(answers).length}/{questions.length}
+        </p>
+        <ul className="space-y-2">
+          {questions.map((question, index) => (
+            <li
+              key={question.id}
+              className={`p-2 rounded-lg cursor-pointer flex justify-between items-center ${
+                currentQuestionIndex === index
+                  ? "bg-blue-300 text-white"
+                  : "bg-gray-200"
+              }`}
+              onClick={() => setCurrentQuestionIndex(index)}
+            >
+              <span>Câu {index + 1}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className="col-span-2">
-        {part === '6' && content && (
-          <div className="mb-5">
-            <div className="text-lg bg-yellow-100 p-5 rounded-lg h-96 overflow-scroll">
-              <b>  Question: {totalCount +1} </b> <MessageComponent content={content} />
-            </div>
-          </div>
-        )}
-
-        {part === '6' && (
-          <div className="h-96 overflow-scroll py-5">
-            {questions.map((question, index) => (
+      {/* Nội dung chính */}
+      <div className="w-3/4 p-8">
+        {loading ? (
+          <p>Đang tải câu hỏi...</p>
+        ) : (
+          <>
+            {content && (
+              <div className="content mb-8">
+                <h2 className="text-2xl font-bold">Nội dung bài thi</h2>
+                <div dangerouslySetInnerHTML={{ __html: content }} />
+              </div>
+            )}
+            {questions.length > 0 && (
               <Question
+                data={questions[currentQuestionIndex]}
                 onAnswerUpdate={handleAnswerUpdate}
-                data={question}
-                key={index}
               />
-            ))}
+            )}
+          </>
+        )}
+
+        {/* Hiển thị tổng kết */}
+        {currentQuestionIndex === questions.length - 1 && (
+          <div className="mt-8 text-center">
+            <p className="text-lg font-semibold">Bạn đã hoàn thành bài thi!</p>
+            <p>
+              Số câu trả lời đúng:{" "}
+              {
+                Object.values(answers).filter(
+                  (answer, index) =>
+                    answer === questions[index].CorrectAnswer
+                ).length
+              }{" "}
+              / {questions.length}
+            </p>
           </div>
         )}
-
-        {part === '5' && questions.length > 0 && (
-          <Question
-            onAnswerUpdate={handleAnswerUpdate}
-            data={questions[0][0]}
-          />
-        )}
-
-        <div className="w-full flex justify-between mt-5">
-          <button
-            className={`bg-green-400 p-2 rounded-xl text-white ${answeredCount === questions.length ? 'block' : 'hidden'}`} // Hiển thị nút khi tất cả câu hỏi đã được trả lời
-            onClick={handleNext}
-          >
-            Câu tiếp theo
-          </button>
-        </div>
       </div>
     </div>
-    <Footer/>
-    </>
   );
-}
+};
 
-export default QuestionPart;
+export default ExamPage;

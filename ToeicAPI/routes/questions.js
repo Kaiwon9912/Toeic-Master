@@ -12,8 +12,8 @@ router.get('/user-question-stats/:userId', questionsController.getUserQuestionSt
 router.get('/group',questionsController.getRandomQuestionsByPartAndLevel);
 // Lấy nhóm câu hỏi ngẫu nhiên bằng Stored Procedure
 router.get('/random-group/:partId', questionsController.getRandomGroupByStoredProc);
-
-
+router.get('/exam/:examId/', questionsController.getQuestionsByExamId);
+router.get('/group-question/:questionId/', questionsController.getGroupQuestionById);
 
 
 

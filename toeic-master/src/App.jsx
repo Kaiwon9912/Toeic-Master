@@ -24,10 +24,8 @@ import Account from './pages/adminPage/account';
 import Reading from './pages/lessonsPages/Reading';
 import QuestionPart from './pages/readingPage/QuestionPart';
 import ExamControl from './AdminArea/pages/ExamControl';
-
-
-
-
+import ExamList from './pages/examPage/ExamList';
+import ExamPage from './pages/examPage/ExamPage';
 function App() {
   return (
     <Router>
@@ -39,10 +37,9 @@ function App() {
 
         <Route path="/reading" element={<ReadingPage />} />
         <Route path="/reading/part/:part" element={<QuestionPart />} />
-
-        <Route path="/vocabulary" element={<VocabularyPage />} />
-        <Route path="/test" element={<Home />} />
-
+        <Route path="/listening/:part" element={<Part />} />
+        <Route path="/exam" element={<ExamList/>} />
+        <Route path="/exam/:examID" element={<ExamPage/>} />
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
 
