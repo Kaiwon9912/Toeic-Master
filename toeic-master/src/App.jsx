@@ -38,8 +38,11 @@ function App() {
         <Route path="/reading" element={<ReadingPage />} />
         <Route path="/reading/part/:part" element={<QuestionPart />} />
         <Route path="/listening/:part" element={<Part />} />
-        <Route path="/exam" element={<ExamList/>} />
-        <Route path="/exam/:examID" element={<ExamPage/>} />
+
+        <Route path="/vocabulary" element={<VocabularyPage />} />
+
+        <Route path="/exam" element={<ExamList />} />
+        <Route path="/exam/:examID" element={<ExamPage />} />
         <Route path="/lessons" element={<LessonList />} />
         <Route path="/lessons/:id" element={<LessonDetail />} />
 

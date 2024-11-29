@@ -110,7 +110,6 @@ const Lessons = () => {
         <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">ID</th>
               <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Title</th>
               <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Content</th>
               <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Question type</th>
@@ -122,7 +121,6 @@ const Lessons = () => {
           <tbody>
             {currentItems.map((lesson, index) => (
               <tr key={index}>
-                <td className="py-3 text-center border-b border-gray-300">{lesson.LessonID}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.Title}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.Content}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.QuestionType}</td>

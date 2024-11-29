@@ -154,7 +154,7 @@ const VocabularyPage = () => {
                     </div>
                 </div>
 
-                <div className="flex-grow bg-white p-5 rounded-lg shadow-md overflow-y-auto" id="word-info">
+                <div className="flex-grow bg-white p-5 rounded-lg shadow-md overflow-y-auto w-7" id="word-info">
                     {selectedWord ? (
                         <div className="flex flex-col gap-5">
                             <h3 className="text-2xl font-bold text-blue-800 mb-5">{selectedWord.word}</h3>

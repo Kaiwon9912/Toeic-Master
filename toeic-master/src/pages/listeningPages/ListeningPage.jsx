@@ -117,11 +117,10 @@ function ListeningPage() {
                         className="back-to-top"
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     >
-                      Back to top
+                        Back to top
                     </button>
                 )}
             </div>
-            <Footer />
         </>
     );
 }
