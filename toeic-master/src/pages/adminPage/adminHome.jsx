@@ -39,20 +39,8 @@ const AdminHome = () => {
     sidebarLinkHover: {
       backgroundColor: '#3B82F6', // Màu xanh sáng khi hover
     },
-    mainContent: {
-      flex: '1',
-      padding: '20px',
-      backgroundColor: '#F3F4F6', // Nền sáng để làm nổi bật nội dung
-    },
-    mainContentHeader: {
-      fontSize: '36px',
-      marginBottom: '20px',
-      color: '#1E40AF', // Màu tiêu đề chính như trong sidebar
-    },
-    mainContentText: {
-      fontSize: '18px',
-      color: '#4B5563', // Màu chữ nhạt cho dễ đọc
-    }
+    
+    
   };
 
   return (

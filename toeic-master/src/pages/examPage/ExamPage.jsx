@@ -1,141 +1,253 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Question from "./components/Question";
 
-import Footer from '../../components/Footer';
-import Question from '../../components/Question';
+const ExamPage = () => {
+  const userID = 1;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [remainingTime, setRemainingTime] = useState(900); // Thời gian thi: 15 phút
 
-function ExamPage() {
-  const { state } = useLocation(); // Lấy state từ location
-  const exam = state?.examData; // Kiểm tra xem có dữ liệu không
-  console.log(exam?.Part5); // In ra số câu hỏi Part 5
+  const examData = location.state?.examData;
 
-  const [questions, setQuestions] = useState([]); // Câu hỏi sẽ được fetch từ API
-  const [currentPart, setCurrentPart] = useState(1); // Part mặc định là Part 5
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Chỉ số câu hỏi hiện tại
-  const [answers, setAnswers] = useState([]); // Mảng lưu trữ câu trả lời
+  const calculateTotalQuestions = (questions) => {
+    return questions.reduce((total, question) => {
+      if (question.type === "single") {
+        return total + 1;
+      } else if (question.type === "group") {
+        return total + question.questions.length;
+      }
+      return total;
+    }, 0);
+  };
+const calculateCorrectAnswers = () => {
+  return Object.keys(answers).reduce((correct, questionId) => {
+    // Tìm câu hỏi dựa trên questionId thay vì content
+    const question = questions.find((q) => q.questionID === questionId);
+    if (question) {
+      console.log("Checking question:", question);
+      console.log("User's answer:", answers[questionId]);
+      console.log("Correct answer:", question.correctAnswer);
+
+      if (answers[questionId] === question.correctAnswer) {
+        return correct + 1;
+      }
+    }
+    return correct;
+  }, 0);
+};
+
+
+
+  const calculateScore = () => {
+    const correctAnswers = calculateCorrectAnswers();
+    const totalQuestions = calculateTotalQuestions(questions);
+    return Math.round((correctAnswers / totalQuestions) * 100);
+  };
+
+  const handleSubmitExam = () => {
+    const correctAnswers = calculateCorrectAnswers();
+    const totalQuestions = calculateTotalQuestions(questions);
+    const score = calculateScore();
+    alert(`Kết quả của bạn: ${score} điểm\nSố câu đúng: ${correctAnswers}/${totalQuestions}`);
+    navigate("/submit", { state: { answers } });
+  };
 
   useEffect(() => {
-    // Hàm xác định part hiện tại dựa trên số câu hỏi
-    const getCurrentPart = () => {
-      const totalQuestions = exam.Part1 + exam.Part2 + exam.Part3 + exam.Part4 + exam.Part5 + exam.Part6 + exam.Part7;
-      const currentIndex = currentQuestionIndex;
+    if (!examData) {
+      navigate("/");
+    }
+  }, [examData, navigate]);
 
-      if (currentIndex < exam.Part1) {
-        return 1;
-      } else if (currentIndex < exam.Part1 + exam.Part2) {
-        return 2;
-      } else if (currentIndex < exam.Part1 + exam.Part2 + exam.Part3) {
-        return 3;
-      } else if (currentIndex < exam.Part1 + exam.Part2 + exam.Part3 + exam.Part4) {
-        return 4;
-      } else if (currentIndex < exam.Part1 + exam.Part2 + exam.Part3 + exam.Part4 + exam.Part5) {
-        return 5;
-      } else if (currentIndex < exam.Part1 + exam.Part2 + exam.Part3 + exam.Part4 + exam.Part5 + exam.Part6) {
-        return 6;
-      } else {
-        return 7;
-      }
-    };
-
-    // Fetch câu hỏi khi exam data có sẵn
-    if (exam) {
+  useEffect(() => {
+    if (examData) {
       const fetchQuestions = async () => {
         try {
-          // Lấy câu hỏi từ API với số câu hỏi tùy thuộc vào part
-          const response = await axios.get(`http://localhost:3000/api/questions/random/5/1`);
-          setQuestions(response.data);  // Cập nhật danh sách câu hỏi
+          setLoading(true);
+          const response = await fetch(
+            `http://localhost:3000/api/questions/exam/${examData.ExamID}`
+          );
+          const data = await response.json();
+          setQuestions(data);
+          setLoading(false);
         } catch (error) {
-          console.error('Error fetching questions:', error);
+          console.error("Error fetching questions:", error);
+          setLoading(false);
         }
       };
-
       fetchQuestions();
-      setCurrentPart(getCurrentPart()); // Cập nhật currentPart khi fetch dữ liệu
     }
-  }, [exam, currentQuestionIndex]);
+  }, [examData]);
 
-  const handleNextQuestion = () => {
+  useEffect(() => {
+    if (remainingTime <= 0) {
+      alert("Thời gian làm bài đã hết!");
+      handleSubmitExam(); // Tự động nộp bài khi hết thời gian
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [remainingTime, navigate, answers]);
+
+  const handleAnswerUpdate = (answer, questionId) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: answer,
+    }));
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt
+    });
+  };
+
+  const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1); // Chuyển sang câu hỏi tiếp theo
-    } else {
-      // Nếu đã đến câu hỏi cuối cùng
-      console.log('Đã hết câu hỏi');
+      setCurrentQuestionIndex((prev) => prev + 1);
+      scrollToTop();
     }
   };
 
-  const handleAnswerUpdate = (isCorrect) => {
-    setAnswers(prevAnswers => [...prevAnswers, isCorrect]);
-    console.log("Answers:", answers);
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+      scrollToTop();
+    }
   };
 
-  if (!exam) return <div>Loading...</div>;
+  const renderQuestion = () => {
+    const currentQuestion = questions[currentQuestionIndex];
+    if (!currentQuestion) return null;
+
+    if (currentQuestion.type === "single") {
+      return (
+        <Question
+          key={currentQuestion.content}
+          data={currentQuestion}
+          onAnswerUpdate={(answer) =>
+            handleAnswerUpdate(answer, currentQuestion.content)
+          }
+        />
+      );
+    } else if (currentQuestion.type === "group") {
+      return (
+        <div>
+          <div className="mb-4 p-4 bg-yellow-100 rounded-lg">
+            <h3 className="text-lg font-semibold">Nội dung nhóm:</h3>
+            <p>{currentQuestion.groupContent}</p>
+          </div>
+          {currentQuestion.questions.map((subQuestion) => (
+            <Question
+              key={subQuestion.questionID}
+              data={subQuestion}
+              onAnswerUpdate={(answer) =>
+                handleAnswerUpdate(answer, subQuestion.questionID)
+              }
+            />
+          ))}
+        </div>
+      );
+    }
+  };
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   return (
-    <>
-      <div className="w-auto md:w-[64rem] m-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Sidebar */}
-        <div className="col-span-1 space-y-4">
-          <div className="p-5 bg-gray-100 rounded-lg mb-4">
-            <h4 className="font-bold">Thông tin đề thi</h4>
-            <p><b>{exam.ExamName}</b></p>
-            <p>{exam.Description}</p>
-            <p><b>Level:</b> {exam.Level}</p>
-            <p><b>Duration:</b> {exam.DurationInMinutes} minutes</p>
-            <p><b>Number of Questions:</b> {exam.TotalQuestions}</p>
-            <p><b>Part 1 Questions:</b> {exam.Part1}</p>
-            <p><b>Part 2 Questions:</b> {exam.Part2}</p>
-            <p><b>Part 3 Questions:</b> {exam.Part3}</p>
-            <p><b>Part 4 Questions:</b> {exam.Part4}</p>
-            <p><b>Part 5 Questions:</b> {exam.Part5}</p>
-            <p><b>Part 6 Questions:</b> {exam.Part6}</p>
-            <p><b>Part 7 Questions:</b> {exam.Part7}</p>
-            {/* Thêm các thông tin khác nếu cần */}
-          </div>
-          {/* Hiển thị part hiện tại */}
-          <div className="p-5 bg-blue-100 rounded-lg">
-            <h4 className="font-bold">Part {currentPart} hiện tại</h4>
-            <p>{exam.Description}</p>
-          </div>
-        </div>
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-1/4 bg-white shadow-lg p-4">
+        <h2 className="text-xl font-bold mb-4">{examData?.ExamName}</h2>
+        <p className="mb-4">
+          <b>Số câu đã làm:</b> {Object.keys(answers).length}/{calculateTotalQuestions(questions)}
+        </p>
 
-        {/* Main content */}
-        <div className="col-span-2">
-          <div className="mb-5">
-            <div className="text-lg bg-yellow-100 p-5 rounded-lg">
-              <b> Part {currentPart}: </b>
-              {exam.Description}
-            </div>
-          </div>
+        <p className="mb-4 text-red-500 font-semibold">
+          <b>Thời gian còn lại:</b> {formatTime(remainingTime)}
+        </p>
+        <ul className="space-y-2">
+          {questions.map((question, index) => (
+            <li
+              key={index}
+              className={`p-2 rounded-lg cursor-pointer flex justify-between items-center ${
+                currentQuestionIndex === index
+                  ? "bg-blue-300 text-white"
+                  : "bg-gray-200"
+              }`}
+              onClick={() => {
+                setCurrentQuestionIndex(index);
+                scrollToTop();
+              }}
+            >
+              <span>Câu {index + 1}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-          <div className="h-96 overflow-scroll py-5">
-            {questions.length > 0 ? (
-              <Question
-                data={questions[currentQuestionIndex]}
-                onAnswerUpdate={handleAnswerUpdate}
-                key={currentQuestionIndex}
-              />
-            ) : (
-              <div>Loading questions...</div>
-            )}
-          </div>
-
-          {/* Nút chuyển sang câu hỏi tiếp theo */}
-          {questions.length > 0 && (
-            <div className="w-full flex justify-between mt-5">
+      {/* Nội dung chính */}
+      <div className="w-3/4 p-8">
+        {loading ? (
+          <p>Đang tải câu hỏi...</p>
+        ) : (
+          <>
+            {renderQuestion()}
+            <div className="mt-8 flex justify-between">
               <button
-                className="bg-blue-500 text-white p-2 rounded-xl"
-                onClick={handleNextQuestion}
+                className={`px-4 py-2 rounded ${
+                  currentQuestionIndex === 0
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+                disabled={currentQuestionIndex === 0}
+                onClick={handlePrevious}
               >
-                Câu hỏi tiếp theo
+                Previous
+              </button>
+              <button
+                className={`px-4 py-2 rounded ${
+                  currentQuestionIndex === questions.length - 1
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-green-500 text-white hover:bg-green-600"
+                }`}
+                disabled={currentQuestionIndex === questions.length - 1}
+                onClick={handleNext}
+              >
+                Next
               </button>
             </div>
-          )}
-        </div>
+            {currentQuestionIndex === questions.length - 1 && (
+              <div className="mt-4 text-center">
+                <button
+                  className="bg-red-500 text-white py-2 px-6 rounded"
+                  onClick={() => {
+                    if (window.confirm("Bạn chắc chắn muốn nộp bài?")) {
+                      handleSubmitExam();
+                    }
+                  }}
+                >
+                  Nộp bài
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
-      <Footer />
-    </>
+    </div>
   );
-}
+};
 
 export default ExamPage;

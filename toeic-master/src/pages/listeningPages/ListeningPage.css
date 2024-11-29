@@ -132,15 +132,6 @@ button:hover {
 }
 
 /* Footer Styles */
-footer {
-    background-color: #4f89c4; /* Màu xanh nhẹ */
-    color: white;
-    text-align: center;
-    padding: 15px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
 
 /* No results message */
 .no-results {

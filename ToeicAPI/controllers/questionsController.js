@@ -202,6 +202,29 @@ exports.getQuestionById = async (req, res) => {
         res.status(500).send(err.message);
     }
 };
+exports.getGroupQuestionById = async (req, res) => {
+    const { questionId } = req.params;  // Sử dụng questionId thay vì id
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('questionId', sql.VarChar, questionId)
+            .query('SELECT * FROM QuestionGroup WHERE QuestionGroupID = @questionId');
+        
+        console.log(result.recordset);  // Log kết quả để kiểm tra
+
+        if (result.recordset.length === 0) {
+            // Trường hợp không tìm thấy QuestionGroup
+            return res.status(404).json({ message: "QuestionGroup not found" });
+        }
+
+        // Trả về dữ liệu nếu tìm thấy
+        res.json(result.recordset[0]);
+    } catch (err) {
+        // Xử lý lỗi máy chủ
+        res.status(500).json({ error: "Internal Server Error", details: err.message });
+    }
+};
+
 
 exports.updateQuestion = async (req, res) => {
     const { id } = req.params;
@@ -250,3 +273,138 @@ exports.deleteQuestion = async (req, res) => {
 };
 
 
+exports.getQuestionsByExamId = async (req, res) => {
+    const { examId } = req.params; // Lấy ExamID từ URL
+
+    try {
+        // Kết nối cơ sở dữ liệu
+        const pool = await sql.connect();
+
+        // Thực hiện truy vấn
+        const result = await pool.request()
+            .input('ExamID', sql.VarChar, examId) // Truyền tham số ExamID
+            .query(`
+              SELECT 
+                    q.QuestionID,
+                    q.QuestionGroupID,
+                    q.PartID,
+                    q.Level,
+                    q.QuestionAudio,
+                    q.QuestionText,
+                    q.QuestionImage,
+                    q.AnswerA,
+                    q.AnswerB,
+                    q.AnswerC,
+                    q.AnswerD,
+                    q.CorrectAnswer,
+                    q.Explanation,
+                    q.ExamQuestion,
+                    g.Content AS GroupContent,
+                    g.Audio AS GroupAudio
+                FROM ExamDetail ed
+                JOIN Questions q ON ed.QuestionID = q.QuestionID
+                LEFT JOIN QuestionGroup g ON q.QuestionGroupID = g.QuestionGroupID
+                WHERE ed.ExamID = @ExamID
+                ORDER BY q.PartID, q.QuestionGroupID, q.QuestionID;
+            `);
+
+        // Kiểm tra nếu không có câu hỏi nào
+        if (result.recordset.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: `Không tìm thấy câu hỏi nào cho ExamID: ${examId}`,
+            });
+        }
+        const formattedData = formatQuestions(result.recordset);
+        res.status(200).json(
+            formattedData,
+        );
+    } catch (error) {
+        // Xử lý lỗi
+        console.error('Error fetching questions by ExamID:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Đã xảy ra lỗi khi lấy câu hỏi.',
+        });
+    }
+};
+const formatQuestions = (questions) => {
+    const groupedQuestions = {};
+
+    questions.forEach((q) => {
+        if (q.PartID === 5 ||q.PartID ===1| q.PartID ===2 || q.PartID===3) {
+            // Câu hỏi đơn lẻ
+            groupedQuestions[q.QuestionID] = {
+                type: 'single',
+                content: q.QuestionText,
+                answers: [q.AnswerA, q.AnswerB, q.AnswerC, q.AnswerD],
+                correctAnswer: q.CorrectAnswer,
+                explanation: q.Explanation,
+                image: q.QuestionImage,
+                audio: q.QuestionAudio,
+            };
+        } else if ([6, 7,4].includes(q.PartID)) {
+            // Nhóm câu hỏi
+            if (!groupedQuestions[q.QuestionGroupID]) {
+                groupedQuestions[q.QuestionGroupID] = {
+                    type: 'group',
+                    groupContent: q.GroupContent,
+                    groupAudio: q.GroupAudio,
+                    questions: [],
+                };
+            }
+            groupedQuestions[q.QuestionGroupID].questions.push({
+                questionID: q.QuestionID,
+                questionText: q.QuestionText,
+                answers: [q.AnswerA, q.AnswerB, q.AnswerC, q.AnswerD],
+                correctAnswer: q.CorrectAnswer,
+                explanation: q.Explanation,
+                image: q.QuestionImage,
+                audio: q.QuestionAudio,
+            });
+        }
+    });
+
+    return Object.values(groupedQuestions);
+};
+
+// Controller để lấy danh sách câu hỏi theo ExamID
+exports.getExamQuestions = async (req, res) => {
+    const examID = req.params
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('ExamID', sql.VarChar(100), examID)
+            .query(`
+                SELECT 
+                    q.QuestionID,
+                    q.QuestionGroupID,
+                    q.PartID,
+                    q.Level,
+                    q.QuestionAudio,
+                    q.QuestionText,
+                    q.QuestionImage,
+                    q.AnswerA,
+                    q.AnswerB,
+                    q.AnswerC,
+                    q.AnswerD,
+                    q.CorrectAnswer,
+                    q.Explanation,
+                    q.ExamQuestion,
+                    g.Content AS GroupContent,
+                    g.Audio AS GroupAudio
+                FROM ExamDetail ed
+                JOIN Questions q ON ed.QuestionID = q.QuestionID
+                LEFT JOIN QuestionGroup g ON q.QuestionGroupID = g.QuestionGroupID
+                WHERE ed.ExamID = @ExamID
+                ORDER BY q.PartID, q.QuestionGroupID, q.QuestionID;
+            `);
+
+        const formattedData = formatQuestions(result.recordset);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: err });
+    }
+};
