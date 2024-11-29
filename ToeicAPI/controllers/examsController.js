@@ -155,7 +155,7 @@ exports.addQuestionToExam = async (req, res) => {
                 INSERT INTO ExamDetail (ExamID, QuestionID)
                 VALUES (@examId, @questionId)
             `);
-        
+
         console.log('Insert result:', result);  // Log kết quả truy vấn
         res.status(201).json({ message: 'Question added to exam successfully!' });
     } catch (err) {

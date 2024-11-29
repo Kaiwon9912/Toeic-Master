@@ -67,7 +67,6 @@ function Part2() {
 
     return (
         <>
-            <Header />
             <div className="part2">
                 <div className="header-container">
                     <div className="intro-box">
@@ -173,7 +172,6 @@ function Part2() {
                     </button>
                 </div>
             </div>
-            <Footer />
         </>
     );
 }

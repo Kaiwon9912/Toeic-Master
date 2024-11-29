@@ -115,47 +115,107 @@ CREATE TABLE User_Vocabulary (
     FOREIGN KEY (WordID) REFERENCES Vocabulary(WordID)
 );
 
-CREATE TABLE User_Lessons (
-    LessonID INT,
+
+
+CREATE TABLE User_Question(
+    Id INT PRIMARY KEY IDENTITY(1,1),
     UserID INT,
-    Status BIT DEFAULT 0,
-    Score INT,  
-    Completed_at DATETIME DEFAULT GETDATE(),
-	PRIMARY KEY (UserID, LessonID),  
-    FOREIGN KEY (UserID) REFERENCES Users(UserID), 
-	FOREIGN KEY (LessonID) REFERENCES Lessons(LessonID),
+    QuestionID INT,
+	Saved  BIT DEFAULT 0,
+	FOREIGN KEY (UserID) REFERENCES Users(UserID),
+  FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID)
+ 
 );
 
-ALTER TABLE User_Lessons
-ADD CONSTRAINT FK_UserLessons_LessonID
-FOREIGN KEY (LessonID) REFERENCES Lessons(LessonID);
-
---CREATE FUNCTION GetUserQuestionStats(@UserID INT)
---RETURNS TABLE
---AS
---RETURN (
---    SELECT 
---        Q.PartID,  -- Phần của câu hỏi
---        P.Title,  -- Tiêu đề của Part
---        COUNT(Q.QuestionID) AS TotalQuestions,  -- Tổng số câu hỏi của phần đó
---        COUNT(UQR.QuestionID) AS CompletedQuestions,  -- Số câu hỏi đã làm
---        SUM(CASE 
---            WHEN UQR.Saved = 1 THEN 1 
---            ELSE 0 
---        END) AS IncorrectQuestions  -- Số câu trả lời sai (Saved = 1)
---    FROM 
---        Questions Q
---    LEFT JOIN 
---        User_Question UQR ON Q.QuestionID = UQR.QuestionID AND UQR.UserID = @UserID
---    LEFT JOIN 
---        Parts P ON Q.PartID = P.PartID
---	WHERE ExamQuestion =0
---    GROUP BY 
---        Q.PartID, P.Title
---);
 
 
-CREATE PROCEDURE GetRandomGroupByPart
+CREATE FUNCTION GetUserQuestionStats(@UserID INT)
+RETURNS TABLE
+AS
+RETURN (
+    SELECT 
+        Q.PartID,  -- Phần của câu hỏi
+        P.Title,  -- Tiêu đề của Part
+        COUNT(Q.QuestionID) AS TotalQuestions,  -- Tổng số câu hỏi của phần đó
+        COUNT(UQR.QuestionID) AS CompletedQuestions,  -- Số câu hỏi đã làm
+        SUM(CASE 
+            WHEN UQR.Saved = 1 THEN 1 
+            ELSE 0 
+        END) AS IncorrectQuestions  -- Số câu trả lời sai (Saved = 1)
+    FROM 
+        Questions Q
+    LEFT JOIN 
+        User_Question UQR ON Q.QuestionID = UQR.QuestionID AND UQR.UserID = @UserID
+    LEFT JOIN 
+        Parts P ON Q.PartID = P.PartID
+	WHERE ExamQuestion =0
+    GROUP BY 
+        Q.PartID, P.Title
+);
+
+
+
+
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[GetQuestionsByPartGroupLevelAndExam]    Script Date: 11/28/2024 9:03:50 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetQuestionsByPartGroupLevelAndExam]
+    @N INT,                -- Số lượng nhóm câu hỏi
+    @PartID INT,           -- ID của phần thi (Listening, Reading, etc.)
+    @Level INT             -- Mức độ câu hỏi (1: dễ, 2: trung bình, 3: khó)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Lấy ra N nhóm câu hỏi ngẫu nhiên
+    WITH RandomQuestionGroups AS (
+        SELECT TOP (@N) QuestionGroupID
+        FROM QuestionGroup
+        ORDER BY NEWID()  -- Lấy ngẫu nhiên các nhóm câu hỏi
+    )
+    -- Lấy câu hỏi thuộc các nhóm câu hỏi ngẫu nhiên, phần thi, mức độ và là câu hỏi trong đề thi chính thức
+    SELECT 
+        q.QuestionID,
+        q.QuestionGroupID,
+        q.PartID,
+        q.Level,
+        q.QuestionAudio,
+        q.QuestionText,
+        q.QuestionImage,
+        q.AnswerA,
+        q.AnswerB,
+        q.AnswerC,
+        q.AnswerD,
+        q.CorrectAnswer,
+        q.ExamQuestion,
+        q.Explanation
+    FROM Questions q
+    INNER JOIN RandomQuestionGroups r ON q.QuestionGroupID = r.QuestionGroupID
+    WHERE 
+        q.PartID = @PartID AND 
+        q.Level = @Level AND 
+        q.ExamQuestion = 1
+    ORDER BY q.QuestionID;  -- Sắp xếp kết quả theo ID câu hỏi
+END;
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[GetRandomGroupByPart]    Script Date: 11/28/2024 9:04:00 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetRandomGroupByPart]
     @PartID INT
 AS
 BEGIN
@@ -184,9 +244,120 @@ BEGIN
     WHERE 
         Q.QuestionGroupID = (SELECT QuestionGroupID FROM RandomGroup);
 END;
+GO
 
-EXEC GetRandomGroupByPart @PartID = 6;
 
--- Thêm các chủ đề từ vựng
-delete from Topics 
+
+/****** Object:  StoredProcedure [dbo].[GetRandomQuestionsByPart]    Script Date: 11/28/2024 9:04:09 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetRandomQuestionsByPart]
+    @PartID INT
+AS
+BEGIN
+    WITH RandomGroup AS (
+        SELECT TOP 1 QuestionGroupID
+        FROM Questions
+        WHERE PartID = @PartID AND QuestionGroupID IS NOT NULL
+        ORDER BY NEWID()
+    )
+    SELECT 
+        Q.QuestionID,
+        Q.QuestionText,
+        Q.AnswerA,
+        Q.AnswerB,
+        Q.AnswerC,
+        Q.AnswerD,
+        Q.CorrectAnswer,
+        Q.Explanation,
+        G.Content
+    FROM 
+        Questions Q
+    JOIN 
+        QuestionGroup G ON Q.QuestionGroupID = G.QuestionGroupID
+    WHERE 
+        Q.QuestionGroupID = (SELECT QuestionGroupID FROM RandomGroup);
+END;
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[GetRandomQuestionsByPartAndLevel]    Script Date: 11/28/2024 9:04:15 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetRandomQuestionsByPartAndLevel]
+    @N INT,        -- Số lượng câu hỏi nhóm cần lấy ngẫu nhiên
+    @Part INT,     -- Mã phần câu hỏi (PartID)
+    @Level INT     -- Mức độ câu hỏi (Level)
+AS
+BEGIN
+    -- Biến lưu trữ danh sách QuestionGroupID ngẫu nhiên
+    DECLARE @RandomGroupIDs TABLE (QuestionGroupID VARCHAR(255));
+
+    -- Lấy ngẫu nhiên N QuestionGroupID từ GetGroupQuestionsWithExamQuestion()
+    INSERT INTO @RandomGroupIDs (QuestionGroupID)
+    SELECT TOP (@N) QuestionGroupID
+    FROM dbo.GetGroupQuestionsWithExamQuestion()
+    ORDER BY NEWID();  -- Lấy ngẫu nhiên
+
+    -- Truy vấn các câu hỏi thuộc về các QuestionGroupID ngẫu nhiên và thỏa mãn Part và Level
+    SELECT 
+        q.QuestionID,
+        q.QuestionGroupID,
+        q.PartID,
+        q.Level,
+        q.QuestionText,
+        q.AnswerA,
+        q.AnswerB,
+        q.AnswerC,
+        q.AnswerD,
+        q.CorrectAnswer,
+        q.Explanation,
+        q.QuestionAudio,
+        q.QuestionImage
+    FROM 
+        Questions q
+    JOIN 
+        @RandomGroupIDs rg
+        ON q.QuestionGroupID = rg.QuestionGroupID
+    WHERE 
+        q.PartID = @Part
+        AND q.Level = @Level
+        AND q.ExamQuestion = 1;  -- Lọc các câu hỏi có ExamQuestion = 1
+END;
+GO
+
+
+CREATE FUNCTION GetGroupQuestionsWithExamQuestion
+() 
+RETURNS TABLE
+AS
+RETURN
+(
+    -- Truy vấn nhóm câu hỏi có câu hỏi với ExamQuestion = 1
+    SELECT DISTINCT
+        q.QuestionGroupID
+    FROM
+        Questions q
+    WHERE
+        q.ExamQuestion = 1
+)
+
+
+SELECT * FROM dbo.GetGroupQuestionsWithExamQuestion();
+
+EXEC GetRandomQuestionsByPartAndLevel @N = 2, @Part = 6, @Level = 1;
+
+
+
+
+
 

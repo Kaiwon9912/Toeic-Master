@@ -66,7 +66,6 @@ const Part1 = () => {
 
     return (
         <>
-            <Header />
             <div className="part1">
                 <div className="header-container">
                     <div className="intro-box">
@@ -170,7 +169,7 @@ const Part1 = () => {
                     </button>
                 </div>
             </div>
-            <Footer />
+
         </>
     );
 };

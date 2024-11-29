@@ -38,27 +38,27 @@ const VocabularyItem = (props) => {
 
   return (
     <div>
-     <div className='flex items-center justify-between px-2 py-1 cursor-pointer bg-blue3 rounded-xl hover:font-bold' onClick={handleClick}>
-     <h1 className='text-center text-white' >{props.word}</h1>
-     <i class="fa-regular fa-star"></i>
-     </div>
+      <div className='flex items-center justify-between px-2 py-1 cursor-pointer bg-blue3 rounded-xl hover:font-bold' onClick={handleClick}>
+        <h1 className='text-center text-white' >{props.word}</h1>
+        <i class="fa-regular fa-star"></i>
+      </div>
       <div className={`overflow-auto transition-all duration-300 bg-blue5  ${isOpen ? 'h-40' : 'h-0'}`}>
         {vocabulary && (
           <div className='p-3'>
             <div className='flex justify-start space-x-5'>
-            <p> {vocabulary.partOfSpeech}</p>
-            <p> {vocabulary.phonetic}</p>
-            {vocabulary.pronunciationAudio && (
-            <span className='ml-4'>
-                <span onClick={playAudio}>
-                <i class="fa-solid fa-volume-high cursor-pointer"></i>
-            </span>
-    
-                <audio ref={audioRef} src={vocabulary.pronunciationAudio} />
-            </span>
-            )}
-     
-                 </div>
+              <p> {vocabulary.partOfSpeech}</p>
+              <p> {vocabulary.phonetic}</p>
+              {vocabulary.pronunciationAudio && (
+                <span className='ml-4'>
+                  <span onClick={playAudio}>
+                    <i class="fa-solid fa-volume-high cursor-pointer"></i>
+                  </span>
+
+                  <audio ref={audioRef} src={vocabulary.pronunciationAudio} />
+                </span>
+              )}
+
+            </div>
             <p><strong>Defination:</strong> {vocabulary.definition}</p>
             {vocabulary.example && <p><strong>Example:</strong> {vocabulary.example}</p>}
           </div>
