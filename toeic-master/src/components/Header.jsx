@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <header className="bg-blue-600 text-white p-4 shadow-lg">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-        <div className="text-2xl font-bold">TOEIC MASTER</div>
+        <a href="/" className="text-2xl font-bold">TOEIC MASTER</a>
         <nav className="space-x-6">
           <a href="#mock-test" className="hover:text-yellow-300">Thi thử</a>
           <a href="#lessons" className="hover:text-yellow-300">Bài học</a>
