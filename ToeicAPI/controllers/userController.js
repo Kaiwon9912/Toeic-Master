@@ -1,5 +1,18 @@
 const sql = require('mssql');
 
+
+// API để lấy tất cả người dùng
+exports.getUser = async (req, res) => {
+    try {
+        const result = await pool.request().query('SELECT * FROM Users');
+        console.log('Dữ liệu users:', result.recordset); // Log dữ liệu trả về
+        res.json(result.recordset);
+    } catch (err) {
+        console.error('Lỗi khi lấy dữ liệu users:', err.message); // Log lỗi
+        res.status(500).send(err.message);
+    }
+};
+
 exports.createUser = async (req, res) => {
     const { username, passwordHash, fullName, email, role } = req.body;
     try {

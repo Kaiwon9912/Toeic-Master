@@ -17,16 +17,6 @@ sql.connect(config)
     .then(pool => {
         console.log('Kết nối thành công đến SQL Server');
 
-        // API để lấy tất cả các bài thi
-        app.get('/api/exams', async (req, res) => {
-            try {
-                const result = await pool.request().query('SELECT * FROM Exams');
-                res.json(result.recordset); // Trả về tất cả dữ liệu từ bảng Exams
-            } catch (err) {
-                res.status(500).send(`Lỗi: ${err.message}`);
-            }
-        });
-
         // API để lấy tất cả các part
         app.get('/api/parts', async (req, res) => {
             try {
@@ -39,51 +29,7 @@ sql.connect(config)
             }
         });
 
-        //APi lấy câu hỏi ngẫu nhiên theo part
-        app.get('/api/question/part/:part/random', async (req, res) => {
-            const { part } = req.params;
-            try {
-                const result = await pool.request()
-                    .input('part', sql.Int, part)
-                    .query('SELECT TOP 1 * FROM Questions WHERE PartID = 5 and ExamQuestion =0 ORDER BY NEWID()'); // Lấy ngẫu nhiên 1 câu hỏi
-                res.json(result.recordset);
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
-        });
-        // Lấy câu hỏi theo từng part
-        app.get('/api/question/part/:part', async (req, res) => {
-            const { part } = req.params;
-            try {
-                const result = await pool.request()
-                    .input('part', sql.Int, part)
-                    .query('SELECT  * FROM Questions WHERE Part = @part');
-                res.json(result.recordset);
-            } catch (err) {
-                res.status(500).send(err.message);
-            }
-        });
 
-        app.get("/api/random-group/:partId", async (req, res) => {
-            const partId = parseInt(req.params.partId);
-
-            if (isNaN(partId)) {
-                return res.status(400).json({ error: "Invalid PartID" });
-            }
-
-            try {
-
-                const request = new sql.Request();
-                request.input("PartID", sql.Int, partId);
-
-                const result = await request.execute("GetRandomQuestionsByPart");
-
-                res.json(result.recordset);
-            } catch (err) {
-                console.error("Error executing stored procedure:", err);
-                res.status(500).send("Internal Server Error");
-            }
-        });
 
 
 
@@ -352,6 +298,36 @@ sql.connect(config)
                 res.json(result.recordset);
             } catch (err) {
                 console.error('Lỗi khi lấy dữ liệu users:', err.message); // Log lỗi
+                res.status(500).send(err.message);
+            }
+        });
+
+        // API để thêm người dùng
+        app.post('/api/users', async (req, res) => {
+            const { username, password, fullName, email, role } = req.body;
+
+            // Kiểm tra xem người dùng đã tồn tại chưa (optional)
+            try {
+                const existingUser = await pool.request()
+                    .input('Username', sql.NVarChar, username)
+                    .query('SELECT * FROM Users WHERE Username = @Username');
+
+                if (existingUser.recordset.length > 0) {
+                    return res.status(400).json({ message: 'User already exists.' });
+                }
+
+                // Thêm người dùng mới vào cơ sở dữ liệu
+                await pool.request()
+                    .input('Username', sql.NVarChar, username)
+                    .input('PasswordHash', sql.NVarChar, password) // Nên mã hóa mật khẩu trước khi lưu trữ
+                    .input('FullName', sql.NVarChar, fullName)
+                    .input('Email', sql.NVarChar, email)
+                    .input('Role', sql.Int, role) // Mặc định role là 0 nếu không được cung cấp
+                    .query('INSERT INTO Users (Username, PasswordHash, FullName, Email, Role) VALUES (@Username, @PasswordHash, @FullName, @Email, @Role)');
+
+                res.status(201).json({ message: 'User created successfully.' });
+            } catch (err) {
+                console.error('Lỗi khi thêm người dùng:', err.message); // Log lỗi
                 res.status(500).send(err.message);
             }
         });

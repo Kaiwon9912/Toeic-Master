@@ -5,13 +5,15 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
+    const logout = () => {
+        setUser(null); // Đặt user về null để đăng xuất
+    };
+
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, logout, setUser }}>
             {children}
         </UserContext.Provider>
     );
 };
 
-export const useUser = () => {
-    return useContext(UserContext);
-};
+export const useUser = () => useContext(UserContext);

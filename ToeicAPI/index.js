@@ -9,6 +9,7 @@ const vocabularyRoutes = require('./routes/vocabulary');
 const questionsRoutes = require('./routes/questions');
 const partsRoutes = require('./routes/parts');
 const examsRoutes = require('./routes/exams');
+const userRoutes = require('./routes/users');
 const app = express();
 const port = 3000;
 
@@ -27,6 +28,7 @@ app.use('/api/vocabulary', vocabularyRoutes);
 app.use('/api/questions', questionsRoutes);
 app.use('/api/parts', partsRoutes);
 app.use('/api/exams', examsRoutes);
+app.use('api/users', userRoutes);
 
 // Khởi động server
 app.listen(port, () => {
