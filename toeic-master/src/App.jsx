@@ -22,11 +22,11 @@ import AdminHome from './pages/adminPage/adminHome';
 import VocabularyA from './pages/adminPage/vocabularyA';
 import LessonA from './pages/adminPage/lessonA';
 import Account from './pages/adminPage/account';
-import Reading from './pages/lessonsPages/Reading';
-import QuestionPart from './pages/readingPage/QuestionPart';
+
 import ExamControl from './AdminArea/pages/ExamControl';
 import ExamList from './pages/examPage/ExamList';
 import ExamPage from './pages/examPage/ExamPage';
+import ReadingQuestion from './pages/readingPage/readingQuestion';
 function App() {
   return (
     <UserProvider>
@@ -38,7 +38,7 @@ function App() {
           <Route path="/listening/:part" element={<Part />} />
 
           <Route path="/reading" element={<ReadingPage />} />
-          <Route path="/reading/part/:part" element={<QuestionPart />} />
+          <Route path="/reading/part/:part" element={<ReadingQuestion/>} />
 
           <Route path="/vocabulary" element={<VocabularyPage />} />
 

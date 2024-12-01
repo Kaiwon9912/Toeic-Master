@@ -133,7 +133,7 @@ const handleAddExam = (e) => {
   return (
     
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center">Quản Lý Đề Thi</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Thêm Đề Thi</h1>
 
       <div className="flex gap-8">
         {/* Form Thêm Đề Thi (Bên trái) */}
@@ -142,7 +142,7 @@ const handleAddExam = (e) => {
           <form onSubmit={handleAddExam} className="space-y-4">
             {/* Trường ExamID */}
             <div>
-              <label className="block font-medium text-gray-700">Mã Đề Thi (Exam ID)</label>
+              <label className="block font-medium text-gray-700 text-left">Mã Đề Thi (Exam ID)</label>
               <input
                 type="text"
                 className="w-full px-4 py-2 border rounded-lg"
@@ -154,7 +154,7 @@ const handleAddExam = (e) => {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-700">Tên Đề Thi</label>
+              <label className="block font-medium text-gray-700 text-left">Tên Đề Thi</label>
               <input
                 type="text"
                 className="w-full px-4 py-2 border rounded-lg"
@@ -166,7 +166,7 @@ const handleAddExam = (e) => {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-700">Mô Tả Đề Thi</label>
+              <label className="block font-medium text-gray-700 text-left">Mô Tả Đề Thi</label>
               <textarea
                 className="w-full px-4 py-2 border rounded-lg"
                 value={examDescription}
@@ -177,7 +177,7 @@ const handleAddExam = (e) => {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-700">Thời Gian Làm Bài (Phút)</label>
+              <label className="block font-medium text-gray-700 text-left">Thời Gian Làm Bài (Phút)</label>
               <input
                 type="number"
                 className="w-full px-4 py-2 border rounded-lg"
