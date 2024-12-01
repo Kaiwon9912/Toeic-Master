@@ -18,23 +18,37 @@ CREATE TABLE Users (
 CREATE TABLE Exams (
     ExamID VARCHAR(100) PRIMARY KEY,
     ExamName NVARCHAR(100) NOT NULL,
-    Level INT,
- 	Part1 INT,
-	Part2 INT,
-	Part3 INT,
-	Part4 INT,
-	Part5 INT,
-	Part6 INT,
-	Part7 INT,
+    Description NVARCHAR(MAX),
+    TotalQuestions INT,
     DurationInMinutes INT,
+    CreatedAt DATETIME DEFAULT GETDATE()
 );
 
-CREATE TABLE ExamDetails (
-    ExamDetailID INT PRIMARY KEY IDENTITY(1,1),
-   ExamID VARCHAR(100),  -- ID của bài thi
-    NumberOfQuestions INT NOT NULL,  -- Số câu hỏi cho Part này
+CREATE TABLE ExamDetail (
+    ExamID VARCHAR(100),  -- ID của bài thi
+	QuestionID INT,
+	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID),
     FOREIGN KEY (ExamID) REFERENCES Exams(ExamID),
+	PRIMARY KEY(ExamID,QuestionID)
 );
+
+CREATE TABLE Exams (
+    ExamID VARCHAR(100) PRIMARY KEY,
+    ExamName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX),
+    TotalQuestions INT,
+    DurationInMinutes INT,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE ExamDetail (
+    ExamID VARCHAR(100),  -- ID của bài thi
+	QuestionID INT,
+	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID),
+    FOREIGN KEY (ExamID) REFERENCES Exams(ExamID),
+	PRIMARY KEY(ExamID,QuestionID)
+);
+
 
 
 CREATE TABLE ExamResults (
@@ -123,7 +137,7 @@ CREATE TABLE User_Question(
     QuestionID INT,
 	Saved  BIT DEFAULT 0,
 	FOREIGN KEY (UserID) REFERENCES Users(UserID),
-  FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID)
+	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID)
  
 );
 

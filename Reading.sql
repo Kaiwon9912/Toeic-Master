@@ -1,4 +1,7 @@
-﻿INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+﻿
+
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 (NULL, 5, 1, NULL, '_____Mr. Williams addressed the audience, he showed a brief video about the engine he had designed.', NULL, 'A) Then', 'B) So that', 'C) Before', 'D) Whereas', 'A', NULL, '“Then” là sự lựa chọn phù hợp vì nó diễn tả hành động tiếp theo trong thời gian, làm cho câu trôi chảy và dễ hiểu.'),
 (NULL, 5, 1, NULL, 'At the guest’s _____, an extra set of towels and complimentary soaps were brought to the room.', NULL, 'A) quote', 'B) graduation', 'C) request', 'D) dispute', 'C', NULL, '“Request” phù hợp vì khách yêu cầu thêm đồ, làm cho câu có nghĩa rõ ràng.'),

@@ -82,9 +82,22 @@ exports.getQuestionsByPart = async (req, res) => {
         const pool = await sql.connect();
         const result = await pool.request()
             .input('part', sql.Int, part)
-            .query('SELECT * FROM Questions WHERE Part = @part');
+            .query('SELECT * FROM Questions WHERE PartID = @part');
         res.json(result.recordset);
     } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+// API lấy question groups
+exports.getQuestionsGroups = async (req, res) => {
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .query('SELECT * FROM QuestionGroup');
+        res.json(result.recordset);
+    } catch (err) {
+        console.error('Lỗi khi lấy dữ liệu question groups:', err.message); // Log lỗi
         res.status(500).send(err.message);
     }
 };

@@ -18,7 +18,7 @@ function Part3() {
         const fetchQuestions = async () => {
             const partID = 3; // Thay đổi giá trị này để lấy câu hỏi cho phần khác
             try {
-                const response = await axios.get(`http://localhost:3000/api/questions/${partID}`);
+                const response = await axios.get(`http://localhost:3000/api/questions/part/${partID}`);
                 setQuestions(response.data); // Giả sử data là mảng câu hỏi
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu câu hỏi:', error);
@@ -27,7 +27,7 @@ function Part3() {
 
         const fetchQuestionGroups = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/question-groups`);
+                const response = await axios.get(`http://localhost:3000/api/questions/question-groups`);
                 setQuestionGroups(response.data); // Giả sử data là mảng nhóm câu hỏi
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu question groups:', error);

@@ -3,10 +3,13 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 
 
-router.get('/', userController.getUser);
-router.post('/users', userController.createUser);
-router.get('/users/:id', userController.getUserById);
+router.get('', userController.getUser);
+router.post('', userController.createUser);
+router.post('/reset-password/:userId', userController.resetpassword);
+router.get('/:username', userController.getUserByName);
+router.delete('/:username', userController.deleteUser);
+
+//chua check
 router.put('/users/:id', userController.updateUser);
-router.delete('/users/:id', userController.deleteUser);
 
 module.exports = router;

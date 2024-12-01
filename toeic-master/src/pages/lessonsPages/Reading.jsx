@@ -103,7 +103,7 @@ function Reading() {
           ))}
         </div>
 
-        <div className="flex-grow bg-white p-5 rounded-lg shadow-md overflow-y-auto" id="lesson-content">
+        <div className="flex-grow bg-white p-5 rounded-lg shadow-md overflow-y-auto w-7" id="lesson-content">
           {selectedLesson && (
             <div className="flex flex-col gap-5">
               <h3 className="text-2xl font-bold text-blue-800 mb-5">{selectedLesson}</h3>

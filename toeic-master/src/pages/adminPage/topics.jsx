@@ -18,7 +18,7 @@ const Topics = () => {
 
   const fetchTopics = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/topics');
+      const response = await axios.get('http://localhost:3000/api/topic');
       setTopics(response.data);
       setTotalPages(Math.ceil(response.data.length / topicsPerPage));
       setLoading(false);
@@ -36,7 +36,7 @@ const Topics = () => {
   const handleDelete = async () => {
     if (topicToDelete) {
       try {
-        await axios.delete(`http://localhost:3000/api/topics/${topicToDelete.TopicID}`);
+        await axios.delete(`http://localhost:3000/api/topic/${topicToDelete.TopicID}`);
         setTopics(prevTopics => prevTopics.filter((topic) => topic.TopicID !== topicToDelete.TopicID));
         setTimeout(() => setDeleteSuccess(''), 3000);
         setIsDeleteModalOpen(false);
@@ -54,7 +54,7 @@ const Topics = () => {
 
   const handleUpdateTopic = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/topics/${editingTopic.TopicID}`, editingTopic);
+      const response = await axios.put(`http://localhost:3000/api/topic/${editingTopic.TopicID}`, editingTopic);
       setTopics(topics.map(topic => topic.TopicID === editingTopic.TopicID ? response.data : topic));
       setEditingTopic(null);
       fetchTopics();
@@ -93,7 +93,7 @@ const Topics = () => {
 
   const handleAddTopic = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/topics', newTopic);
+      const response = await axios.post('http://localhost:3000/api/topic', newTopic);
       setTopics([...topics, response.data]);
       setIsAddModalOpen(false);
       setNewTopic({ Name: '', Image: '' });

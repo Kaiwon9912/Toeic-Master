@@ -14,8 +14,8 @@ router.get('/group',questionsController.getRandomQuestionsByPartAndLevel);
 router.get('/random-group/:partId', questionsController.getRandomGroupByStoredProc);
 router.get('/exam/:examId/', questionsController.getQuestionsByExamId);
 router.get('/group-question/:questionId/', questionsController.getGroupQuestionById);
-
-
+// Lấy group câu hỏi
+router.get('/question-groups',questionsController.getQuestionsGroups);
 
 
 module.exports = router;

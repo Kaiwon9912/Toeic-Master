@@ -16,6 +16,7 @@ import Part from "./pages/listeningPages/Part"
 import VocabularyPage from './pages/vocabulary/VocabularyPage';
 
 import Login from './pages/Auth/Login';
+import UserInfo from './pages/Auth/UserInfo';
 
 import Topics from './pages/adminPage/topics';
 import AdminHome from './pages/adminPage/adminHome';
@@ -48,7 +49,8 @@ function App() {
           <Route path="/lessons" element={<LessonList />} />
           <Route path="/lessons/:id" element={<LessonDetail />} />
 
-          <Route path="/login" element={<Login />} />  {/* AdminHome cho login */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/user-info" element={<UserInfo />} />
 
           <Route path="/admin" element={<AdminHome />}>
             <Route path="topics" element={<Topics />} /> {/* Route cho Topics */}

@@ -26,7 +26,7 @@ const VocabularyPage = () => {
 
         const fetchTopics = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/topics');
+                const response = await axios.get('http://localhost:3000/api/topic');
                 setTopics(response.data);
             } catch (err) {
                 setError(err.message);

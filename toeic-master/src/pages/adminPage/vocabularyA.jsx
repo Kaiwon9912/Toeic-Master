@@ -46,7 +46,7 @@ const Vocabulary = () => {
 
   const fetchTopics = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/topics');
+      const response = await axios.get('http://localhost:3000/api/topic');
       setTopics(response.data);
       setTotalPages(Math.ceil(response.data.length / topicsPerPage));
     } catch (err) {

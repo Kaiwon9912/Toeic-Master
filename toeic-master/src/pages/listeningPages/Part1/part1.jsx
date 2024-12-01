@@ -15,9 +15,9 @@ const Part1 = () => {
 
     useEffect(() => {
         const fetchQuestions = async () => {
-            const partID = 1; // Thay đổi giá trị này để lấy câu hỏi cho phần khác
+            const part = 1; // Thay đổi giá trị này để lấy câu hỏi cho phần khác
             try {
-                const response = await axios.get(`http://localhost:3000/api/questions/${partID}`);
+                const response = await axios.get(`http://localhost:3000/api/questions/part/${part}`);
                 setQuestions(response.data); // Giả sử data là mảng câu hỏi
             } catch (error) {
                 console.error('Lỗi khi lấy dữ liệu câu hỏi:', error);

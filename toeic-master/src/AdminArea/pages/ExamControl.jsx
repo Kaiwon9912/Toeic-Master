@@ -29,12 +29,12 @@ const ExamControl = () => {
       });
   };
 
-const handleAddExam = (e) => {
+  const handleAddExam = (e) => {
     e.preventDefault();
-    
+
     // Tạo đối tượng exam
     const examData = { examID, examName, examDescription, examDuration, allQuestions };
-    
+
     // Gọi API để tạo đề thi
     fetch("http://localhost:3000/api/exams/create", {
       method: "POST",
@@ -48,16 +48,16 @@ const handleAddExam = (e) => {
         durationInMinutes: examDuration,
       }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message === "Exam created successfully!") {
-        // Sau khi tạo đề thi thành công, thêm câu hỏi vào đề thi
-        addQuestionsToExam();
-      }
-    })
-    .catch((error) => {
-      console.error("Error adding exam:", error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "Exam created successfully!") {
+          // Sau khi tạo đề thi thành công, thêm câu hỏi vào đề thi
+          addQuestionsToExam();
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding exam:", error);
+      });
   };
 
   // Hàm xử lý thêm câu hỏi vào đề thi
@@ -83,7 +83,7 @@ const handleAddExam = (e) => {
       }
 
       // Hiển thị thông báo thành công và reset các trường
-    alert("Thêm đề thi thành công");
+      alert("Thêm đề thi thành công");
       // Làm sạch các ô input
       setExamID('');
       setExamName('');
@@ -99,7 +99,7 @@ const handleAddExam = (e) => {
   const handleDeleteQuestion = (questionId) => {
     setAllQuestions((prev) => prev.filter((question) => question.QuestionID !== questionId));
   };
-  
+
   const handleDeleteGroup = (groupId) => {
     setAllQuestions((prev) => prev.filter((q) => q.QuestionGroupID !== groupId));
   };
@@ -131,18 +131,18 @@ const handleAddExam = (e) => {
   }, {});
 
   return (
-    
+
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6 text-center">Quản Lý Đề Thi</h1>
 
       <div className="flex gap-8">
         {/* Form Thêm Đề Thi (Bên trái) */}
         <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-          <h2 className="text-2xl font-bold mb-4">Thêm Đề Thi</h2>
+          <h2 className="text-2xl font-bold mb-4 text-left">Thêm Đề Thi</h2>
           <form onSubmit={handleAddExam} className="space-y-4">
             {/* Trường ExamID */}
             <div>
-              <label className="block font-medium text-gray-700">Mã Đề Thi (Exam ID)</label>
+              <label className="block font-medium text-gray-700 text-left">Mã Đề Thi (Exam ID)</label>
               <input
                 type="text"
                 className="w-full px-4 py-2 border rounded-lg"
@@ -154,7 +154,7 @@ const handleAddExam = (e) => {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-700">Tên Đề Thi</label>
+              <label className="block font-medium text-gray-700 text-left">Tên Đề Thi</label>
               <input
                 type="text"
                 className="w-full px-4 py-2 border rounded-lg"
@@ -166,7 +166,7 @@ const handleAddExam = (e) => {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-700">Mô Tả Đề Thi</label>
+              <label className="block font-medium text-gray-700 text-left">Mô Tả Đề Thi</label>
               <textarea
                 className="w-full px-4 py-2 border rounded-lg"
                 value={examDescription}
@@ -177,7 +177,7 @@ const handleAddExam = (e) => {
             </div>
 
             <div>
-              <label className="block font-medium text-gray-700">Thời Gian Làm Bài (Phút)</label>
+              <label className="block font-medium text-gray-700 text-left">Thời Gian Làm Bài (Phút)</label>
               <input
                 type="number"
                 className="w-full px-4 py-2 border rounded-lg"
@@ -196,7 +196,7 @@ const handleAddExam = (e) => {
               Thêm Đề Thi
             </button>
           </form>
- 
+
         </div>
 
         {/* Form Thêm Câu Hỏi (Bên phải) */}
@@ -219,7 +219,7 @@ const handleAddExam = (e) => {
               onClick={() => togglePart(part)}
               className="cursor-pointer bg-gray-200 p-4 rounded-lg flex justify-between items-center"
             >
-              <h3 className="text-xl font-semibold">Phần {part}</h3>
+              <h3 className="text-xl text-left font-semibold">Phần {part}</h3>
               <span className="text-sm">Số câu hỏi: {questions.length}</span>
               <span>{openParts[part] ? "▲" : "▼"}</span>
             </div>
@@ -229,52 +229,52 @@ const handleAddExam = (e) => {
               <div className="mt-4">
                 {([4, 6, 7].includes(Number(part))
                   ? Object.entries(
-                      questions.reduce((groups, question) => {
-                        const groupId = question.QuestionGroupID;
-                        if (!groups[groupId]) {
-                          groups[groupId] = [];
-                        }
-                        groups[groupId].push(question);
-                        return groups;
-                      }, {})
-                    ).map(([groupId, groupQuestions]) => (
-                      <div key={groupId} className="mb-4">
-                        {/* Header của Group */}
-                        <div
-                          onClick={() => toggleGroup(groupId)}
-                          className="cursor-pointer bg-gray-300 p-3 rounded-lg flex justify-between items-center"
-                        >
-                          <h4 className="text-lg font-medium">Nhóm {groupId}</h4>
-                          <span className="text-sm">
-                            Số câu hỏi trong nhóm: {groupQuestions.length}
-                          </span>
-                          <button
-                            onClick={() => handleDeleteGroup(groupId)}
-                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-                          >
-                            Xóa Nhóm
-                          </button>
-                        </div>
-
-                        {/* Danh sách câu hỏi trong Group */}
-                        {openGroups[groupId] && (
-                          <div className="ml-4 mt-2 space-y-2">
-                            {groupQuestions.map((question, index) => (
-                              <div key={index} className="border-b pb-2">
-                                <p>{question.QuestionText}</p>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))
-                  : questions.map((question, index) => (
+                    questions.reduce((groups, question) => {
+                      const groupId = question.QuestionGroupID;
+                      if (!groups[groupId]) {
+                        groups[groupId] = [];
+                      }
+                      groups[groupId].push(question);
+                      return groups;
+                    }, {})
+                  ).map(([groupId, groupQuestions]) => (
+                    <div key={groupId} className="mb-4">
+                      {/* Header của Group */}
                       <div
-                        key={index}
-                        className="border-b pb-2 flex justify-between items-center"
+                        onClick={() => toggleGroup(groupId)}
+                        className="cursor-pointer bg-gray-300 p-3 rounded-lg flex justify-between items-center"
                       >
-                       <p>{question.QuestionText}</p>
-                       {!question.QuestionGroupID && (
+                        <h4 className="text-lg font-medium">Nhóm {groupId}</h4>
+                        <span className="text-sm">
+                          Số câu hỏi trong nhóm: {groupQuestions.length}
+                        </span>
+                        <button
+                          onClick={() => handleDeleteGroup(groupId)}
+                          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                        >
+                          Xóa Nhóm
+                        </button>
+                      </div>
+
+                      {/* Danh sách câu hỏi trong Group */}
+                      {openGroups[groupId] && (
+                        <div className="ml-4 mt-2 space-y-2">
+                          {groupQuestions.map((question, index) => (
+                            <div key={index} className="border-b pb-2">
+                              <p>{question.QuestionText}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                  : questions.map((question, index) => (
+                    <div
+                      key={index}
+                      className="border-b pb-2 flex justify-between items-center"
+                    >
+                      <p>{question.QuestionText}</p>
+                      {!question.QuestionGroupID && (
                         <button
                           onClick={() => handleDeleteQuestion(question.QuestionID)} // Xóa câu hỏi đơn
                           className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
@@ -282,9 +282,9 @@ const handleAddExam = (e) => {
                           Xóa
                         </button>
                       )}
-                      </div>
-                      
-                    )))}
+                    </div>
+
+                  )))}
               </div>
             )}
           </div>

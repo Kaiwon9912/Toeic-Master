@@ -24,6 +24,7 @@ const Login = () => {
 
             if (foundUser) {
                 setUser({
+                    id: foundUser.UserID,
                     username: foundUser.Username,
                     fullName: foundUser.FullName,
                     email: foundUser.Email,

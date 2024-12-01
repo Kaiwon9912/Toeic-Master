@@ -25,10 +25,10 @@ const Header = () => {
           <a href="#lessons" className="hover:text-yellow-300">Lessons</a>
           <a href="#vocabulary" className="hover:text-yellow-300">Vocabulary</a>
           {user ? (
-            <div className="relative">
+            <div className="relative w-1/2">
               <button
                 onClick={toggleMenu}
-                className="bg-yellow-400 text-black px-4 py-2 rounded-3xl font-semibold"
+                className="bg-yellow-400 text-black px-4 py-2 rounded-3xl font-semibold "
               >
                 {user.fullName}
               </button>

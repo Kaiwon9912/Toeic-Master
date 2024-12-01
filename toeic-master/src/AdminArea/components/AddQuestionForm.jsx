@@ -17,7 +17,7 @@ const AddQuestionsForm = ({ handleAddQuestions }) => {
       <h3 className="text-xl font-semibold mb-4">Thêm Câu Hỏi</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block font-medium text-gray-700">Phần</label>
+          <label className="block font-medium text-gray-700 text-left">Phần</label>
           <select
             value={part}
             onChange={(e) => setPart(Number(e.target.value))}
@@ -34,7 +34,7 @@ const AddQuestionsForm = ({ handleAddQuestions }) => {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700">Mức độ</label>
+          <label className="block font-medium text-gray-700 text-left">Mức độ</label>
           <select
             value={level}
             onChange={(e) => setLevel(Number(e.target.value))}
@@ -47,7 +47,7 @@ const AddQuestionsForm = ({ handleAddQuestions }) => {
         </div>
 
         <div>
-          <label className="block font-medium text-gray-700">Số Lượng</label>
+          <label className="block font-medium text-gray-700 text-left">Số Lượng</label>
           <input
             type="number"
             value={quantity}

@@ -24,22 +24,22 @@ const ExamPage = () => {
       return total;
     }, 0);
   };
-const calculateCorrectAnswers = () => {
-  return Object.keys(answers).reduce((correct, questionId) => {
-    // Tìm câu hỏi dựa trên questionId thay vì content
-    const question = questions.find((q) => q.questionID === questionId);
-    if (question) {
-      console.log("Checking question:", question);
-      console.log("User's answer:", answers[questionId]);
-      console.log("Correct answer:", question.correctAnswer);
+  const calculateCorrectAnswers = () => {
+    return Object.keys(answers).reduce((correct, questionId) => {
+      // Tìm câu hỏi dựa trên questionId thay vì content
+      const question = questions.find((q) => q.questionID === questionId);
+      if (question) {
+        console.log("Checking question:", question);
+        console.log("User's answer:", answers[questionId]);
+        console.log("Correct answer:", question.correctAnswer);
 
-      if (answers[questionId] === question.correctAnswer) {
-        return correct + 1;
+        if (answers[questionId] === question.CorrectAnswer) {
+          return correct + 1;
+        }
       }
-    }
-    return correct;
-  }, 0);
-};
+      return correct;
+    }, 0);
+  };
 
 
 
@@ -182,11 +182,10 @@ const calculateCorrectAnswers = () => {
           {questions.map((question, index) => (
             <li
               key={index}
-              className={`p-2 rounded-lg cursor-pointer flex justify-between items-center ${
-                currentQuestionIndex === index
-                  ? "bg-blue-300 text-white"
-                  : "bg-gray-200"
-              }`}
+              className={`p-2 rounded-lg cursor-pointer flex justify-between items-center ${currentQuestionIndex === index
+                ? "bg-blue-300 text-white"
+                : "bg-gray-200"
+                }`}
               onClick={() => {
                 setCurrentQuestionIndex(index);
                 scrollToTop();
@@ -207,22 +206,20 @@ const calculateCorrectAnswers = () => {
             {renderQuestion()}
             <div className="mt-8 flex justify-between">
               <button
-                className={`px-4 py-2 rounded ${
-                  currentQuestionIndex === 0
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
+                className={`px-4 py-2 rounded ${currentQuestionIndex === 0
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
                 disabled={currentQuestionIndex === 0}
                 onClick={handlePrevious}
               >
                 Previous
               </button>
               <button
-                className={`px-4 py-2 rounded ${
-                  currentQuestionIndex === questions.length - 1
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-green-500 text-white hover:bg-green-600"
-                }`}
+                className={`px-4 py-2 rounded ${currentQuestionIndex === questions.length - 1
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-green-500 text-white hover:bg-green-600"
+                  }`}
                 disabled={currentQuestionIndex === questions.length - 1}
                 onClick={handleNext}
               >
