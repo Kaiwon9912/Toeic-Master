@@ -133,7 +133,7 @@ const ExamControl = () => {
   return (
 
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center">Quản Lý Đề Thi</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Thêm Đề Thi</h1>
 
       <div className="flex gap-8">
         {/* Form Thêm Đề Thi (Bên trái) */}

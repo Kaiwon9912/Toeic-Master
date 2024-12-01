@@ -17,19 +17,23 @@ const AddQuestionsForm = ({ handleAddQuestions }) => {
       <h3 className="text-xl font-semibold mb-4">Thêm Câu Hỏi</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+<<<<<<< HEAD
           <label className="block font-medium text-gray-700 text-left">Phần</label>
+=======
+          <label className="block font-medium text-gray-700 text-left">Part</label>
+>>>>>>> 31156ac127a26540bfe295dc1e80dee0651ed27f
           <select
             value={part}
             onChange={(e) => setPart(Number(e.target.value))}
             className="w-full px-4 py-2 border rounded-lg"
           >
-            <option value={1}>Phần 1</option>
-            <option value={2}>Phần 2</option>
-            <option value={3}>Phần 3</option>
-            <option value={4}>Phần 4</option>
-            <option value={5}>Phần 5</option>
-            <option value={6}>Phần 6</option>
-            <option value={7}>Phần 7</option>
+            <option value={1}>Part 1</option>
+            <option value={2}>Part 2</option>
+            <option value={3}>Part 3</option>
+            <option value={4}>Part 4</option>
+            <option value={5}>Part 5</option>
+            <option value={6}>Part 6</option>
+            <option value={7}>Part 7</option>
           </select>
         </div>
 

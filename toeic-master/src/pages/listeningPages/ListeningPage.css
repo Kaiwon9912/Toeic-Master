@@ -113,23 +113,7 @@ header, footer {
     margin-bottom: 5px;
 }
 
-/* Button Styles */
-button {
-    padding: 12px;
-    background-color: #4f89c4; /* Màu xanh nhẹ */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
 
-button:hover {
-    background-color: #6db3f2; /* Lighter blue on hover */
-}
 
 /* Footer Styles */
 
