@@ -59,7 +59,7 @@ const ExamPage = () => {
 
   useEffect(() => {
     if (!examData) {
-      navigate("/");
+      navigate("/#/");
     }
   }, [examData, navigate]);
 
