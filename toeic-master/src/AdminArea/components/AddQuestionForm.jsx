@@ -17,11 +17,7 @@ const AddQuestionsForm = ({ handleAddQuestions }) => {
       <h3 className="text-xl font-semibold mb-4">Thêm Câu Hỏi</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-<<<<<<< HEAD
-          <label className="block font-medium text-gray-700 text-left">Phần</label>
-=======
           <label className="block font-medium text-gray-700 text-left">Part</label>
->>>>>>> 31156ac127a26540bfe295dc1e80dee0651ed27f
           <select
             value={part}
             onChange={(e) => setPart(Number(e.target.value))}
