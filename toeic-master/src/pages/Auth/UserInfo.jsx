@@ -23,7 +23,7 @@ const UserInfo = () => {
                     password: response.data.PasswordHash,
                 });
             } catch (error) {
-                console.error('Error fetching user information:', error);
+                console.error('Lỗi khi lấy thông tin người dùng:', error);
             }
         };
 
@@ -34,10 +34,10 @@ const UserInfo = () => {
         e.preventDefault();
         try {
             await axios.put(`http://localhost:3000/api/users/${user.username}`, userInfo);
-            setMessage('Information updated successfully!');
+            setMessage('Thông tin đã được cập nhật thành công!');
         } catch (error) {
-            console.error('Error updating information:', error);
-            setMessage('An error occurred during the update process.');
+            console.error('Lỗi khi cập nhật thông tin:', error);
+            setMessage('Đã xảy ra lỗi trong quá trình cập nhật.');
         }
     };
 
@@ -55,57 +55,57 @@ const UserInfo = () => {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-            <h1 className="text-3xl font-bold mb-4">User Information</h1>
+            <h1 className="text-3xl font-bold mb-4">Thông Tin Người Dùng</h1>
             <form onSubmit={handleUpdate} className="bg-white p-6 rounded shadow-md">
                 {message && <p className="text-green-500 mb-4">{message}</p>}
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-left">Username</label>
-                    <div className="mt-1 p-2 border border-gray-300 rounded-md w-full bg-gray-100">
+                    <label className="block text-2xl font-medium text-left">Tên đăng nhập:</label>
+                    <div className="mt-1 p-2 border border-gray-300 rounded-md w-full bg-gray-100 text-2xl">
                         {user.username}
                     </div>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-left">Role</label>
-                    <div className="mt-1 p-2 border border-gray-300 rounded-md w-full bg-gray-100">
-                        {user.role === 0 ? 'User' : 'Administrator'}
+                    <label className="block text-2xl font-medium text-left">Vai trò:</label>
+                    <div className="mt-1 p-2 border border-gray-300 rounded-md w-full bg-gray-100 text-2xl">
+                        {user.role === 0 ? 'Người dùng' : 'Quản trị viên'}
                     </div>
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-left">Full Name</label>
+                    <label className="block text-2xl font-medium text-left">Họ và Tên:</label>
                     <input
                         type="text"
                         name="fullName"
                         value={userInfo.fullName}
                         onChange={handleChange}
                         required
-                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                        className="mt-1 p-2 border border-gray-300 rounded-md w-full text-2xl"
                     />
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-left">Email</label>
+                    <label className="block text-2xl font-medium text-left">Email:</label>
                     <input
                         type="email"
                         name="email"
                         value={userInfo.email}
                         onChange={handleChange}
                         required
-                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                        className="mt-1 p-2 border border-gray-300 rounded-md w-full text-2xl"
                     />
                 </div>
 
                 <div className="mb-4 relative">
-                    <label className="block text-sm font-medium text-left">Password</label>
+                    <label className="block text-2xl font-medium text-left">Mật khẩu:</label>
                     <div className="flex items-center">
                         <input
                             type={showPassword ? 'text' : 'password'}
                             name="password"
                             value={userInfo.password}
                             onChange={handleChange}
-                            className="mt-1 p-2 border border-gray-300 rounded-md w-full pr-10" // Thêm padding bên phải để tạo không gian cho biểu tượng
+                            className="mt-1 p-2 border border-gray-300 rounded-md w-full pr-10 text-2xl" // Thêm padding bên phải để tạo không gian cho biểu tượng
                         />
                         <button
                             type="button"
@@ -119,9 +119,9 @@ const UserInfo = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
+                    className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition text-2xl"
                 >
-                    Update Information
+                    Cập nhật thông tin
                 </button>
             </form>
         </div>

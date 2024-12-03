@@ -23,6 +23,7 @@ import AdminHome from './pages/adminPage/adminHome';
 import VocabularyA from './pages/adminPage/vocabularyA';
 import LessonA from './pages/adminPage/lessonA';
 import Account from './pages/adminPage/account';
+import AdminInfo from './pages/adminPage/adminInfo';
 
 import ExamControl from './AdminArea/pages/ExamControl';
 import ExamList from './pages/examPage/ExamList';
@@ -39,7 +40,7 @@ function App() {
           <Route path="/listening/:part" element={<Part />} />
 
           <Route path="/reading" element={<ReadingPage />} />
-          <Route path="/reading/part/:part" element={<ReadingQuestion/>} />
+          <Route path="/reading/part/:part" element={<ReadingQuestion />} />
 
           <Route path="/vocabulary" element={<VocabularyPage />} />
 
@@ -58,6 +59,7 @@ function App() {
             <Route path="lesson" element={<LessonA />} /> {/* Route cho Lesson */}
             <Route path="account" element={<Account />} /> {/* Route cho Exams */}
             <Route path="exams" element={<ExamControl />} /> {/* Route cho Exams */}
+            <Route path="adminInfo" element={<AdminInfo />} /> {/* Route cho Exams */}
           </Route>
 
           {/* Các route khác có thể thêm vào đây */}

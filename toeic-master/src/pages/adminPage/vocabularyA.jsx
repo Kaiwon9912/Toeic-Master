@@ -6,17 +6,16 @@ const Vocabulary = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const itemsPerPage = 7;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [wordToDelete, setWordToDelete] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [wordInfo, setWordInfo] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editWord, setEditWord] = useState({ Word: '', Translation: '', TopicID: '' });
-  const [addWord, setAddWord] = useState({ Word: '', Translation: '', TopicID: '' });
-  const [topics, setTopics] = useState([]);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newWord, setNewWord] = useState({ Word: '', Translation: '', TopicID: '' }); const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const topicsPerPage = 15;
@@ -116,59 +115,57 @@ const Vocabulary = () => {
     setWordInfo(null);
   };
 
+  // Hàm mở modal thêm từ
+  const handleAddClick = () => {
+    setNewWord({ Word: '', Translation: '', TopicID: '' }); // Reset thông tin
+    setIsAddModalOpen(true);
+  };
+
+  // Hàm mở modal chỉnh sửa từ
   const handleEditClick = (word) => {
     setEditWord(word);
     setIsEditModalOpen(true);
   };
 
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditWord({ ...editWord, [name]: value });
+  // Hàm đóng modal
+  const handleCloseModal = () => {
+    setIsAddModalOpen(false);
+    setIsEditModalOpen(false);
   };
 
+  // Hàm gửi yêu cầu thêm từ mới
+  const handleAddSubmit = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/api/vocabulary', newWord);
+      setVocabulary([...vocabulary, response.data]);
+      setSuccessMessage(`Added successfully: "${newWord.Word}"`);
+      handleCloseModal();
+      fetchVocabulary();
+    } catch (error) {
+      handleError(error.message);
+    }
+
+    setTimeout(() => {
+      setSuccessMessage('');
+    }, 5000);
+  };
+
+  // Hàm gửi yêu cầu chỉnh sửa từ
   const handleEditSubmit = async () => {
     try {
       await axios.put(`http://localhost:3000/api/vocabulary/${editWord.WordID}`, editWord);
       setVocabulary(vocabulary.map(item => item.Word === editWord.Word ? editWord : item));
       setSuccessMessage(`Edited successfully: "${editWord.Word}"`);
-      setIsEditModalOpen(false);
-      setEditWord({ Word: '', Translation: '', TopicID: '' });
-    } catch (error) {
-      handleError(error.message); // Gọi hàm xử lý lỗi
-    }
-
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 5000);
-  };
-
-  const handleAddChange = (e) => {
-    const { name, value } = e.target;
-    setEditWord({ ...editWord, [name]: value });
-  };
-
-  const handleAddClick = () => {
-    setIsAddModalOpen(true);
-  };
-
-  const handleAddWord = async () => {
-    try {
-      const response = await axios.post('http://localhost:3000/api/vocabulary', addWord);
-      setVocabulary([...vocabulary, response.data]); // Thêm từ mới vào danh sách
-      setSuccessMessage(`Added successfully: "${editWord.Word}"`);
-      setIsEditModalOpen(false);
-      setEditWord({ Word: '', Translation: '', TopicID: '' });
+      handleCloseModal();
       fetchVocabulary();
     } catch (error) {
-      handleError(error.message); // Gọi hàm xử lý lỗi
+      handleError(error.message);
     }
 
     setTimeout(() => {
       setSuccessMessage('');
     }, 5000);
   };
-
-
 
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -194,18 +191,16 @@ const Vocabulary = () => {
   };
 
   return (
-    <div className="p-5 bg-gray-100 rounded-lg ">
+    <div className="p-5 bg-gray-100 rounded-lg">
+      <h1 className="text-center text-3xl text-blue-800 mb-5">Danh sách từ vựng</h1>
 
-      <h1 className="text-center text-3xl text-blue-800 mb-5">Vocabulary list</h1>
-
-      {/* Dropdown for Topic Filtering and Add Word button */}
       <div className="flex justify-between mb-4">
         <select
           value={selectedTopic}
           onChange={e => setSelectedTopic(e.target.value)}
           className="border border-gray-300 p-2 w-1/4 rounded"
         >
-          <option value="">All Topics</option>
+          <option value="">Tất cả các chủ đề</option>
           {topics.map(topic => (
             <option key={topic.TopicID} value={topic.TopicID}>{topic.Name}</option>
           ))}
@@ -215,39 +210,37 @@ const Vocabulary = () => {
           className="bg-green-500 text-white px-4 py-2 rounded w-1/6"
           onClick={handleAddClick}
         >
-          Add Word
+          Thêm từ
         </button>
       </div>
 
-      {/* Error message */}
       {error && (
         <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded shadow-md">
           {error}
         </div>
       )}
 
+      {successMessage && (
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded shadow-md">
+          {successMessage}
+        </div>
+      )}
 
-      {/* Success message */}
-      {
-        successMessage && (
-          <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded shadow-md">
-            {successMessage}
-          </div>
-        )
-      }
-
-      {/* Vocabulary Table */}
       <table className="w-full border-collapse bg-white rounded-lg overflow-hidden">
         <thead>
           <tr>
-            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Word</th>
-            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Translation</th>
-            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white" style={{ width: '30%' }}>Action</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Hình ảnh</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Từ</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Dịch nghĩa</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white" style={{ width: '30%' }}>Hành động</th>
           </tr>
         </thead>
         <tbody>
           {currentItems.map((word, index) => (
             <tr key={index}>
+              <td className="py-3 text-center border-b border-gray-300">
+                {word.Image && <img src={word.Image} alt={word.Word} className="w-16 h-16 object-cover mx-auto" />}
+              </td>
               <td className="py-3 text-center border-b border-gray-300">{word.Word}</td>
               <td className="py-3 text-center border-b border-gray-300">{word.Translation}</td>
               <td className="py-3 text-center border-b border-gray-300">
@@ -256,19 +249,19 @@ const Vocabulary = () => {
                     className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
                     onClick={() => handleEditClick(word)}
                   >
-                    Edit
+                    Chỉnh sửa
                   </button>
                   <button
                     className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600"
                     onClick={() => handleDeleteClick(word)}
                   >
-                    Delete
+                    Xóa
                   </button>
                   <button
                     className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600"
                     onClick={() => handleShowInfo(word)}
                   >
-                    Information
+                    Thông tin
                   </button>
                 </div>
               </td>
@@ -277,223 +270,210 @@ const Vocabulary = () => {
         </tbody>
       </table>
 
-      {/* Modal for Confirming Delete */}
-      {
-        isDeleteModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-md w-1/3">
-              <h2 className="text-xl mb-4">Confirm Deletion</h2>
-              <p>
-                Are you sure you want to delete the word
-                <span className="text-red-500"> "{wordToDelete?.Word}" </span>
-                ?
-              </p>
-              <div className="flex justify-end mt-4">
-                <button onClick={handleDelete} className="p-2 bg-red-500 text-white rounded">Delete</button>
-                <button onClick={handleCancelDelete} className="p-2 bg-gray-400 text-white rounded ml-2">Cancel</button>
-              </div>
+      {/* Modal xác nhận xóa */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-1/3">
+            <h2 className="text-xl mb-4">Xác nhận xóa</h2>
+            <p>
+              Bạn có chắc chắn muốn xóa từ
+              <span className="text-red-500"> "{wordToDelete?.Word}" </span>
+              ?
+            </p>
+            <div className="flex justify-end mt-4">
+              <button onClick={handleDelete} className="p-2 bg-red-500 text-white rounded">Xóa</button>
+              <button onClick={handleCancelDelete} className="p-2 bg-gray-400 text-white rounded ml-2">Hủy</button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
-      {/* Modal for Showing Word Information */}
-      {
-        isInfoModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-md w-1/3 relative">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl mb-4">Word Information</h2>
-                <button onClick={handleCloseInfo} className="text-gray-600 hover:text-gray-900 w-1/12" style={{ flex: '0 0 3%' }} aria-label="Close">X</button>
-              </div>
-              {wordInfo && (
-                <>
-                  <p><strong>Word:</strong> {wordInfo.word}</p>
-                  {wordInfo.pronunciations && wordInfo.pronunciations.length > 0 && wordInfo.pronunciations.map((phonetic, index) => (
-                    <div key={index}>
-                      <p><strong>Phonetic:</strong> {phonetic.text}</p>
-                      {phonetic.audio && <audio controls src={phonetic.audio}></audio>}
-                    </div>
-                  ))}
-                  {wordInfo.meanings && wordInfo.meanings.map((meaning, index) => (
-                    <div key={index}>
-                      <p><strong>Part of Speech:</strong> {meaning.partOfSpeech}</p>
-                      <p><strong>Definitions:</strong></p>
-                      <ul>
-                        {meaning.definitions.map((def, i) => (
-                          <li key={i}>
-                            {def.definition} {def.example && (
-                              <div style={{ marginTop: '5px' }}>
-                                <strong>Example:</strong>
-                                <ul style={{ listStyleType: 'disc', marginLeft: '20px' }}>
-                                  <li>{def.example}</li>
-                                </ul>
-                              </div>
-                            )}
-                            {def.synonyms.length > 0 && (
-                              <div className="mt-2">
-                                <strong style={{ color: 'blue' }}>Synonyms:</strong>
-                                <ul>
-                                  {def.synonyms.map((synonym, j) => (
-                                    <li key={j}>
-                                      <span role="img" aria-label="synonym">🔗</span> {synonym}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                            {def.antonyms.length > 0 && (
-                              <div className="mt-2">
-                                <strong style={{ color: 'red' }}>Antonyms:</strong>
-                                <ul>
-                                  {def.antonyms.map((antonym, j) => (
-                                    <li key={j}>
-                                      <span role="img" aria-label="antonym">❌</span> {antonym}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                  {wordInfo.otherInfo && (
-                    <div>
-                      <strong>Other Information:</strong>
-                    </div>
-                  )}
-                </>
-              )}
+      {/* Modal hiển thị thông tin từ */}
+      {isInfoModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-1/3 relative max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl mb-4">Thông tin từ</h2>
+              <button
+                onClick={handleCloseInfo}
+                className="text-gray-600 hover:text-gray-900 w-1/12"
+                style={{ flex: '0 0 3%' }}
+                aria-label="Close">X
+              </button>
             </div>
-          </div>
-        )
-      }
-
-      {/* Modal for Editing Word */}
-      {
-        isEditModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-md w-1/3">
-              <h2 className="text-xl mb-4">Edit Word</h2>
-              <input
-                type="text"
-                name="Word"
-                value={editWord.Word}
-                onChange={handleEditChange}
-                placeholder="Word"
-                className="border border-gray-300 p-2 rounded w-full mb-3"
-              />
-              <input
-                type="text"
-                name="Translation"
-                value={editWord.Translation}
-                onChange={handleEditChange}
-                placeholder="Translation"
-                className="border border-gray-300 p-2 rounded w-full mb-3"
-              />
-              <select
-                name="TopicID"
-                value={editWord.TopicID}
-                onChange={handleEditChange}
-                className="border border-gray-300 p-2 rounded w-full mb-4"
-              >
-                <option value="">Select Topic</option>
-                {topics.map((topic) => (
-                  <option key={topic.TopicID} value={topic.TopicID}>
-                    {topic.Name}
-                  </option>
+            {wordInfo && (
+              <>
+                <p><strong>Từ:</strong> {wordInfo.word}</p>
+                {wordInfo.pronunciations && wordInfo.pronunciations.length > 0 && wordInfo.pronunciations.map((phonetic, index) => (
+                  <div key={index}>
+                    <p><strong>Phát âm:</strong> {phonetic.text}</p>
+                    {phonetic.audio && <audio controls src={phonetic.audio}></audio>}
+                  </div>
                 ))}
-              </select>
-              <div className="flex justify-end">
-                <button onClick={handleEditSubmit} className="p-2 bg-blue-500 text-white rounded">Save</button>
-                <button onClick={() => setIsEditModalOpen(false)} className="p-2 bg-gray-400 text-white rounded ml-2">Cancel</button>
-              </div>
-            </div>
-          </div>
-        )
-      }
-
-      {/* Modal for Add Word */}
-      {
-        isAddModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-md w-1/3">
-              <h2 className="text-xl mb-4">Add Word</h2>
-              <input
-                type="text"
-                name="Word"
-                value={addWord.Word}
-                onChange={handleAddChange}
-                placeholder="Word"
-                className="border border-gray-300 p-2 rounded w-full mb-3"
-              />
-              <input
-                type="text"
-                name="Translation"
-                value={addWord.Translation}
-                onChange={handleAddChange}
-                placeholder="Translation"
-                className="border border-gray-300 p-2 rounded w-full mb-3"
-              />
-              <select
-                name="TopicID"
-                value={addWord.TopicID}
-                onChange={handleAddChange}
-                className="border border-gray-300 p-2 rounded w-full mb-4"
-              >
-                <option value="">Select Topic</option>
-                {topics.map((topic) => (
-                  <option key={topic.TopicID} value={topic.TopicID}>
-                    {topic.Name}
-                  </option>
+                {wordInfo.meanings && wordInfo.meanings.map((meaning, index) => (
+                  <div key={index}>
+                    <p><strong>Loại từ:</strong> {meaning.partOfSpeech}</p>
+                    <p><strong>Định nghĩa:</strong></p>
+                    <ul>
+                      {meaning.definitions.map((def, i) => (
+                        <li key={i}>
+                          {def.definition} {def.example && (
+                            <div style={{ marginTop: '5px' }}>
+                              <strong>Ví dụ:</strong>
+                              <ul style={{ listStyleType: 'disc', marginLeft: '20px' }}>
+                                <li>{def.example}</li>
+                              </ul>
+                            </div>
+                          )}
+                          {def.synonyms.length > 0 && (
+                            <div className="mt-2">
+                              <strong style={{ color: 'blue' }}>Từ đồng nghĩa:</strong>
+                              <ul>
+                                {def.synonyms.map((synonym, j) => (
+                                  <li key={j}>
+                                    <span role="img" aria-label="synonym">🔗</span> {synonym}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          {def.antonyms.length > 0 && (
+                            <div className="mt-2">
+                              <strong style={{ color: 'red' }}>Từ trái nghĩa:</strong>
+                              <ul>
+                                {def.antonyms.map((antonym, j) => (
+                                  <li key={j}>
+                                    <span role="img" aria-label="antonym">❌</span> {antonym}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </select>
-              <div className="flex justify-end">
-                <button onClick={handleAddWord} className="p-2 bg-blue-500 text-white rounded">Add</button>
-                <button onClick={() => setIsAddModalOpen(false)} className="p-2 bg-gray-400 text-white rounded ml-2">Cancel</button>
-              </div>
+                {wordInfo.otherInfo && (
+                  <div>
+                    <strong>Thông tin khác:</strong>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {(isAddModalOpen || isEditModalOpen) && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-1/3">
+            <h2 className="text-xl mb-4">{isAddModalOpen ? 'Thêm từ mới' : 'Chỉnh sửa từ'}</h2>
+            <input
+              type="text"
+              name="Word"
+              value={isAddModalOpen ? newWord.Word : editWord.Word}
+              onChange={(e) => {
+                if (isAddModalOpen) {
+                  setNewWord({ ...newWord, Word: e.target.value });
+                } else {
+                  setEditWord({ ...editWord, Word: e.target.value });
+                }
+              }}
+              placeholder="Từ"
+              className="border border-gray-300 p-2 rounded w-full mb-3"
+            />
+            <input
+              type="text"
+              name="Translation"
+              value={isAddModalOpen ? newWord.Translation : editWord.Translation}
+              onChange={(e) => {
+                if (isAddModalOpen) {
+                  setNewWord({ ...newWord, Translation: e.target.value });
+                } else {
+                  setEditWord({ ...editWord, Translation: e.target.value });
+                }
+              }}
+              placeholder="Dịch nghĩa"
+              className="border border-gray-300 p-2 rounded w-full mb-3"
+            />
+            <input
+              type="text"
+              name="Image"
+              value={isAddModalOpen ? newWord.Image : editWord.Image}
+              onChange={(e) => {
+                if (isAddModalOpen) {
+                  setNewWord({ ...newWord, Image: e.target.value });
+                } else {
+                  setEditWord({ ...editWord, Image: e.target.value });
+                }
+              }}
+              placeholder="URL hình ảnh"
+              className="border border-gray-300 p-2 rounded w-full mb-3"
+            />
+            <select
+              name="TopicID"
+              value={isAddModalOpen ? newWord.TopicID : editWord.TopicID}
+              onChange={(e) => {
+                if (isAddModalOpen) {
+                  setNewWord({ ...newWord, TopicID: e.target.value });
+                } else {
+                  setEditWord({ ...editWord, TopicID: e.target.value });
+                }
+              }}
+              className="border border-gray-300 p-2 rounded w-full mb-4"
+            >
+              <option value="">Chọn chủ đề</option>
+              {topics.map((topic) => (
+                <option key={topic.TopicID} value={topic.TopicID}>
+                  {topic.Name}
+                </option>
+              ))}
+            </select>
+            <div className="flex justify-end">
+              <button onClick={isAddModalOpen ? handleAddSubmit : handleEditSubmit} className="p-2 bg-blue-500 text-white rounded">
+                {isAddModalOpen ? 'Thêm' : 'Lưu'}
+              </button>
+              <button onClick={handleCloseModal} className="p-2 bg-gray-400 text-white rounded ml-2">Hủy</button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
-      {/* Pagination */}
       <div className="flex justify-center mt-4 w-1/2 mx-auto">
         <button
           className={`p-2 bg-blue-800 text-white rounded-l-lg ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={() => setCurrentPage(1)}
           disabled={currentPage === 1}
         >
-          First
+          Đầu
         </button>
         <button
           className={`p-2 bg-blue-800 text-white ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={handlePrevPage}
           disabled={currentPage === 1}
         >
-          Previous
+          Trước
         </button>
         <span className="flex items-center px-4 whitespace-nowrap">
-          Page {currentPage} of {totalPagesVocabulary}
+          Trang {currentPage} / {totalPagesVocabulary}
         </span>
         <button
           className={`p-2 bg-blue-800 text-white ${currentPage === totalPagesVocabulary ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={handleNextPage}
           disabled={currentPage === totalPagesVocabulary}
         >
-          Next
+          Tiếp
         </button>
         <button
           className={`p-2 bg-blue-800 text-white rounded-r-lg ${currentPage === totalPagesVocabulary ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={() => setCurrentPage(totalPagesVocabulary)}
           disabled={currentPage === totalPagesVocabulary}
         >
-          Last
+          Cuối
         </button>
       </div>
-    </div >
+    </div>
   );
 };
 

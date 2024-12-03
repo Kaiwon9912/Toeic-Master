@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Trang Lesson
+// Trang Bài Học
 const Lessons = () => {
   const [lessons, setLessons] = useState([]);
-  const [parts, setParts] = useState([]); // State để lưu danh sách Parts
+  const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,17 +12,17 @@ const Lessons = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [currentLesson, setCurrentLesson] = useState({ Title: '', Content: '', QuestionType: '', Guide: '', PartID: '' });
+  const [currentLesson, setCurrentLesson] = useState({ Title: '', Content: '', QuestionType: '', Guide: '', Score: '', PartID: '' });
 
   const fetchLessons = async () => {
-    setLoading(true); // Đặt loading thành true trước khi gọi API
+    setLoading(true);
     try {
       const response = await axios.get('http://localhost:3000/api/lessons');
       setLessons(response.data);
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false); // Đặt loading thành false sau khi gọi API xong
+      setLoading(false);
     }
   };
 
@@ -31,13 +31,13 @@ const Lessons = () => {
       const response = await axios.get('http://localhost:3000/api/parts');
       setParts(response.data);
     } catch (error) {
-      console.error('Error fetching parts:', error.message);
+      console.error('Lỗi khi tải các phần:', error.message);
     }
   };
 
   useEffect(() => {
     fetchLessons();
-    fetchParts(); // Gọi hàm để lấy dữ liệu Parts
+    fetchParts();
   }, []);
 
   if (loading) return <div className="text-center text-2xl text-blue-800 py-12">Đang tải bài học...</div>;
@@ -65,7 +65,7 @@ const Lessons = () => {
       setCurrentLesson(lesson);
       setIsEditMode(true);
     } else {
-      setCurrentLesson({ Title: '', Content: '', QuestionType: '', Guide: '', PartID: '' });
+      setCurrentLesson({ Title: '', Content: '', QuestionType: '', Guide: '', Score: '', PartID: '' });
       setIsEditMode(false);
     }
     setIsModalOpen(true);
@@ -78,7 +78,6 @@ const Lessons = () => {
       } else {
         await axios.post('http://localhost:3000/api/lessons', currentLesson);
       }
-      // Gọi lại API để lấy dữ liệu mới
       fetchLessons();
       setIsModalOpen(false);
     } catch (error) {
@@ -89,33 +88,41 @@ const Lessons = () => {
   const deleteLesson = async (lessonId) => {
     try {
       await axios.delete(`http://localhost:3000/api/lessons/${lessonId}`);
-      // Gọi lại API để lấy dữ liệu mới
       fetchLessons();
     } catch (error) {
       console.error('Lỗi khi xóa bài học:', error.message);
     }
   };
 
+  // Danh sách tùy chọn điểm số
+  const scoreOptions = [
+    '0 - 250',
+    '251 - 500',
+    '501 - 750',
+    '751 - 1000',
+  ];
+
   return (
     <div className="p-5 bg-gray-100 rounded-lg max-w-full overflow-hidden relative">
-      <h1 className="text-center text-4xl text-blue-800 mb-5">List of lessons</h1>
+      <h1 className="text-center text-4xl text-blue-800 mb-5">Danh Sách Bài Học</h1>
 
       <div className="absolute top-5 right-5">
         <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => openModal()}>
-          Add New Lesson
+          Thêm Bài Học Mới
         </button>
       </div>
 
-      <div className="max-h-[500px] overflow-y-auto">
+      <div className="max-h-full overflow-y-auto">
         <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
             <tr>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Title</th>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Content</th>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Question type</th>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Instructions</th>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Part of Lesson</th>
-              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white">Actions</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[150px]">Tiêu Đề</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[200px]">Nội Dung</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[150px]">Loại Câu Hỏi</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[200px]">Hướng Dẫn</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Điểm</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[150px]">Phần</th>
+              <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Hành Động</th>
             </tr>
           </thead>
           <tbody>
@@ -125,10 +132,11 @@ const Lessons = () => {
                 <td className="py-3 text-center border-b border-gray-300">{lesson.Content}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.QuestionType}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.Guide}</td>
+                <td className="py-3 text-center border-b border-gray-300">{lesson.Score}</td>
                 <td className="py-3 text-center border-b border-gray-300">{lesson.PartID}</td>
                 <td className="py-3 text-center border-b border-gray-300">
-                  <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-2" onClick={() => openModal(lesson)}>Edit</button>
-                  <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => deleteLesson(lesson.LessonID)}>Delete</button>
+                  <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-4 w-full mb-2" onClick={() => openModal(lesson)}>Sửa</button>
+                  <button className="bg-red-500 text-white px-2 py-1 rounded w-full" onClick={() => deleteLesson(lesson.LessonID)}>Xóa</button>
                 </td>
               </tr>
             ))}
@@ -142,80 +150,91 @@ const Lessons = () => {
           onClick={() => setCurrentPage(1)}
           disabled={currentPage === 1}
         >
-          First
+          Đầu
         </button>
         <button
           className={`p-2 bg-blue-800 text-white ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={handlePrevPage}
           disabled={currentPage === 1}
         >
-          Previous
+          Trước
         </button>
         <span className="flex items-center px-4 whitespace-nowrap">
-          Page {currentPage} of {totalPages}
+          Trang {currentPage} của {totalPages}
         </span>
         <button
           className={`p-2 bg-blue-800 text-white ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
-          Next
+          Tiếp
         </button>
         <button
           className={`p-2 bg-blue-800 text-white rounded-r-lg ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
           onClick={() => setCurrentPage(totalPages)}
           disabled={currentPage === totalPages}
         >
-          Last
+          Cuối
         </button>
       </div>
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-5 rounded shadow-md w-1/3">
-            <h2 className="text-xl mb-4">{isEditMode ? 'Edit Lesson' : 'Add New Lesson'}</h2>
+            <h2 className="text-xl mb-4">{isEditMode ? 'Sửa Bài Học' : 'Thêm Bài Học Mới'}</h2>
             <select
               value={currentLesson.PartID}
               onChange={e => setCurrentLesson({ ...currentLesson, PartID: e.target.value })}
               className="border border-gray-300 p-2 mb-3 w-full rounded"
             >
-              <option value="">Select Part</option>
+              <option value="">Chọn Phần</option>
               {parts.map(part => (
-                <option key={part.PartID} value={part.PartID}>{part.Title}</option> // Sử dụng Title cho dropdown
+                <option key={part.PartID} value={part.PartID}>{part.Title}</option>
+              ))}
+            </select>
+            {/* Dropdown cho Điểm đứng sau Phần */}
+            <select
+              value={currentLesson.Score}
+              onChange={e => setCurrentLesson({ ...currentLesson, Score: e.target.value })}
+              className="border border-gray-300 p-2 mb-3 w-full rounded"
+            >
+              <option value="">Chọn Điểm</option>
+              {scoreOptions.map((score, index) => (
+                <option key={index} value={score}>{score}</option>
               ))}
             </select>
             <input
               type="text"
-              placeholder="Title"
+              placeholder="Tiêu Đề"
               value={currentLesson.Title}
               onChange={e => setCurrentLesson({ ...currentLesson, Title: e.target.value })}
               className="border border-gray-300 p-2 mb-3 w-full rounded"
             />
             <textarea
-              placeholder="Content"
+              placeholder="Nội Dung"
               value={currentLesson.Content}
               onChange={e => setCurrentLesson({ ...currentLesson, Content: e.target.value })}
               className="border border-gray-300 p-2 mb-3 w-full rounded h-24"
             />
             <input
               type="text"
-              placeholder="Question Type"
+              placeholder="Loại Câu Hỏi"
               value={currentLesson.QuestionType}
               onChange={e => setCurrentLesson({ ...currentLesson, QuestionType: e.target.value })}
               className="border border-gray-300 p-2 mb-3 w-full rounded"
             />
             <textarea
-              placeholder="Instructions"
+              placeholder="Hướng Dẫn"
               value={currentLesson.Guide}
               onChange={e => setCurrentLesson({ ...currentLesson, Guide: e.target.value })}
               className="border border-gray-300 p-2 mb-3 w-full rounded h-24"
             />
             <div className="flex justify-end">
               <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2" onClick={saveLesson}>
-                {isEditMode ? 'Update' : 'Add'}
+                {isEditMode ? 'Cập Nhật' : 'Thêm'}
               </button>
               <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setIsModalOpen(false)}>
-                Cancel
+                Hủy
               </button>
             </div>
           </div>

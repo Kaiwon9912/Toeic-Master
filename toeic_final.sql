@@ -72,6 +72,7 @@ CREATE TABLE Lessons (
     Content NVARCHAR(MAX),  -- Nội dung bài học (có thể là văn bản, hoặc mô tả về tài liệu)
 	QuestionType NVARCHAR(MAX),
 	Guide NVARCHAR(MAX),
+	Score NVARCHAR(50),
 	PartID int,
 	FOREIGN KEY (PartID) REFERENCES Parts(PartID)
 );
@@ -109,16 +110,17 @@ CREATE TABLE Topics (
     Name NVARCHAR(100) NOT NULL,
 );
 
-
+ALTER TABLE Topics
+DROP COLUMN Image;
 
 CREATE TABLE Vocabulary (
     WordID INT PRIMARY KEY IDENTITY(1,1),
     Word VARCHAR(100) NOT NULL,
     Translation NVARCHAR(100) NOT NULL,
     TopicID VARCHAR(10),
+	Image NVARCHAR(255),
     FOREIGN KEY (TopicID) REFERENCES Topics(TopicID)
 );
-
 
 CREATE TABLE User_Vocabulary (
     ID INT PRIMARY KEY IDENTITY(1,1),
@@ -309,20 +311,20 @@ GO
 
 CREATE PROCEDURE [dbo].[GetRandomQuestionsByPartAndLevel]
     @N INT,        -- Số lượng câu hỏi nhóm cần lấy ngẫu nhiên
-    @Part INT,     -- Mã phần câu hỏi (PartID)
+    @PartID INT,   -- Mã phần câu hỏi (PartID)
     @Level INT     -- Mức độ câu hỏi (Level)
 AS
 BEGIN
     -- Biến lưu trữ danh sách QuestionGroupID ngẫu nhiên
     DECLARE @RandomGroupIDs TABLE (QuestionGroupID VARCHAR(255));
 
-    -- Lấy ngẫu nhiên N QuestionGroupID từ GetGroupQuestionsWithExamQuestion()
+    -- Lấy ngẫu nhiên N QuestionGroupID từ function GetGroupQuestionsWithExamQuestion
     INSERT INTO @RandomGroupIDs (QuestionGroupID)
     SELECT TOP (@N) QuestionGroupID
-    FROM dbo.GetGroupQuestionsWithExamQuestion()
+    FROM dbo.GetGroupQuestionsWithExamQuestion(@PartID, @Level)
     ORDER BY NEWID();  -- Lấy ngẫu nhiên
 
-    -- Truy vấn các câu hỏi thuộc về các QuestionGroupID ngẫu nhiên và thỏa mãn Part và Level
+    -- Truy vấn các câu hỏi thuộc về các QuestionGroupID ngẫu nhiên
     SELECT 
         q.QuestionID,
         q.QuestionGroupID,
@@ -343,32 +345,59 @@ BEGIN
         @RandomGroupIDs rg
         ON q.QuestionGroupID = rg.QuestionGroupID
     WHERE 
-        q.PartID = @Part
+        q.PartID = @PartID
         AND q.Level = @Level
         AND q.ExamQuestion = 1;  -- Lọc các câu hỏi có ExamQuestion = 1
 END;
-GO
-
 
 CREATE FUNCTION GetGroupQuestionsWithExamQuestion
-() 
+(
+    @PartID INT,   -- Tham số cho PartID
+    @Level INT     -- Tham số cho Level
+) 
 RETURNS TABLE
 AS
 RETURN
 (
-    -- Truy vấn nhóm câu hỏi có câu hỏi với ExamQuestion = 1
+    -- Truy vấn nhóm câu hỏi có câu hỏi với ExamQuestion = 1 và phù hợp với PartID và Level
     SELECT DISTINCT
         q.QuestionGroupID
     FROM
         Questions q
     WHERE
-        q.ExamQuestion = 1
-)
+        q.ExamQuestion = 1 
+        AND q.PartID = @PartID 
+        AND q.Level = @Level
+);
 
 
 SELECT * FROM dbo.GetGroupQuestionsWithExamQuestion();
 
-EXEC GetRandomQuestionsByPartAndLevel @N = 2, @Part = 6, @Level = 1;
+
+
+ SELECT 
+                    q.QuestionID,
+                    q.QuestionGroupID,
+                    q.PartID,
+                    q.Level,
+                    q.QuestionAudio,
+                    q.QuestionText,
+                    q.QuestionImage,
+			
+                    q.AnswerA,
+                    q.AnswerB,
+                    q.AnswerC,
+                    q.AnswerD,
+                    q.CorrectAnswer,
+                    q.Explanation,
+                    q.ExamQuestion,
+                    g.Content AS GroupContent,
+                    g.Audio AS GroupAudio
+                FROM ExamDetail ed
+                JOIN Questions q ON ed.QuestionID = q.QuestionID
+                LEFT JOIN QuestionGroup g ON q.QuestionGroupID = g.QuestionGroupID
+                WHERE ed.ExamID = 'TEST01'
+                ORDER BY q.PartID, q.QuestionGroupID, q.QuestionID;
 
 
 

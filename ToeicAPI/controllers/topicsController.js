@@ -17,7 +17,6 @@ exports.addTopic = async (req, res) => {
         const result = await pool.request()
             .input('TopicID', sql.VarChar, TopicID)
             .input('Name', sql.NVarChar, Name) // Sử dụng NVarChar cho Unicode
-            .input('Image', sql.VarChar, Image)
             .query('INSERT INTO Topics (TopicID, Name, Image) VALUES (@TopicID, @Name, @Image)');
 
         res.status(201).send(`Chủ đề đã được thêm với ID: ${TopicID}`); // Trả về ID của chủ đề mới
@@ -37,7 +36,6 @@ exports.updateTopic = async (req, res) => {
         const result = await pool.request()
             .input('topicID', sql.VarChar, topicID) // Đảm bảo TopicID là VarChar
             .input('Name', sql.NVarChar, Name) // Sử dụng NVarChar cho Unicode
-            .input('Image', sql.VarChar, Image)
             .query('UPDATE Topics SET Name = @Name, Image = @Image WHERE TopicID = @topicID');
 
         if (result.rowsAffected[0] === 0) {
@@ -50,8 +48,8 @@ exports.updateTopic = async (req, res) => {
     }
 };
 
- // API xóa chủ đề 
- exports.deleteTopic = async (req, res) => {
+// API xóa chủ đề 
+exports.deleteTopic = async (req, res) => {
     const { topicID } = req.params;
     try {
         const pool = await sql.connect();

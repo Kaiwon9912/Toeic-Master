@@ -40,27 +40,33 @@ const VocabularyPage = () => {
     }, []);
 
     const handleShowInfo = async (word) => {
+        // Đặt cấu trúc thông tin từ vựng
+        const structuredWordInfo = {
+            word: word.Word, // Lấy từ từ đối tượng từ vựng
+            phonetic: word.Translation, // Lấy phần dịch nghĩa từ từ vựng
+            image: word.Image, // Lấy hình ảnh từ đối tượng từ vựng
+            pronunciations: [],
+            meanings: []
+        };
+        // Gọi API từ điển để lấy thông tin phát âm và nghĩa
         try {
             const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.Word}`);
             const apiData = response.data[0];
 
-            const structuredWordInfo = {
-                word: apiData.word,
-                phonetic: apiData.phonetic,
-                pronunciations: apiData.phonetics.map(pronunciation => ({
-                    text: pronunciation.text,
-                    audio: pronunciation.audio
+            // Cập nhật thông tin phát âm và nghĩa
+            structuredWordInfo.pronunciations = apiData.phonetics.map(pronunciation => ({
+                text: pronunciation.text,
+                audio: pronunciation.audio
+            }));
+            structuredWordInfo.meanings = apiData.meanings.map(meaning => ({
+                partOfSpeech: meaning.partOfSpeech,
+                definitions: meaning.definitions.map(definition => ({
+                    definition: definition.definition,
+                    synonyms: definition.synonyms,
+                    antonyms: definition.antonyms,
+                    example: definition.example
                 })),
-                meanings: apiData.meanings.map(meaning => ({
-                    partOfSpeech: meaning.partOfSpeech,
-                    definitions: meaning.definitions.map(definition => ({
-                        definition: definition.definition,
-                        synonyms: definition.synonyms,
-                        antonyms: definition.antonyms,
-                        example: definition.example
-                    })),
-                }))
-            };
+            }));
 
             setSelectedWord(structuredWordInfo);
         } catch (error) {
@@ -92,7 +98,7 @@ const VocabularyPage = () => {
             <Header />
             <div className="flex justify-between p-5 bg-gradient-to-r from-green-300 to-blue-500 rounded-lg shadow-lg h-screen overflow-hidden">
                 <div className="w-72 bg-white p-5 rounded-lg shadow-md overflow-y-auto mr-5">
-                    <h3 className="text-2xl font-bold text-blue-800 mb-5 text-center uppercase">Vocabulary</h3>
+                    <h3 className="text-2xl font-bold text-blue-800 mb-5 text-center uppercase">Từ Vựng</h3>
 
                     {/* Dropdown chọn Topic */}
                     <select
@@ -100,14 +106,14 @@ const VocabularyPage = () => {
                         onChange={handleTopicChange}
                         className="w-full p-2 mb-5 border rounded"
                     >
-                        <option value="">All Topic</option>
+                        <option value="">Tất cả Chủ Đề</option>
                         {topics.map(topic => (
                             <option key={topic.TopicID} value={topic.TopicID}>{topic.Name}</option>
                         ))}
                     </select>
 
-                    {loading && <p>Loading...</p>}
-                    {error && <p>Error: {error}</p>}
+                    {loading && <p>Đang tải...</p>}
+                    {error && <p>Lỗi: {error}</p>}
                     <ul className="list-none">
                         {filteredVocabulary.map(word => (
                             <li
@@ -158,25 +164,41 @@ const VocabularyPage = () => {
                     {selectedWord ? (
                         <div className="flex flex-col gap-5">
                             <h3 className="text-2xl font-bold text-blue-800 mb-5">{selectedWord.word}</h3>
+                            <div className="flex items-start mb-5">
+                                {/* Hàng hiển thị Dịch nghĩa và Phát âm */}
+                                <div className="flex-grow mr-4">
+                                    {/* Dịch nghĩa */}
+                                    <p className="bg-gray-100 text-lg font-semibold rounded-lg p-4 shadow-md mb-3">Phiên âm: {selectedWord.phonetic}</p>
 
-                            {/* Pronunciation Section */}
-                            {selectedWord.pronunciations && selectedWord.pronunciations.map((phonetic, index) => (
-                                <div key={index} className="bg-gray-100 rounded-lg p-4 shadow-md mb-3">
-                                    <p><strong>Pronunciation:</strong> {phonetic.text}</p>
-                                    {phonetic.audio && <audio controls src={phonetic.audio}></audio>}
+                                    {/* Phần Phát âm */}
+                                    <div className="bg-gray-100 rounded-lg p-4 shadow-md mb-3">
+                                        {selectedWord.pronunciations && selectedWord.pronunciations.map((phonetic, index) => (
+                                            <div key={index} className="flex items-center mb-2">
+                                                <p><strong>Phát âm:</strong> {phonetic.text}</p>
+                                                {phonetic.audio && (
+                                                    <audio controls src={phonetic.audio} className="ml-2"></audio>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            ))}
 
-                            {/* Meanings Section */}
+                                {/* Hình ảnh từ vựng */}
+                                {selectedWord.image && (
+                                    <img src={selectedWord.image} alt={selectedWord.word} className="w-1/4 rounded-lg shadow-md h-full object-contain" />
+                                )}
+                            </div>
+
+                            {/* Phần Nghĩa */}
                             {selectedWord.meanings && selectedWord.meanings.map((meaning, index) => (
                                 <div key={index} className="bg-gray-100 rounded-lg p-4 shadow-md mb-3">
-                                    <p><strong>Part of Speech:</strong> {meaning.partOfSpeech}</p>
-                                    <p><strong>Definitions:</strong></p>
+                                    <p><strong>Loại từ:</strong> {meaning.partOfSpeech}</p>
+                                    <p><strong>Định nghĩa:</strong></p>
                                     <ul>
                                         {meaning.definitions.map((def, i) => (
                                             <li key={i} className="mt-1">
                                                 {def.definition}
-                                                {def.example && <div><strong>Example:</strong> {def.example}</div>}
+                                                {def.example && <div><strong>Ví dụ:</strong> {def.example}</div>}
                                             </li>
                                         ))}
                                     </ul>
@@ -184,7 +206,7 @@ const VocabularyPage = () => {
                             ))}
                         </div>
                     ) : (
-                        <p>Select a word to view its information</p>
+                        <p>Chọn một từ để xem thông tin</p>
                     )}
                 </div>
             </div>

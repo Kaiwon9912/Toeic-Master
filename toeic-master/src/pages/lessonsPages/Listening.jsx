@@ -10,6 +10,7 @@ function Listening() {
   const [lessons, setLessons] = useState({});
   const [parts, setParts] = useState([]);
   const [currentMediaURL, setCurrentMediaURL] = useState('');
+  const [selectedScore, setSelectedScore] = useState('');
 
   const fetchLessons = async () => {
     try {
@@ -25,6 +26,8 @@ function Listening() {
             questionType: lesson.QuestionType,
             guide: lesson.Guide.split('\n'),
           },
+          score: lesson.Score,
+          partID: lesson.PartID,
         });
         return acc;
       }, {});
@@ -50,14 +53,34 @@ function Listening() {
 
   const togglePart = (partID) => {
     setOpenPart(openPart === partID ? null : partID);
-    setCurrentPart(`part${partID}`); // Cập nhật currentPart chỉ khi partNumber hợp lệ
+    setCurrentPart(`part${partID}`);
+    // Reset selected lesson and media URL when part changes
+    setSelectedLesson('');
+    setCurrentMediaURL('');
   };
 
-  const handleLessonClick = (lessonName, content, mediaURL) => {
+  const handleScoreClick = (score) => {
+    setSelectedScore(score);
+    setSelectedLesson(''); // Reset lại bài học đã chọn
+  };
+
+  const handleLessonClick = (lessonName, content, partID) => {
     setSelectedLesson(lessonName);
     setLessonContent(content);
-    setCurrentMediaURL(mediaURL);
+    // Lấy MediaURL từ parts dựa trên partID
+    const part = parts.find(part => part.PartID === partID);
+    if (part) {
+      setCurrentMediaURL(part.MediaURL);
+    }
     document.getElementById('lesson-content').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const getFilteredLessons = () => {
+    if (!selectedScore || !currentPart) return [];
+    const partID = parseInt(currentPart.replace('part', ''));
+    return Object.values(lessons).flat().filter(lesson =>
+      lesson.score === selectedScore && lesson.partID === partID
+    );
   };
 
   return (
@@ -74,13 +97,13 @@ function Listening() {
             </button>
             {openPart === part.PartID && (
               <div>
-                {lessons[part.PartID]?.map((lesson, index) => (
+                {['0 - 250', '255 - 500', '501 - 700', '701 - 900', '901 - 990'].map(score => (
                   <div
-                    key={index}
-                    onClick={() => handleLessonClick(lesson.title, lesson.content, part.MediaURL)}
-                    className={`bg-white rounded-lg shadow-md p-5 mb-3 cursor-pointer transition-all duration-300 ${selectedLesson === lesson.title ? 'bg-gray-200' : ''}`}
+                    key={score}
+                    onClick={() => handleScoreClick(score)}
+                    className={`bg-white rounded-lg shadow-md p-5 mb-3 cursor-pointer transition-all duration-300 ${selectedScore === score ? 'bg-gray-200' : ''}`}
                   >
-                    <h4 className="text-lg">{lesson.title}</h4>
+                    <h4 className="text-lg">{score}</h4>
                   </div>
                 ))}
               </div>
@@ -90,7 +113,8 @@ function Listening() {
       </div>
 
       <div className="flex-grow bg-white p-5 rounded-lg shadow-md overflow-y-auto" id="lesson-content">
-        {selectedLesson && (
+        {/* Hiển thị nội dung bài học */}
+        {selectedLesson ? (
           <div className="flex flex-col gap-5">
             <h3 className="text-2xl font-bold text-blue-800 mb-5">{selectedLesson}</h3>
 
@@ -98,7 +122,7 @@ function Listening() {
             {currentMediaURL && (
               <div className="flex justify-center mb-5">
                 <iframe
-                  className="w-full h-96 rounded-lg shadow-md"
+                  className="w-1/2 h-96 rounded-lg shadow-md" // Thay đổi h-96 thành h-128
                   src={currentMediaURL.replace("youtu.be/", "youtube.com/embed/")}
                   title="YouTube video player"
                   allowFullScreen
@@ -124,13 +148,29 @@ function Listening() {
               </div>
             </div>
 
-            {/* Call to Action Button */}
+            {/* Nút Take an Exercise */}
             <div className="text-right mt-5">
               <Link to={`/listening/${currentPart}`} className="bg-blue-800 text-white py-2 px-5 rounded-full transition-all duration-300 hover:bg-blue-700">
-                Take an example
+                Take an exercise
               </Link>
             </div>
           </div>
+        ) : (
+          // Hiển thị danh sách bài học theo mốc điểm
+          selectedScore && (
+            <div className="mt-5">
+              <h4 className="text-xl font-semibold text-blue-800 mb-2">Lessons with score: {selectedScore}</h4>
+              {getFilteredLessons().map((lesson, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleLessonClick(lesson.title, lesson.content, lesson.partID)}
+                  className={`bg-white rounded-lg shadow-md p-5 mb-3 cursor-pointer transition-all duration-300 ${selectedLesson === lesson.title ? 'bg-gray-200' : ''}`}
+                >
+                  <h4 className="text-lg">{lesson.title}</h4>
+                </div>
+              ))}
+            </div>
+          )
         )}
       </div>
     </div>

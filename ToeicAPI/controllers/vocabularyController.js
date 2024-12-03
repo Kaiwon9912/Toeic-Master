@@ -11,18 +11,19 @@ exports.getAllVocabulary = async (req, res) => {
 };
 
 exports.createWord = async (req, res) => {
-    const { Word, Translation, TopicID } = req.body; // Giả định rằng chỉ có 3 trường này cần thiết cho phép thêm
+    const { Word, Translation, TopicID, Image } = req.body;
 
     try {
         const pool = await sql.connect();
         const result = await pool.request()
             .input('Word', sql.VarChar, Word)
-            .input('Translation', sql.NVarChar, Translation) // Sử dụng NVarChar cho tiếng Việt
-            .input('TopicID', sql.VarChar, TopicID) // Điều chỉnh kiểu dữ liệu nếu TopicID là chuỗi
+            .input('Translation', sql.NVarChar, Translation)
+            .input('TopicID', sql.VarChar, TopicID)
+            .input('Image', sql.VarChar, Image)
             .query(`
-        INSERT INTO Vocabulary (Word, Translation, TopicID) 
-        VALUES (@Word, @Translation, @TopicID)
-    `);
+                INSERT INTO Vocabulary (Word, Translation, TopicID, Image) 
+                VALUES (@Word, @Translation, @TopicID, @Image)
+            `);
 
         res.status(201).send(`Từ đã được thêm với ID: ${result.rowsAffected}`);
     } catch (err) {
@@ -31,21 +32,22 @@ exports.createWord = async (req, res) => {
 };
 
 exports.updateWord = async (req, res) => {
-    const { Word, Translation, TopicID } = req.body; // Các trường cần sửa
-    const id = req.params.id; // Lấy ID từ tham số URL
+    const { Word, Translation, TopicID, Image } = req.body;
+    const id = req.params.id;
 
     try {
         const pool = await sql.connect();
         const result = await pool.request()
             .input('Word', sql.VarChar, Word)
             .input('Translation', sql.NVarChar, Translation)
-            .input('TopicID', sql.VarChar, TopicID)
-            .input('ID', sql.Int, id) // Giả định ID là kiểu Int
+            .input('TopicID', sql.NVarChar, TopicID)
+            .input('Image', sql.NVarChar, Image)
+            .input('ID', sql.Int, id)
             .query(`
-        UPDATE Vocabulary 
-        SET Word = @Word, Translation = @Translation, TopicID = @TopicID 
-        WHERE WordID = @ID
-    `);
+                UPDATE Vocabulary 
+                SET Word = @Word, Translation = @Translation, TopicID = @TopicID, Image = @Image 
+                WHERE WordID = @ID
+            `);
 
         if (result.rowsAffected[0] === 0) {
             return res.status(404).send('Không tìm thấy từ để sửa.');
@@ -79,7 +81,7 @@ exports.deleteWord = async (req, res) => {
     }
 };
 
- 
+
 
 
 exports.getWordById = async (req, res) => {
@@ -107,4 +109,3 @@ exports.getVocabularyByTopic = async (req, res) => {
         res.status(500).send(err.message);
     }
 };
-        

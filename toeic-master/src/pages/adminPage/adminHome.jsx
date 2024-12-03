@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { useUser } from '../../hooks/UserContext'; // Import hook để sử dụng UserContext
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const AdminHome = () => {
+  const { user, logout } = useUser(); // Lấy thông tin người dùng từ UserContext
+  const navigate = useNavigate(); // Hook để điều hướng
+
+
+
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+
   const styles = {
     adminContainer: {
       display: 'flex',
@@ -60,24 +74,42 @@ const AdminHome = () => {
     <div style={styles.adminContainer}>
       {/* Sidebar */}
       <div style={styles.sidebar}>
-        <h2 style={styles.sidebarTitle}>Admin Page</h2>
+        <h2 style={styles.sidebarTitle}>Trang Quản Trị</h2>
         <ul style={styles.sidebarList}>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/topics" style={styles.sidebarLink}>Topics</Link>
+            <p className="text-xl bg-yellow-600 text-left p-2 rounded-md">
+              Xin chào
+            </p>
+            <div className="text-right p-2">
+              <strong>{user.fullName}</strong>
+            </div>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/vocabulary" style={styles.sidebarLink}>Vocabulary</Link>
+            <Link to="/admin/adminInfo" style={styles.sidebarLink}>Thông tin quản trị viên</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/lesson" style={styles.sidebarLink}>Lessons</Link>
+            <Link to="/admin/topics" style={styles.sidebarLink}>Quản lý chủ đề</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/account" style={styles.sidebarLink}>Account</Link>
+            <Link to="/admin/vocabulary" style={styles.sidebarLink}>Quản lý từ vựng</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/exams" style={styles.sidebarLink}>Exams</Link>
+            <Link to="/admin/lesson" style={styles.sidebarLink}>Quản lý bài học</Link>
           </li>
-
+          <li style={styles.sidebarListItem}>
+            <Link to="/admin/account" style={styles.sidebarLink}>Quản lý tài khoản</Link>
+          </li>
+          <li style={styles.sidebarListItem}>
+            <Link to="/admin/exams" style={styles.sidebarLink}>Tạo đề thi</Link>
+          </li>
+          <li style={styles.sidebarListItem}>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-4 py-2 hover:bg-orange-700 rounded-2xl"
+            >
+              Đăng xuất
+            </button>
+          </li>
         </ul>
       </div>
 

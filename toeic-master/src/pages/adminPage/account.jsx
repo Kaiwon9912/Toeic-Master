@@ -51,13 +51,13 @@ const Account = () => {
 
   return (
     <div>
-      <h1 className="text-center text-2xl mb-4">User Management</h1>
+      <h1 className="text-center text-2xl mb-4">Quản lý người dùng</h1>
 
       {/* Thanh tìm kiếm */}
       <div className="mb-4 flex justify-start">
         <input
           type="text"
-          placeholder="Search by name..." // Placeholder bằng tiếng Anh
+          placeholder="Tìm kiếm theo tên..." // Placeholder bằng tiếng Việt
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật giá trị tìm kiếm
           className="border rounded px-2 py-1 w-2/5" // Chiếm 40% chiều ngang
@@ -67,11 +67,11 @@ const Account = () => {
       <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr>
-            <th className="py-3 text-center border-b border-gray-300">Username</th>
-            <th className="py-3 text-center border-b border-gray-300">Full Name</th>
+            <th className="py-3 text-center border-b border-gray-300">Tên đăng nhập</th>
+            <th className="py-3 text-center border-b border-gray-300">Họ và tên</th>
             <th className="py-3 text-center border-b border-gray-300">Email</th>
-            <th className="py-3 text-center border-b border-gray-300">Role</th>
-            <th className="py-3 text-center border-b border-gray-300">Action</th> {/* Cột Action */}
+            <th className="py-3 text-center border-b border-gray-300">Vai trò</th>
+            <th className="py-3 text-center border-b border-gray-300">Hành động</th> {/* Cột Hành động */}
           </tr>
         </thead>
         <tbody>
@@ -93,7 +93,7 @@ const Account = () => {
                     className="bg-red-500 text-white px-2 py-1 rounded"
                     onClick={() => deleteUser(user.Username)} // Gọi hàm deleteUser
                   >
-                    Delete
+                    Xóa
                   </button>
                 </div>
               </td>
