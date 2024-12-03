@@ -5,7 +5,7 @@ exports.getRandomQuestionByPart = async (req, res) => {
     const { part, examQuestion } = req.params;  // Lấy cả part và examQuestion từ tham số URL
     try {
         const pool = await sql.connect();
-        
+
         // Truy vấn câu hỏi ngẫu nhiên với PartID và ExamQuestion
         const result = await pool.request()
             .input('part', sql.Int, part)  // Nhận tham số part từ URL
@@ -102,6 +102,28 @@ exports.getQuestionsGroups = async (req, res) => {
     }
 };
 
+// API lấy thông tin nhóm câu hỏi theo QuestionGroupID
+exports.getQuestionGroupById = async (req, res) => {
+    const { groupId } = req.params; // Lấy QuestionGroupID từ tham số URL
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('QuestionGroupID', sql.VarChar, groupId) // Truyền tham số vào câu truy vấn
+            .query('SELECT * FROM QuestionGroup WHERE QuestionGroupID = @QuestionGroupID');
+
+        // Kiểm tra nếu không tìm thấy dữ liệu
+        if (result.recordset.length === 0) {
+            return res.status(404).send('Nhóm câu hỏi không tìm thấy.');
+        }
+
+        res.json(result.recordset[0]); // Trả về thông tin nhóm câu hỏi
+    } catch (err) {
+        console.error('Lỗi khi lấy dữ liệu nhóm câu hỏi:', err.message);
+        res.status(500).send(err.message);
+    }
+};
+
 // Lấy thống kê câu hỏi của người dùng
 exports.getUserQuestionStats = async (req, res) => {
     const { userId } = req.params;
@@ -154,7 +176,7 @@ exports.getRandomQuestionsByPartAndLevel = async (req, res) => {
         // Kết nối tới SQL Server
         const pool = await sql.connect();
         const request = pool.request();
-        
+
         // Truyền tham số vào stored procedure
         request.input('N', sql.Int, n);
         request.input('Part', sql.Int, part);
@@ -222,7 +244,7 @@ exports.getGroupQuestionById = async (req, res) => {
         const result = await pool.request()
             .input('questionId', sql.VarChar, questionId)
             .query('SELECT * FROM QuestionGroup WHERE QuestionGroupID = @questionId');
-        
+
         console.log(result.recordset);  // Log kết quả để kiểm tra
 
         if (result.recordset.length === 0) {
@@ -345,7 +367,7 @@ const formatQuestions = (questions) => {
     const groupedQuestions = {};
 
     questions.forEach((q) => {
-        if (q.PartID === 5 ||q.PartID ===1| q.PartID ===2 || q.PartID===3) {
+        if (q.PartID === 5 || q.PartID === 1 | q.PartID === 2 || q.PartID === 3) {
             // Câu hỏi đơn lẻ
             groupedQuestions[q.QuestionID] = {
                 type: 'single',
@@ -356,7 +378,7 @@ const formatQuestions = (questions) => {
                 image: q.QuestionImage,
                 audio: q.QuestionAudio,
             };
-        } else if ([6, 7,4].includes(q.PartID)) {
+        } else if ([6, 7, 4].includes(q.PartID)) {
             // Nhóm câu hỏi
             if (!groupedQuestions[q.QuestionGroupID]) {
                 groupedQuestions[q.QuestionGroupID] = {

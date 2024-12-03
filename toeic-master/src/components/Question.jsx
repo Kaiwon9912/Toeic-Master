@@ -2,25 +2,25 @@ import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 const Question = ({ onAnswerUpdate, data }) => {
-   
-    
-  
+
+
+
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     useEffect(() => {
         setSelectedAnswer(null);
-     }, [data]);
+    }, [data]);
     const question = data;
 
     const handleClick = (Answer) => {
-      
+
         setSelectedAnswer(Answer);
-        if(selectedAnswer===null)
-        onAnswerUpdate(Answer === question.CorrectAnswer); // Gọi hàm update từ QuestionPart
+        if (selectedAnswer === null)
+            onAnswerUpdate(Answer === question.CorrectAnswer); // Gọi hàm update từ QuestionPart
 
     };
 
- 
-    
+
+
 
     return (
         <>
@@ -36,12 +36,12 @@ const Question = ({ onAnswerUpdate, data }) => {
                         </ul>
                     </div>
                 )}
-                { selectedAnswer&& !question.ExamQuestion && (
+                {selectedAnswer && !question.ExamQuestion && (
                     <div className='my-8 h-36 w-full'>
                         <p className='bg-blue-400 text-white h-36 p-4 rounded-xl'>
                             Giải thích: {question.Explanation}
                         </p>
-                 
+
                     </div>
                 )}
             </div>

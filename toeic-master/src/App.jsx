@@ -4,14 +4,16 @@ import { UserProvider } from './hooks/UserContext'; // Import UserProvider
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/HomePage/Home';
 
-import ListeningPage from './pages/listeningPages/ListeningPage';
+
 
 import ReadingPage from './pages/readingPage/ReadingPage';
 
 
 import LessonList from './pages/lessonsPages/LessonList';
 import LessonDetail from "./pages/lessonsPages/LessonDetail"
-import Part from "./pages/listeningPages/Part"
+
+import ListeningPage from './pages/listeningPage/ListeningPage';
+import ListeningQuestion from './pages/listeningPage/listeningQuestion';
 
 import VocabularyPage from './pages/vocabulary/VocabularyPage';
 
@@ -37,7 +39,7 @@ function App() {
           <Route path="/" element={<Home />} />
 
           <Route path="/listening" element={<ListeningPage />} />
-          <Route path="/listening/:part" element={<Part />} />
+          <Route path="/listening/:part" element={<ListeningQuestion />} />
 
           <Route path="/reading" element={<ReadingPage />} />
           <Route path="/reading/part/:part" element={<ReadingQuestion />} />
