@@ -103,6 +103,12 @@ const AdminHome = () => {
             <Link to="/admin/exams" style={styles.sidebarLink}>Tạo đề thi</Link>
           </li>
           <li style={styles.sidebarListItem}>
+            <Link to="/admin/question" style={styles.sidebarLink}>Quản lý câu hỏi</Link>
+          </li>
+          <li style={styles.sidebarListItem}>
+            <Link to="/admin/group" style={styles.sidebarLink}>Quản lý nhóm câu hỏi</Link>
+          </li>
+          <li style={styles.sidebarListItem}>
             <button
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 hover:bg-orange-700 rounded-2xl"

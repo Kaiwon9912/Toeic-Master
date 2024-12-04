@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AddQuestionsForm from "../components/AddQuestionForm";
-import SuccessModal from "../components/SuccessModal";
 const ExamControl = () => {
   const [examID, setExamID] = useState(""); // Thêm state cho ExamID
   const [examName, setExamName] = useState("");

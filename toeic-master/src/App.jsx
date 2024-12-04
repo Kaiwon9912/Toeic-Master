@@ -31,6 +31,8 @@ import ExamControl from './AdminArea/pages/ExamControl';
 import ExamList from './pages/examPage/ExamList';
 import ExamPage from './pages/examPage/ExamPage';
 import ReadingQuestion from './pages/readingPage/readingQuestion';
+import QuestionCRUD from './AdminArea/pages/QuestionCRUD';
+import QuestionGroupCRUD from './AdminArea/pages/QuestionGroupCRUD';
 function App() {
   return (
     <UserProvider>
@@ -56,6 +58,9 @@ function App() {
           <Route path="/user-info" element={<UserInfo />} />
 
           <Route path="/admin" element={<AdminHome />}>
+          
+            <Route path="question" element={<QuestionCRUD />} /> {/* Route cho Topics */}
+            <Route path="group" element={<QuestionGroupCRUD/>} /> {/* Route cho Topics */}
             <Route path="topics" element={<Topics />} /> {/* Route cho Topics */}
             <Route path="vocabulary" element={<VocabularyA />} /> {/* Route cho Vocabulary */}
             <Route path="lesson" element={<LessonA />} /> {/* Route cho Lesson */}
