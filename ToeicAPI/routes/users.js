@@ -10,6 +10,6 @@ router.get('/:username', userController.getUserByName);
 router.delete('/:username', userController.deleteUser);
 
 //chua check
-router.put('/users/:id', userController.updateUser);
+router.put('/:username', userController.updateUser);
 
 module.exports = router;

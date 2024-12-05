@@ -14,7 +14,7 @@ exports.getUser = async (req, res) => {
     }
 };
 
-exports.createUser =  async (req, res) => {
+exports.createUser = async (req, res) => {
     const { username, password, fullName, email, role } = req.body;
 
     // Kiểm tra xem người dùng đã tồn tại chưa (optional)
@@ -27,7 +27,7 @@ exports.createUser =  async (req, res) => {
         if (existingUser.recordset.length > 0) {
             return res.status(400).json({ message: 'User already exists.' });
         }
-        
+
         // Thêm người dùng mới vào cơ sở dữ liệu
         await pool.request()
             .input('Username', sql.NVarChar, username)
@@ -45,8 +45,8 @@ exports.createUser =  async (req, res) => {
 };
 
 
- // API để reset mật khẩu của người dùng
- exports.resetpassword = async (req, res) => {
+// API để reset mật khẩu của người dùng
+exports.resetpassword = async (req, res) => {
     const { userId } = req.params;
     const { newPassword } = req.body; // Lấy mật khẩu mới từ body
 
@@ -66,7 +66,7 @@ exports.createUser =  async (req, res) => {
 };
 
 // API để lấy người dùng theo tên đăng nhập
-exports.getUserByName =  async (req, res) => {
+exports.getUserByName = async (req, res) => {
     const { username } = req.params;
 
     try {
@@ -87,17 +87,16 @@ exports.getUserByName =  async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-    const { id } = req.params;
-    const { username, fullName, email, role } = req.body;
+    const { username } = req.params; // Lấy username từ params
+    const { fullName, email, role } = req.body;
     try {
         const pool = await sql.connect();
         await pool.request()
-            .input('id', sql.Int, id)
-            .input('username', sql.NVarChar, username)
+            .input('username', sql.NVarChar, username) // Thay đổi input để lấy username
             .input('fullName', sql.NVarChar, fullName)
             .input('email', sql.NVarChar, email)
             .input('role', sql.Bit, role)
-            .query('UPDATE Users SET Username = @username, FullName = @fullName, Email = @email, Role = @role WHERE UserID = @id');
+            .query('UPDATE Users SET FullName = @fullName, Email = @email, Role = @role WHERE Username = @username');
         res.send('User updated successfully');
     } catch (err) {
         res.status(500).send(err.message);

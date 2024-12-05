@@ -14,20 +14,22 @@ const AdminInfo = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3000/api/users/${user.username}`);
-                setUserInfo({
-                    fullName: response.data.FullName,
-                    email: response.data.Email,
-                    password: response.data.PasswordHash,
-                });
-            } catch (error) {
-                console.error('Error fetching user information:', error);
-            }
-        };
 
+    const fetchUserInfo = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/api/users/${user.username}`);
+            setUserInfo({
+                fullName: response.data.FullName,
+                email: response.data.Email,
+                password: response.data.PasswordHash,
+            });
+        } catch (error) {
+            console.error('Error fetching user information:', error);
+        }
+    };
+
+
+    useEffect(() => {
         fetchUserInfo();
     }, [user.username]);
 
@@ -37,6 +39,7 @@ const AdminInfo = () => {
             await axios.put(`http://localhost:3000/api/users/${user.username}`, userInfo);
             setMessage('Cập nhật thông tin thành công!');
             setIsModalOpen(false); // Đóng modal sau khi cập nhật
+            fetchUserInfo();
         } catch (error) {
             console.error('Error updating information:', error);
             setMessage('Đã xảy ra lỗi trong quá trình cập nhật.');
