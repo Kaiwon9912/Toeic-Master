@@ -195,36 +195,6 @@ exports.getRandomQuestionsByPartAndLevel = async (req, res) => {
 
 
 
-
-
-exports.createQuestion = async (req, res) => {
-    const { questionGroupId, partId, level, questionAudio, questionText, questionImage, answerA, answerB, answerC, answerD, correctAnswer, explanation, examQuestion } = req.body;
-    try {
-        const pool = await sql.connect();
-        await pool.request()
-            .input('questionGroupId', sql.VarChar, questionGroupId)
-            .input('partId', sql.Int, partId)
-            .input('level', sql.Int, level)
-            .input('questionAudio', sql.NVarChar, questionAudio)
-            .input('questionText', sql.NVarChar, questionText)
-            .input('questionImage', sql.NVarChar, questionImage)
-            .input('answerA', sql.NVarChar, answerA)
-            .input('answerB', sql.NVarChar, answerB)
-            .input('answerC', sql.NVarChar, answerC)
-            .input('answerD', sql.NVarChar, answerD)
-            .input('correctAnswer', sql.Char, correctAnswer)
-            .input('explanation', sql.NVarChar, explanation)
-            .input('examQuestion', sql.Bit, examQuestion)
-            .query(`
-                INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, Explanation, ExamQuestion)
-                VALUES (@questionGroupId, @partId, @level, @questionAudio, @questionText, @questionImage, @answerA, @answerB, @answerC, @answerD, @correctAnswer, @explanation, @examQuestion)
-            `);
-        res.status(201).send('Question created successfully');
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-};
-
 exports.getQuestionById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -260,6 +230,139 @@ exports.getGroupQuestionById = async (req, res) => {
     }
 };
 
+
+
+exports.getPaginatedQuestionGroups = async (req, res) => {
+    const { page = 1, pageSize = 10 } = req.query; // Mặc định page = 1, limit = 10
+    try {
+        const pool = await sql.connect();
+        const offset = (page - 1) * pageSize;
+
+        const result = await pool.request()
+            .input('offset', sql.Int, offset)
+            .input('pageSize', sql.Int, parseInt(pageSize))
+            .query(`
+                SELECT * 
+                FROM QuestionGroup
+                ORDER BY QuestionGroupID
+                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY;
+
+                SELECT COUNT(*) AS total
+                FROM QuestionGroup;
+            `);
+
+        const questionGroups = result.recordsets[0];
+        const total = result.recordsets[1][0].total;
+
+        res.json({
+            data: questionGroups,
+            total,
+            currentPage: parseInt(page),
+            totalPages: Math.ceil(total / pageSize),
+        });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+exports.createQuestionGroup = async (req, res) => {
+    const { questionGroupId, audio, content } = req.body;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('questionGroupId', sql.VarChar, questionGroupId)
+            .input('audio', sql.VarChar, audio)
+            .input('content', sql.NVarChar, content)
+            .query(`
+                INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
+                VALUES (@questionGroupId, @audio, @content)
+            `);
+        res.status(201).send('Question Group created successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+exports.updateQuestionGroup = async (req, res) => {
+    const { id } = req.params;
+    const { audio, content } = req.body;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('id', sql.VarChar, id)
+            .input('audio', sql.VarChar, audio)
+            .input('content', sql.NVarChar, content)
+            .query(`
+                UPDATE QuestionGroup
+                SET Audio = @audio, Content = @content
+                WHERE QuestionGroupID = @id
+            `);
+        res.send('Question Group updated successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+// Delete a Question Group
+exports.deleteQuestionGroup = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('id', sql.VarChar, id)
+            .query(`
+                DELETE FROM QuestionGroup WHERE QuestionGroupID = @id
+            `);
+        res.send('Question Group deleted successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+exports.getQuestions = async (req, res) => {
+    const { page = 1, pageSize = 10 } = req.query; // Phân trang
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('offset', sql.Int, (page - 1) * pageSize)
+            .input('pageSize', sql.Int, parseInt(pageSize))
+            .query(`
+                SELECT * 
+                FROM Questions
+                ORDER BY QuestionID
+                OFFSET @offset ROWS 
+                FETCH NEXT @pageSize ROWS ONLY;
+            `);
+        res.json(result.recordset);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
+exports.createQuestion = async (req, res) => {
+    const { questionGroupId, partId, level, questionAudio, questionText, questionImage, answerA, answerB, answerC, answerD, correctAnswer, explanation, examQuestion } = req.body;
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('questionGroupId', sql.VarChar, questionGroupId)
+            .input('partId', sql.Int, partId)
+            .input('level', sql.Int, level)
+            .input('questionAudio', sql.NVarChar, questionAudio)
+            .input('questionText', sql.NVarChar, questionText)
+            .input('questionImage', sql.NVarChar, questionImage)
+            .input('answerA', sql.NVarChar, answerA)
+            .input('answerB', sql.NVarChar, answerB)
+            .input('answerC', sql.NVarChar, answerC)
+            .input('answerD', sql.NVarChar, answerD)
+            .input('correctAnswer', sql.Char, correctAnswer)
+            .input('explanation', sql.NVarChar, explanation)
+            .input('examQuestion', sql.Bit, examQuestion)
+            .query(`
+                INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, Explanation, ExamQuestion)
+                VALUES (@questionGroupId, @partId, @level, @questionAudio, @questionText, @questionImage, @answerA, @answerB, @answerC, @answerD, @correctAnswer, @explanation, @examQuestion)
+            `);
+        res.status(201).send('Question created successfully');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
 
 exports.updateQuestion = async (req, res) => {
     const { id } = req.params;

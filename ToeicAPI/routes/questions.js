@@ -16,8 +16,17 @@ router.get('/exam/:examId/', questionsController.getQuestionsByExamId);
 router.get('/group-question/:questionId/', questionsController.getGroupQuestionById);
 // Lấy group câu hỏi
 router.get('/question-groups', questionsController.getQuestionsGroups);
-router.get('/question-groups/:groupId', questionsController.getQuestionGroupById);
 
 
+router.post('/create', questionsController.createQuestion);
+router.put('/update/:id', questionsController.updateQuestion);
+router.delete('/delete/:id', questionsController.deleteQuestion);
+router.get('/paging', questionsController.getQuestions); // Fetch paginated questions
+
+router.get('/group/get/:groupId', questionsController.getQuestionGroupById); // Lấy thông tin 1 nhóm
+router.post('/group/create', questionsController.createQuestionGroup); // Tạo nhóm mới
+router.put('/group/update/:id', questionsController.updateQuestionGroup); // Cập nhật nhóm
+router.delete('/group/delete/:id', questionsController.deleteQuestionGroup); // Xóa nhóm
+router.get('/group/paging', questionsController.getPaginatedQuestionGroups); // Lấy danh sách nhóm với phân trang
 
 module.exports = router;
