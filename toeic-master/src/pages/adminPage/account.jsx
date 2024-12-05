@@ -80,7 +80,7 @@ const Account = () => {
               <td className="py-3 text-center border-b border-gray-300">{user.Username}</td>
               <td className="py-3 text-center border-b border-gray-300">{user.FullName}</td>
               <td className="py-3 text-center border-b border-gray-300">{user.Email}</td>
-              <td className="py-3 text-center border-b border-gray-300">{user.Role === 0 ? 'User' : 'Admin'}</td>
+              <td className="py-3 text-center border-b border-gray-300">{user.Role === false ? 'User' : 'Admin'}</td>
               <td className="py-3 text-center border-b border-gray-300">
                 <div className="flex justify-center space-x-2">
                   <button

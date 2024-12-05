@@ -52,7 +52,8 @@ function ListeningQuestion() {
         const partNumber = Number(part);
         try {
             const response = await axios.get(`http://localhost:3000/api/questions/part/${partNumber}`);
-            setQuestions(response.data); // Giả sử data là mảng câu hỏi
+            const filteredQuestions = response.data.filter(question => question.ExamQuestion === false); // Lọc câu hỏi
+            setQuestions(filteredQuestions); // Lưu những câu hỏi đã lọc
         } catch (error) {
             console.error('Lỗi khi lấy dữ liệu câu hỏi:', error);
         }

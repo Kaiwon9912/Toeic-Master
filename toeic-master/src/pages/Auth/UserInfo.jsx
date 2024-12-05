@@ -69,7 +69,7 @@ const UserInfo = () => {
                 <div className="mb-4">
                     <label className="block text-2xl font-medium text-left">Vai trò:</label>
                     <div className="mt-1 p-2 border border-gray-300 rounded-md w-full bg-gray-100 text-2xl">
-                        {user.role === 0 ? 'Người dùng' : 'Quản trị viên'}
+                        {user.role === true ? 'Quản trị viên' : 'Người dùng'}
                     </div>
                 </div>
 

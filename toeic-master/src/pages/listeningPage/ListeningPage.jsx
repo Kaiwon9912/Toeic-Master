@@ -36,9 +36,9 @@ function ListeningPage() {
             <Header />
             <div className="m-auto max-w-7xl p-6">
                 {/* Tiêu đề chính */}
-                <h1 className="text-4xl font-bold text-center mb-6">Câu Hỏi Nghe hieuxu</h1>
+                <h1 className="text-4xl font-bold text-center mb-6">Câu Hỏi Nghe Hiểu</h1>
                 <p className="text-center text-lg mb-10">
-                    Trong phần này, bạn sẽ làm bài kiểm tra về kỹ năng đọc hiểu. Hãy chắc chắn rằng bạn đã chuẩn bị sẵn sàng!
+                    Trong phần này, bạn sẽ làm bài kiểm tra về kỹ năng nghe hiểu. Hãy chắc chắn rằng bạn đã chuẩn bị sẵn sàng và lắng nghe cẩn thận!
                 </p>
 
                 {/* Danh sách các phần */}

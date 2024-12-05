@@ -77,7 +77,7 @@ const AdminInfo = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label className=" text-2xl font-medium text-gray-700">Vai trò: {user.role === 0 ? 'Người dùng' : 'Quản trị viên'}</label>
+                    <label className=" text-2xl font-medium text-gray-700">Vai trò: {user.role === true ? 'Quản trị viên' : 'Người dùng'}</label>
 
                 </div>
 
