@@ -31,16 +31,16 @@ const QuestionCRUD = () => {
                 await axios.put(`http://localhost:3000/api/questions/update/${editingQuestion.QuestionID}`, data, {
                     headers: { 'Content-Type': 'application/json' }
                 });
-                setSuccessMessage('Question updated successfully');  // Thông báo thành công khi cập nhật
+                setSuccessMessage('Câu hỏi đã được cập nhật thành công');  // Thông báo thành công khi cập nhật
             } else {
                 // Tạo mới câu hỏi
                 await axios.post('http://localhost:3000/api/questions/create', data, {
                     headers: { 'Content-Type': 'application/json' }
                 });
-                setSuccessMessage('Question added successfully');  // Thông báo thành công khi thêm mới
+                setSuccessMessage('Câu hỏi đã được thêm thành công');  // Thông báo thành công khi thêm mới
             }
         } catch (error) {
-            console.error('Error submitting data:', error);
+            console.error('Lỗi khi gửi dữ liệu:', error);
         } finally {
             setLoading(false);  // Dừng loading
             setModalVisible(false);  // Đóng Modal
@@ -49,12 +49,12 @@ const QuestionCRUD = () => {
 
     // Xóa câu hỏi
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this question?')) {
+        if (window.confirm('Bạn có chắc chắn muốn xóa câu hỏi này không?')) {
             try {
                 await axios.delete(`http://localhost:3000/api/questions/delete/${id}`);
-                setSuccessMessage('Question deleted successfully');  // Thông báo thành công khi xóa
+                setSuccessMessage('Câu hỏi đã được xóa thành công');  // Thông báo thành công khi xóa
             } catch (error) {
-                console.error('Error deleting question:', error);
+                console.error('Lỗi khi xóa câu hỏi:', error);
             }
         }
     };
@@ -62,9 +62,9 @@ const QuestionCRUD = () => {
     return (
         <div>
             <div className="flex justify-between mb-4">
-                <h1 className="text-xl font-bold">Manage Questions</h1>
+                <h1 className="text-xl font-bold">Quản lý câu hỏi</h1>
                 <button onClick={handleAdd} className="px-4 py-2 bg-blue-500 text-white rounded">
-                    Add Question
+                    Thêm câu hỏi
                 </button>
             </div>
             {/* Hiển thị bảng câu hỏi */}

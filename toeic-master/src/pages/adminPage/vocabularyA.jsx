@@ -192,7 +192,7 @@ const Vocabulary = () => {
 
   return (
     <div className="p-5 bg-gray-100 rounded-lg">
-      <h1 className="text-center text-3xl text-blue-800 mb-5">Danh sách từ vựng</h1>
+      <h1 className="text-center text-3xl text-blue-800 mb-5">Quản lý từ vựng</h1>
 
       <div className="flex justify-between mb-4">
         <select

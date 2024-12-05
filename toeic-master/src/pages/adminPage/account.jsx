@@ -67,11 +67,11 @@ const Account = () => {
       <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
           <tr>
-            <th className="py-3 text-center border-b border-gray-300">Tên đăng nhập</th>
-            <th className="py-3 text-center border-b border-gray-300">Họ và tên</th>
-            <th className="py-3 text-center border-b border-gray-300">Email</th>
-            <th className="py-3 text-center border-b border-gray-300">Vai trò</th>
-            <th className="py-3 text-center border-b border-gray-300">Hành động</th> {/* Cột Hành động */}
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Tên đăng nhập</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Họ và tên</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Email</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Vai trò</th>
+            <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Hành động</th> {/* Cột Hành động */}
           </tr>
         </thead>
         <tbody>

@@ -104,7 +104,7 @@ const Lessons = () => {
 
   return (
     <div className="p-5 bg-gray-100 rounded-lg max-w-full overflow-hidden relative">
-      <h1 className="text-center text-4xl text-blue-800 mb-5">Danh Sách Bài Học</h1>
+      <h1 className="text-center text-4xl text-blue-800 mb-5">Quản lý  Bài Học</h1>
 
       <div className="absolute top-5 right-5">
         <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => openModal()}>

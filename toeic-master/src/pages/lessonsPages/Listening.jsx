@@ -53,7 +53,7 @@ function Listening() {
 
   const togglePart = (partID) => {
     setOpenPart(openPart === partID ? null : partID);
-    setCurrentPart(`part${partID}`);
+    setCurrentPart(`${partID}`);
     // Reset selected lesson and media URL when part changes
     setSelectedLesson('');
     setCurrentMediaURL('');

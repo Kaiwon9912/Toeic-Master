@@ -100,13 +100,13 @@ const AdminHome = () => {
             <Link to="/admin/account" style={styles.sidebarLink}>Quản lý tài khoản</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/exams" style={styles.sidebarLink}>Tạo đề thi</Link>
-          </li>
-          <li style={styles.sidebarListItem}>
             <Link to="/admin/question" style={styles.sidebarLink}>Quản lý câu hỏi</Link>
           </li>
           <li style={styles.sidebarListItem}>
             <Link to="/admin/group" style={styles.sidebarLink}>Quản lý nhóm câu hỏi</Link>
+          </li>
+          <li style={styles.sidebarListItem}>
+            <Link to="/admin/exams" style={styles.sidebarLink}>Tạo đề thi</Link>
           </li>
           <li style={styles.sidebarListItem}>
             <button

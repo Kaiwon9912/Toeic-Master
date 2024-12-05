@@ -82,7 +82,7 @@ function ListeningQuestion() {
         if (groupedQuestions.length > 0) {
             const groupId = groupedQuestions[currentQuestionGroupIndex][0].QuestionGroupID; // ID của nhóm đầu tiên
             try {
-                const response = await axios.get(`http://localhost:3000/api/questions/question-groups/${groupId}`);
+                const response = await axios.get(`http://localhost:3000/api/questions/group/get/${groupId}`);
                 setGroupAudio(response.data.Audio); // Lưu audio vào state
             } catch (error) {
                 console.error('Lỗi khi lấy âm thanh nhóm câu hỏi:', error);

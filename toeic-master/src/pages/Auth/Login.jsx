@@ -23,13 +23,16 @@ const Login = () => {
             const foundUser = users.find(user => user.Username === username && user.PasswordHash === password);
 
             if (foundUser) {
-                setUser({
+                const userData = {
                     id: foundUser.UserID,
                     username: foundUser.Username,
                     fullName: foundUser.FullName,
                     email: foundUser.Email,
                     role: foundUser.Role,
-                });
+                };
+
+                setUser(userData);
+                localStorage.setItem('user', JSON.stringify(userData)); // Lưu thông tin người dùng
 
                 if (foundUser.Role) {
                     navigate('/admin');
@@ -37,8 +40,8 @@ const Login = () => {
                     navigate('/');
                 }
             } else {
-                setErrorMessage('Username or password is incorrect.'); // Set error message
-                setTimeout(() => setErrorMessage(''), 3000); // Clear message after 3 seconds
+                setErrorMessage('Username or password is incorrect.');
+                setTimeout(() => setErrorMessage(''), 3000);
             }
         } catch (error) {
             console.error('Error:', error);

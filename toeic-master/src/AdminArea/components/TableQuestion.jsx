@@ -4,6 +4,7 @@ const TableQuestions = ({ onEdit, onDelete }) => {
     const [questions, setQuestions] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const itemsPerPage = 10; // Số câu hỏi trên mỗi trang
 
     useEffect(() => {
         fetchQuestions(page);
@@ -11,62 +12,74 @@ const TableQuestions = ({ onEdit, onDelete }) => {
 
     const fetchQuestions = async (page) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/questions/paging?page=${page}&pageSize=10`);
+            const response = await fetch(`http://localhost:3000/api/questions/paging?page=${page}&pageSize=${itemsPerPage}`);
             const data = await response.json();
             setQuestions(data);
-            setTotalPages(Math.ceil(data.total / 10)); // giả định API trả `total` số câu hỏi
+            setTotalPages(Math.ceil(data.total / itemsPerPage)); // Giả định API trả `total` số câu hỏi
         } catch (error) {
             console.error(error);
         }
     };
 
     const handleDelete = async (id) => {
-        if (confirm('Are you sure you want to delete this question?')) {
+        if (confirm('Bạn có chắc chắn muốn xóa câu hỏi này không?')) {
             await onDelete(id);
             fetchQuestions(page);
         }
     };
 
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border">
+        <div className="max-h-full overflow-y-auto">
+            <table className="min-w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
                 <thead>
                     <tr>
-                        <th className="px-4 py-2 border">ID</th>
-                        <th className="px-4 py-2 border">Question Text</th>
-                        <th className="px-4 py-2 border">Level</th>
-                        <th className="px-4 py-2 border">Actions</th>
+                        <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">ID</th>
+                        <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[200px]">Nội Dung Câu Hỏi</th>
+                        <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[100px]">Mức Độ</th>
+                        <th className="py-3 text-center border-b border-gray-300 bg-blue-800 text-white min-w-[150px]">Hành Động</th>
                     </tr>
                 </thead>
                 <tbody>
                     {questions.map((q) => (
                         <tr key={q.QuestionID}>
-                            <td className="px-4 py-2 border">{q.QuestionID}</td>
-                            <td className="px-4 py-2 border">{q.QuestionText}</td>
-                            <td className="px-4 py-2 border">{q.Level}</td>
-                            <td className="px-4 py-2 border">
-                                <button className="text-blue-500 mr-2" onClick={() => onEdit(q)}>Edit</button>
-                                <button className="text-red-500" onClick={() => handleDelete(q.QuestionID)}>Delete</button>
+                            <td className="py-3 text-center border-b border-gray-300">{q.QuestionID}</td>
+                            <td className="py-3 text-center border-b border-gray-300">{q.QuestionText}</td>
+                            <td className="py-3 text-center border-b border-gray-300">{q.Level}</td>
+                            <td className="py-3 text-center border-b border-gray-300">
+                                <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-4" onClick={() => onEdit(q)}>Sửa</button>
+                                <button className="bg-red-500 text-white px-2 py-1 rounded" onClick={() => handleDelete(q.QuestionID)}>Xóa</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div className="flex justify-between mt-4">
+
+            <div className="flex justify-center mt-4 w-1/2 mx-auto">
                 <button
-                    className="px-4 py-2 bg-gray-200 rounded"
+                    className={`p-2 bg-blue-800 text-white rounded-l-lg ${page === 1 ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
+                    onClick={() => setPage(1)}
                     disabled={page === 1}
-                    onClick={() => setPage(page - 1)}
                 >
-                    Previous
+                    Đầu
                 </button>
                 <button
-                    className="px-4 py-2 bg-gray-200 rounded"
-                    disabled={page === totalPages}
-                    onClick={() => setPage(page + 1)}
+                    className={`p-2 bg-blue-800 text-white ${page === 1 ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
+                    onClick={() => setPage(page - 1)}
+                    disabled={page === 1}
                 >
-                    Next
+                    Trước
                 </button>
+                <span className="flex items-center px-4 whitespace-nowrap">
+                    Trang {page}
+                </span>
+                <button
+                    className={`p-2 bg-blue-800 text-white rounded-r-lg ${page === totalPages ? 'opacity-50 cursor-not-allowed' : ''} mx-2`}
+                    onClick={() => setPage(page + 1)}
+                    disabled={page === totalPages}
+                >
+                    Tiếp
+                </button>
+
             </div>
         </div>
     );
