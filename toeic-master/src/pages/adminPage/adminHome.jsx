@@ -74,13 +74,15 @@ const AdminHome = () => {
     <div style={styles.adminContainer}>
       {/* Sidebar */}
       <div style={styles.sidebar}>
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <h2 style={styles.sidebarTitle}>Toeic Master</h2>
         <h2 style={styles.sidebarTitle}>Trang Quản Trị</h2>
         <ul style={styles.sidebarList}>
           <li style={styles.sidebarListItem}>
-            <p className="text-xl bg-yellow-600 text-left p-2 rounded-md">
+            <p className="text-xl bg-yellow-600 text-left p-2 rounded-t-md">
               Xin chào
             </p>
-            <div className="text-right p-2">
+            <div className="text-xl text-right bg-yellow-600 p-2 rounded-b-md">
               <strong>{user.fullName}</strong>
             </div>
           </li>
@@ -94,16 +96,19 @@ const AdminHome = () => {
             <Link to="/admin/vocabulary" style={styles.sidebarLink}>Quản lý từ vựng</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/lesson" style={styles.sidebarLink}>Quản lý bài học</Link>
+            <Link to="/admin/part" style={styles.sidebarLink}>Quản lý các part</Link>
           </li>
           <li style={styles.sidebarListItem}>
-            <Link to="/admin/account" style={styles.sidebarLink}>Quản lý tài khoản</Link>
+            <Link to="/admin/lesson" style={styles.sidebarLink}>Quản lý bài học</Link>
           </li>
           <li style={styles.sidebarListItem}>
             <Link to="/admin/question" style={styles.sidebarLink}>Quản lý câu hỏi</Link>
           </li>
           <li style={styles.sidebarListItem}>
             <Link to="/admin/group" style={styles.sidebarLink}>Quản lý nhóm câu hỏi</Link>
+          </li>
+          <li style={styles.sidebarListItem}>
+            <Link to="/admin/account" style={styles.sidebarLink}>Quản lý tài khoản</Link>
           </li>
           <li style={styles.sidebarListItem}>
             <Link to="/admin/exams" style={styles.sidebarLink}>Tạo đề thi</Link>
