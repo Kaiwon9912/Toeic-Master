@@ -10,7 +10,8 @@ const ExamPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
-  const [remainingTime, setRemainingTime] = useState(900); // Thời gian thi: 15 phút
+  const [remainingTime, setRemainingTime] = useState();
+  const [correctAnswers, setCorrectAnswers] = useState([]); // Thêm state để lưu trữ câu trả lời đúng
 
   const examData = location.state?.examData;
 
@@ -24,15 +25,11 @@ const ExamPage = () => {
       return total;
     }, 0);
   };
+
   const calculateCorrectAnswers = () => {
     return Object.keys(answers).reduce((correct, questionId) => {
-      // Tìm câu hỏi dựa trên questionId thay vì content
       const question = questions.find((q) => q.questionID === questionId);
       if (question) {
-        console.log("Checking question:", question);
-        console.log("User's answer:", answers[questionId]);
-        console.log("Correct answer:", question.CorrectAnswer);
-
         if (answers[questionId] === question.CorrectAnswer) {
           return correct + 1;
         }
@@ -42,18 +39,19 @@ const ExamPage = () => {
   };
 
 
-
   const calculateScore = () => {
-    const correctAnswers = calculateCorrectAnswers();
     const totalQuestions = calculateTotalQuestions(questions);
-    return Math.round((correctAnswers / totalQuestions) * 100);
+    const userAnswersArray = Object.keys(answers).map(id => answers[id]); // Chuyển đổi answers thành mảng
+    const correctCount = correctAnswers.reduce((count, correctAnswer, index) => {
+      return count + (correctAnswer === userAnswersArray[index] ? 1 : 0);
+    }, 0);
+    return Math.round((correctCount / totalQuestions) * 100);
   };
 
   const handleSubmitExam = () => {
-    const correctAnswers = calculateCorrectAnswers();
-    const totalQuestions = calculateTotalQuestions(questions);
     const score = calculateScore();
-    alert(`Kết quả của bạn: ${score} điểm\nSố câu đúng: ${correctAnswers}/${totalQuestions}`);
+    alert(`Kết quả của bạn: ${score} điểm\nSố câu đúng: ${correctAnswers.filter((_, index) => correctAnswers[index] === answers[Object.keys(answers)[index]]).length}/${calculateTotalQuestions(questions)}`);
+
     navigate("/submit", { state: { answers } });
   };
 
@@ -73,7 +71,14 @@ const ExamPage = () => {
           );
           const data = await response.json();
           setQuestions(data);
+
+          // Lưu correctAnswers vào mảng
+          const answersArray = data.map(question => question.correctAnswer);
+          console.log(answersArray);
+          setCorrectAnswers(answersArray);
+
           setLoading(false);
+          setRemainingTime(data.DurationInMinutes * 60);
         } catch (error) {
           console.error("Error fetching questions:", error);
           setLoading(false);
@@ -97,14 +102,21 @@ const ExamPage = () => {
     return () => clearInterval(timer);
   }, [remainingTime, navigate, answers]);
 
-const handleAnswerUpdate = (answerIndex, questionId) => {
-  const answerMap = ["A", "B", "C", "D"]; // Ánh xạ từ index sang đáp án
-  const mappedAnswer = answerMap[answerIndex]; // Lấy đáp án theo chỉ số
-  setAnswers((prev) => ({
-    ...prev,
-    [questionId]: mappedAnswer,
-  }));
-};
+
+
+
+  const handleAnswerUpdate = (answerIndex, questionId) => {
+    console.log(questionId, answerIndex);
+    const answerMap = ["A", "B", "C", "D"]; // Ánh xạ từ index sang đáp án
+    const mappedAnswer = answerMap[answerIndex]; // Lấy đáp án theo chỉ số
+    console.log(questionId, mappedAnswer);
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: questionId, // Lưu QuestionID và đáp án
+    }));
+  };
+
+
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -134,10 +146,10 @@ const handleAnswerUpdate = (answerIndex, questionId) => {
     if (currentQuestion.type === "single") {
       return (
         <Question
-          key={currentQuestion.content}
+
           data={currentQuestion}
-          onAnswerUpdate={(answer) =>
-            handleAnswerUpdate(answer, currentQuestion.content)
+          onAnswerUpdate={(answerIndex) =>
+            handleAnswerUpdate(answerIndex, currentQuestionIndex)
           }
         />
       );
@@ -150,10 +162,10 @@ const handleAnswerUpdate = (answerIndex, questionId) => {
           </div>
           {currentQuestion.questions.map((subQuestion) => (
             <Question
-              key={subQuestion.questionID}
-              data={subQuestion}
-              onAnswerUpdate={(answer) =>
-                handleAnswerUpdate(answer, subQuestion.questionID)
+              key={currentQuestion.content}
+              data={currentQuestion}
+              onAnswerUpdate={(answerIndex) =>
+                handleAnswerUpdate(answerIndex, currentQuestion.index)
               }
             />
           ))}

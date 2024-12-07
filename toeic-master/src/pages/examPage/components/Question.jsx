@@ -6,9 +6,10 @@ const Question = ({ data, onAnswerUpdate }) => {
   // Mảng đại diện thứ tự đáp án (A, B, C, D, ...)
   const answerLabels = ["A", "B", "C", "D", "E", "F"];
 
-  const handleAnswerSelect = (answer) => {
-    setSelectedAnswer(answer);
-    onAnswerUpdate(answer); // Gửi đáp án về ExamPage
+  const handleAnswerSelect = (index) => {
+    const answerLabel = answerLabels[index]; // Lấy ký tự tương ứng (A, B, C, D)
+    setSelectedAnswer(answerLabel); // Cập nhật đáp án đã chọn
+    onAnswerUpdate(index); // Gửi chỉ số đáp án về ExamPage
   };
 
   return (
@@ -41,12 +42,11 @@ const Question = ({ data, onAnswerUpdate }) => {
         {data.answers.map((answer, index) => (
           <button
             key={index}
-            className={`w-full text-left p-2 border rounded-lg ${
-              selectedAnswer === answer
-                ? "bg-blue-300 text-white"
-                : "bg-gray-100"
-            } hover:bg-blue-100`}
-            onClick={() => handleAnswerSelect(answer)}
+            className={`w-full text-left p-2 border rounded-lg ${selectedAnswer === answerLabels[index]
+              ? "bg-blue-300 text-white"
+              : "bg-gray-100"
+              } hover:bg-blue-100`}
+            onClick={() => handleAnswerSelect(index)} // Truyền chỉ số đáp án
           >
             <span className="font-bold mr-2">{answerLabels[index]}.</span>
             {answer}
