@@ -15,49 +15,6 @@ CREATE TABLE Users (
 
 );
 
-CREATE TABLE Exams (
-    ExamID VARCHAR(100) PRIMARY KEY,
-    ExamName NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(MAX),
-    TotalQuestions INT,
-    DurationInMinutes INT,
-    CreatedAt DATETIME DEFAULT GETDATE()
-);
-
-CREATE TABLE ExamDetail (
-    ExamID VARCHAR(100),  -- ID của bài thi
-	QuestionID INT,
-	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID),
-    FOREIGN KEY (ExamID) REFERENCES Exams(ExamID),
-	PRIMARY KEY(ExamID,QuestionID)
-);
-
-CREATE TABLE Exams (
-    ExamID VARCHAR(100) PRIMARY KEY,
-    ExamName NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(MAX),
-    TotalQuestions INT,
-    DurationInMinutes INT,
-    CreatedAt DATETIME DEFAULT GETDATE()
-);
-
-CREATE TABLE ExamDetail (
-    ExamID VARCHAR(100),  -- ID của bài thi
-	QuestionID INT,
-	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID),
-    FOREIGN KEY (ExamID) REFERENCES Exams(ExamID),
-	PRIMARY KEY(ExamID,QuestionID)
-);
-
-
-
-CREATE TABLE ExamResults (
-    ResultID INT PRIMARY KEY IDENTITY(1,1),
-    UserID INT FOREIGN KEY REFERENCES Users(UserID),
-    ExamID VARCHAR(100) FOREIGN KEY REFERENCES Exams(ExamID),
-    Score INT,
-    CompletedAt DATETIME DEFAULT GETDATE()
-);
 
 CREATE TABLE Parts(
 	PartID INT PRIMARY KEY,
@@ -106,12 +63,10 @@ CREATE TABLE Questions (
 
 CREATE TABLE Topics (
     TopicID VARCHAR(10) PRIMARY KEY,
-	Image VARCHAR(MAX),
     Name NVARCHAR(100) NOT NULL,
 );
 
-ALTER TABLE Topics
-DROP COLUMN Image;
+
 
 CREATE TABLE Vocabulary (
     WordID INT PRIMARY KEY IDENTITY(1,1),
@@ -142,6 +97,50 @@ CREATE TABLE User_Question(
 	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID)
  
 );
+CREATE TABLE Exams (
+    ExamID VARCHAR(100) PRIMARY KEY,
+    ExamName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX),
+    TotalQuestions INT,
+    DurationInMinutes INT,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE ExamDetail (
+    ExamID VARCHAR(100),  -- ID của bài thi
+	QuestionID INT,
+	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID),
+    FOREIGN KEY (ExamID) REFERENCES Exams(ExamID),
+	PRIMARY KEY(ExamID,QuestionID)
+);
+
+CREATE TABLE Exams (
+    ExamID VARCHAR(100) PRIMARY KEY,
+    ExamName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX),
+    TotalQuestions INT,
+    DurationInMinutes INT,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE ExamDetail (
+    ExamID VARCHAR(100),  -- ID của bài thi
+	QuestionID INT,
+	FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID),
+    FOREIGN KEY (ExamID) REFERENCES Exams(ExamID),
+	PRIMARY KEY(ExamID,QuestionID)
+);
+
+
+
+CREATE TABLE ExamResults (
+    ResultID INT PRIMARY KEY IDENTITY(1,1),
+    UserID INT FOREIGN KEY REFERENCES Users(UserID),
+    ExamID VARCHAR(100) FOREIGN KEY REFERENCES Exams(ExamID),
+    Score INT,
+    CompletedAt DATETIME DEFAULT GETDATE()
+);
+
 
 
 
