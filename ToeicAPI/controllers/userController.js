@@ -124,3 +124,79 @@ exports.deleteUser = async (req, res) => {
         res.status(500).json({ error: 'Lỗi khi xóa người dùng: ' + err.message });
     }
 };
+
+
+exports.createUserQuestion = async (req, res) => {
+    const { UserID, QuestionID, Saved } = req.body;
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('UserID', sql.Int, UserID)
+            .input('QuestionID', sql.Int, QuestionID)
+            .input('Saved', sql.Bit, Saved || 0) // Mặc định là 0 nếu không có giá trị
+            .query(`
+                INSERT INTO User_Question (UserID, QuestionID, Saved)
+                VALUES (@UserID, @QuestionID, @Saved);
+            `);
+
+        res.status(201).json({
+            message: 'User question created successfully',
+            rowsAffected: result.rowsAffected
+        });
+    } catch (error) {
+        console.error('Error creating user question:', error.message);
+        res.status(500).json({ message: 'Error creating user question', error: error.message });
+    }
+};
+
+// Cập nhật User_Question
+exports.updateUserQuestion = async (req, res) => {
+    const { id } = req.params;
+    const { Saved } = req.body;
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('Id', sql.Int, id)
+            .input('Saved', sql.Bit, Saved)
+            .query(`
+                UPDATE User_Question
+                SET Saved = @Saved
+                WHERE Id = @Id;
+            `);
+
+        if (result.rowsAffected[0] > 0) {
+            res.status(200).json({ message: 'User question updated successfully' });
+        } else {
+            res.status(404).json({ message: 'User question not found' });
+        }
+    } catch (error) {
+        console.error('Error updating user question:', error.message);
+        res.status(500).json({ message: 'Error updating user question', error: error.message });
+    }
+};
+
+exports.getUserQuestionsByUserId = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('UserID', sql.Int, userId)
+            .query(`
+                SELECT * 
+                FROM User_Question
+                WHERE UserID = @UserID;
+            `);
+
+        if (result.recordset.length > 0) {
+            res.status(200).json(result.recordset);
+        } else {
+            res.status(404).json({ message: `No user questions found for UserID: ${userId}` });
+        }
+    } catch (error) {
+        console.error('Error fetching user questions by UserID:', error.message);
+        res.status(500).json({ message: 'Error fetching user questions by UserID', error: error.message });
+    }
+};

@@ -11,5 +11,8 @@ router.delete('/:username', userController.deleteUser);
 
 //chua check
 router.put('/:username', userController.updateUser);
-
+router.get('/question/:userId', userController.getUserQuestionsByUserId); // Thêm route mới
+router.post('/question/create', userController.createUserQuestion);
+router.put('/question/:id', userController.updateUserQuestion);
+router.get('/question/:userId', userController.getUserQuestionsByUserId); 
 module.exports = router;
