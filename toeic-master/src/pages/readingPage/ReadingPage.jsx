@@ -1,4 +1,4 @@
-import PartItem from "./PartItem";
+import PartItem from "../../components/PartItem";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from "../../components/header";
@@ -27,7 +27,7 @@ function ReadingPage() {
     const handleClick = (partId) => {
         navigate(`/reading/part/${partId}`);
     };
-
+    const filteredStats = stats.filter(stat => stat.PartID >= 5 );
     return (
         <>
             <Header />
@@ -40,7 +40,7 @@ function ReadingPage() {
 
                 {/* Danh sách các phần */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {stats.map(stat => (
+                    {filteredStats.map(stat => (
                         <div
                             key={stat.PartID}
                             onClick={() => handleClick(stat.PartID)} // Sử dụng hàm handleClick

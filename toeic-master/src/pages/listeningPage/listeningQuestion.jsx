@@ -98,12 +98,25 @@ function ListeningQuestion() {
         }
     }, [part, groupedQuestions, currentQuestionGroupIndex]);
 
-    const handleAnswerUpdate = (isCorrect) => {
+
+    const handleAnswerUpdate = async (isCorrect, questionId) => {
         setTotalCount((prev) => prev + 1);
         setHistory((prev) => [...prev, { correct: isCorrect }]);
         if (isCorrect) {
             setCorrectCount((prev) => prev + 1);
         }
+        try{
+
+            const userId = 1; // Thay bằng cách lấy UserID hiện tại từ state hoặc context
+            const response = await axios.post('http://localhost:3000/api/users/question/create', {
+              UserID: userId,
+              QuestionID: questionId,
+              Saved: 0, // Luôn lưu Saved = 0
+            });
+          } catch (error) {
+            console.error('Lỗi khi lưu câu hỏi người dùng:', error);
+          }
+          
     };
 
     const handleNext = () => {
@@ -140,7 +153,7 @@ function ListeningQuestion() {
                         questions.length > 0 && currentQuestionIndex < questions.length && (
                             <QuestionView
                                 question={questions[currentQuestionIndex]}
-                                onAnswerUpdate={handleAnswerUpdate}
+                                onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
                                 onNext={handleNext}
                             />
                         )
@@ -149,7 +162,7 @@ function ListeningQuestion() {
                             <QuestionGroupView
                                 questions={groupedQuestions[currentQuestionGroupIndex]}
                                 audio={groupAudio}
-                                onAnswerUpdate={handleAnswerUpdate}
+                                onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
                                 onNext={handleNext}
                             />
                         )

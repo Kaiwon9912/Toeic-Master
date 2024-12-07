@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Question from '../../components/Question';
-import PassageCovert from '../../components/PassageConvert';
+import axios from 'axios';
+import PassageConvert from '../../components/PassageConvert';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
@@ -36,6 +36,8 @@ const AnswerHistory = ({ history }) => {
   );
 };
 
+
+
 function ReadingQuestion() {
   const { part } = useParams();
   const [questions, setQuestions] = useState([]);
@@ -44,23 +46,32 @@ function ReadingQuestion() {
   const [correctCount, setCorrectCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [history, setHistory] = useState([]);
-  const [difficulty, setDifficulty] = useState(1); // Thêm state cho mức độ khó
+  const [answeredCount, setAnsweredCount] = useState(0); // Số câu hỏi đã trả lời
 
   const fetchQuestions = async () => {
     const partNumber = Number(part);
     if (partNumber) {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/questions/random/${partNumber}/${difficulty}`
-        );
-        if (partNumber === 6 && response.data.length > 0) {
-          setContent(response.data[0].Content);
-          setQuestions(response.data);
-        } else if (partNumber === 5) {
-          setQuestions([response.data]);
+      if (partNumber === 6) {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/questions/random-group/${partNumber}`
+          );
+          if (response.data.length > 0) {
+            setContent(response.data[0].Content);
+            setQuestions(response.data);
+          }
+        } catch (error) {
+          console.error('Error fetching questions:', error);
         }
-      } catch (error) {
-        console.error('Error fetching questions:', error);
+      } else if (partNumber === 5) {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/questions/random/${partNumber}/0`
+          );
+          setQuestions([response.data]);
+        } catch (error) {
+          console.error('Error fetching question:', error);
+        }
       }
     } else {
       console.error('Part is not a valid number:', part);
@@ -69,15 +80,32 @@ function ReadingQuestion() {
 
   useEffect(() => {
     fetchQuestions();
-  }, [difficulty]); // Fetch questions lại mỗi khi mức độ khó thay đổi
+  }, []);
 
-  const handleAnswerUpdate = (isCorrect) => {
+  const handleAnswerUpdate = async (isCorrect, questionId) => {
+
+        
     setTotalCount((prev) => prev + 1);
+    setAnsweredCount((prev) => prev + 1); // Tăng số câu hỏi đã trả lời
     setIsSelected(true);
-    setHistory((prev) => [...prev, { correct: isCorrect }]);
+    setHistory((prev) => [...prev, { correct: isCorrect }]); // Cập nhật lịch sử
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
     }
+    try{
+
+      const userId = 1; // Thay bằng cách lấy UserID hiện tại từ state hoặc context
+      const response = await axios.post('http://localhost:3000/api/users/question/create', {
+        UserID: userId,
+        QuestionID: questionId,
+        Saved: 0, // Luôn lưu Saved = 0
+      });
+    } catch (error) {
+      console.error('Lỗi khi lưu câu hỏi người dùng:', error);
+    }
+    
+
+    
   };
 
   const handleNext = () => {
@@ -88,68 +116,53 @@ function ReadingQuestion() {
 
   return (
     <>
-      <Header />
-      <div className="w-auto md:w-[64rem] m-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="col-span-1 space-y-4">
-          <Progress totalCount={totalCount} correctCount={correctCount} />
-          <div className="p-5 bg-gray-100 rounded-lg">
-            <h4 className="font-bold mb-2">Chọn mức độ khó</h4>
-            <select
-              value={difficulty}
-              onChange={(e) => setDifficulty(Number(e.target.value))}
-              className="p-2 border rounded-lg"
-            >
-              <option value={1}>Dễ</option>
-              <option value={2}>Trung bình</option>
-              <option value={3}>Khó</option>
-            </select>
-          </div>
-          <AnswerHistory history={history} />
-          {/* Dropdown chọn mức độ khó */}
-         
-        </div>
+    <Header/>
+     <div className="w-auto md:w-[64rem] m-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="col-span-1 space-y-4">
+        <Progress totalCount={totalCount} correctCount={correctCount} />
+        <AnswerHistory history={history} />
+        
+      </div>
 
-        <div className="col-span-2">
-          {part === '6' && content && (
-            <div className="mb-5">
-              <div className="text-lg bg-yellow-100 p-5 rounded-lg h-96 overflow-scroll">
-                <b>Question: {totalCount + 1}</b> <PassageCovert content={content} />
-              </div>
-            </div>
-          )}
-
-          {part === '6' && (
-            <div className="h-96 overflow-scroll py-5">
-              {questions.map((question, index) => (
-                <Question
-                  onAnswerUpdate={handleAnswerUpdate}
-                  data={question}
-                  key={index}
-                />
-              ))}
-            </div>
-          )}
-
-          {part === '5' && questions.length > 0 && (
-            <Question
-              onAnswerUpdate={handleAnswerUpdate}
-              data={questions[0][0]}
-            />
-          )}
-
-          <div className="w-full flex justify-between mt-5">
-            <div
-              className={`bg-green-400 p-2 rounded-xl text-white ${
-                isSelected ? 'block' : 'hidden'
-              }`}
-              onClick={handleNext}
-            >
-              Câu tiếp theo
+      <div className="col-span-2">
+        {part === '6' && content && (
+          <div className="mb-5">
+            <div className="text-lg bg-yellow-100 p-5 rounded-lg h-96 overflow-scroll">
+              <b>  Question: {totalCount +1} </b> <PassageConvert content={content} />
             </div>
           </div>
+        )}
+
+        {part === '6' && (
+          <div className="h-96 overflow-scroll py-5">
+            {questions.map((question, index) => (
+              <Question
+              onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
+                data={question}
+                key={index}
+              />
+            ))}
+          </div>
+        )}
+
+        {part === '5' && questions.length > 0 && (
+          <Question
+          onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, questions[0][0].QuestionID)}
+            data={questions[0][0]}
+          />
+        )}
+
+        <div className="w-full flex justify-between mt-5">
+          <button
+            className={`bg-green-400 p-2 rounded-xl text-white ${isSelected ? 'block' : 'hidden'}`} // Hiển thị nút khi tất cả câu hỏi đã được trả lời
+            onClick={handleNext}
+          >
+            Câu tiếp theo
+          </button>
         </div>
       </div>
-      <Footer />
+    </div>
+    <Footer/>
     </>
   );
 }

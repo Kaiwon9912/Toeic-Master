@@ -31,7 +31,7 @@ const ExamPage = () => {
       if (question) {
         console.log("Checking question:", question);
         console.log("User's answer:", answers[questionId]);
-        console.log("Correct answer:", question.correctAnswer);
+        console.log("Correct answer:", question.CorrectAnswer);
 
         if (answers[questionId] === question.CorrectAnswer) {
           return correct + 1;
@@ -97,12 +97,14 @@ const ExamPage = () => {
     return () => clearInterval(timer);
   }, [remainingTime, navigate, answers]);
 
-  const handleAnswerUpdate = (answer, questionId) => {
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: answer,
-    }));
-  };
+const handleAnswerUpdate = (answerIndex, questionId) => {
+  const answerMap = ["A", "B", "C", "D"]; // Ánh xạ từ index sang đáp án
+  const mappedAnswer = answerMap[answerIndex]; // Lấy đáp án theo chỉ số
+  setAnswers((prev) => ({
+    ...prev,
+    [questionId]: mappedAnswer,
+  }));
+};
 
   const scrollToTop = () => {
     window.scrollTo({

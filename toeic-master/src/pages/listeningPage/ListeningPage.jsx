@@ -1,4 +1,4 @@
-import PartItem from "./PartItem";
+import PartItem from "../../components/PartItem";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from "../../components/header";

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PassageCovert = ({ content }) => {
+const PassageConvert = ({ content }) => {
   const lines = content.split('<br/>');
   
   return (
@@ -15,4 +15,4 @@ const PassageCovert = ({ content }) => {
   );
 };
 
-export default PassageCovert;
+export default PassageConvert;
