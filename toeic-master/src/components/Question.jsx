@@ -50,25 +50,25 @@ const Question = ({ onAnswerUpdate, data }) => {
                                     className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'A' ? (question.CorrectAnswer === 'A' ? 'bg-green-300' : 'bg-red-300') : ''}`}
                                     onClick={() => handleClick('A')}
                                 >
-                                    A: {question.AnswerA}
+                                    {question.AnswerA}
                                 </li>
                                 <li
                                     className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'B' ? (question.CorrectAnswer === 'B' ? 'bg-green-300' : 'bg-red-300') : ''}`}
                                     onClick={() => handleClick('B')}
                                 >
-                                    B: {question.AnswerB}
+                                    {question.AnswerB}
                                 </li>
                                 <li
                                     className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'C' ? (question.CorrectAnswer === 'C' ? 'bg-green-300' : 'bg-red-300') : ''}`}
                                     onClick={() => handleClick('C')}
                                 >
-                                    C: {question.AnswerC}
+                                    {question.AnswerC}
                                 </li>
                                 <li
                                     className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'D' ? (question.CorrectAnswer === 'D' ? 'bg-green-300' : 'bg-red-300') : ''}`}
                                     onClick={() => handleClick('D')}
                                 >
-                                    D: {question.AnswerD}
+                                    {question.AnswerD}
                                 </li>
                             </ul>
                         </div>

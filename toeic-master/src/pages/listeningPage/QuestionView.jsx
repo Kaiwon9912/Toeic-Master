@@ -20,48 +20,51 @@ const QuestionView = ({ question, onAnswerUpdate, onNext }) => {
                 <img
                     src={question.QuestionImage}
                     alt="Question visual"
-                    className="mb-4 w-full h-80 object-cover" // Giới hạn chiều cao và giữ tỷ lệ
+                    className="mb-4 w-full h-64 object-contain rounded-xl shadow-lg" // Điều chỉnh kiểu dáng hình ảnh
                 />
             )}
             {question.QuestionAudio && (
-                <audio controls className="w-full">
+                <audio controls className="w-full mb-4">
                     <source src={question.QuestionAudio} type="audio/mpeg" />
                     Your browser does not support the audio tag.
                 </audio>
             )}
-            <div className="mt-4">
-                {question.AnswerA && question.AnswerA !== "NULL" && (
-                    <button
-                        onClick={() => handleAnswer('A')}
-                        className={`block w-full p-2 rounded-full mb-2 ${selectedAnswer === 'A' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                    >
-                        {question.AnswerA}
-                    </button>
-                )}
-                {question.AnswerB && question.AnswerB !== "NULL" && (
-                    <button
-                        onClick={() => handleAnswer('B')}
-                        className={`block w-full p-2 rounded-full mb-2 ${selectedAnswer === 'B' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                    >
-                        {question.AnswerB}
-                    </button>
-                )}
-                {question.AnswerC && question.AnswerC !== "NULL" && (
-                    <button
-                        onClick={() => handleAnswer('C')}
-                        className={`block w-full p-2 rounded-full mb-2 ${selectedAnswer === 'C' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                    >
-                        {question.AnswerC}
-                    </button>
-                )}
-                {question.AnswerD && question.AnswerD !== "NULL" && (
-                    <button
-                        onClick={() => handleAnswer('D')}
-                        className={`block w-full p-2 rounded-full mb-2 ${selectedAnswer === 'D' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                    >
-                        {question.AnswerD}
-                    </button>
-                )}
+            <div>
+                <h3 className="p-5 bg-blue-300 rounded-xl">{question.QuestionText}</h3>
+                <ul className="mt-5 space-y-2 bg-white">
+                    {question.AnswerA && question.AnswerA !== "NULL" && (
+                        <li
+                            onClick={() => handleAnswer('A')}
+                            className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'A' ? (question.CorrectAnswer === 'A' ? 'bg-green-300' : 'bg-red-300') : ''}`}
+                        >
+                            {question.AnswerA}
+                        </li>
+                    )}
+                    {question.AnswerB && question.AnswerB !== "NULL" && (
+                        <li
+                            onClick={() => handleAnswer('B')}
+                            className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'B' ? (question.CorrectAnswer === 'B' ? 'bg-green-300' : 'bg-red-300') : ''}`}
+                        >
+                            {question.AnswerB}
+                        </li>
+                    )}
+                    {question.AnswerC && question.AnswerC !== "NULL" && (
+                        <li
+                            onClick={() => handleAnswer('C')}
+                            className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'C' ? (question.CorrectAnswer === 'C' ? 'bg-green-300' : 'bg-red-300') : ''}`}
+                        >
+                            {question.AnswerC}
+                        </li>
+                    )}
+                    {question.AnswerD && question.AnswerD !== "NULL" && (
+                        <li
+                            onClick={() => handleAnswer('D')}
+                            className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswer === 'D' ? (question.CorrectAnswer === 'D' ? 'bg-green-300' : 'bg-red-300') : ''}`}
+                        >
+                            {question.AnswerD}
+                        </li>
+                    )}
+                </ul>
             </div>
             <button
                 onClick={handleNext}

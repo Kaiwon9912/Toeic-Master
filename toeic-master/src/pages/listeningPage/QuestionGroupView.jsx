@@ -8,13 +8,12 @@ const QuestionGroupView = ({ audio, questions, onAnswerUpdate, onNext }) => {
             ...prev,
             [questionId]: answer, // Lưu câu trả lời đã chọn
         }));
+        // Gọi onAnswerUpdate ngay khi người dùng chọn câu trả lời
+        const isCorrect = answer === questions.find(q => q.QuestionID === questionId).CorrectAnswer;
+        onAnswerUpdate(isCorrect, questionId); // Truyền cả isCorrect và questionId
     };
 
     const handleNext = () => {
-        questions.forEach((question) => {
-            const isCorrect = selectedAnswers[question.QuestionID] === question.CorrectAnswer;
-            onAnswerUpdate(isCorrect); // Gọi hàm cập nhật câu trả lời
-        });
         setSelectedAnswers({}); // Reset lại câu trả lời đã chọn
         onNext(); // Chuyển đến câu hỏi tiếp theo
     };
@@ -34,43 +33,22 @@ const QuestionGroupView = ({ audio, questions, onAnswerUpdate, onNext }) => {
                         <img
                             src={question.QuestionImage}
                             alt="Question visual"
-                            className="mb-4 w-full h-96 object-cover"
+                            className="mb-4 w-full h-64 object-contain rounded-xl shadow-lg"
                         />
                     )}
-                    <h3 className="font-normal text-lg">{question.QuestionText}</h3>
-                    <div className="mt-4">
-                        {question.AnswerA && question.AnswerA !== "NULL" && (
-                            <button
-                                onClick={() => handleAnswer(question.QuestionID, 'A')}
-                                className={`block w-full p-2 rounded-full mb-2 ${selectedAnswers[question.QuestionID] === 'A' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                            >
-                                {question.AnswerA}
-                            </button>
-                        )}
-                        {question.AnswerB && question.AnswerB !== "NULL" && (
-                            <button
-                                onClick={() => handleAnswer(question.QuestionID, 'B')}
-                                className={`block w-full p-2 rounded-full mb-2 ${selectedAnswers[question.QuestionID] === 'B' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                            >
-                                {question.AnswerB}
-                            </button>
-                        )}
-                        {question.AnswerC && question.AnswerC !== "NULL" && (
-                            <button
-                                onClick={() => handleAnswer(question.QuestionID, 'C')}
-                                className={`block w-full p-2 rounded-full mb-2 ${selectedAnswers[question.QuestionID] === 'C' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                            >
-                                {question.AnswerC}
-                            </button>
-                        )}
-                        {question.AnswerD && question.AnswerD !== "NULL" && (
-                            <button
-                                onClick={() => handleAnswer(question.QuestionID, 'D')}
-                                className={`block w-full p-2 rounded-full mb-2 ${selectedAnswers[question.QuestionID] === 'D' ? 'bg-blue-600 text-white' : 'bg-white border border-blue-600'}`}
-                            >
-                                {question.AnswerD}
-                            </button>
-                        )}
+                    <h3 className="p-5 bg-blue-300 rounded-xl text-lg font-normal">{question.QuestionText}</h3>
+                    <div className="mt-4 space-y-2 bg-white">
+                        {['A', 'B', 'C', 'D'].map((option) => (
+                            question[`Answer${option}`] && question[`Answer${option}`] !== "NULL" && (
+                                <li
+                                    key={option}
+                                    onClick={() => handleAnswer(question.QuestionID, option)}
+                                    className={`p-2 cursor-pointer rounded-xl bg-blue-200 ${selectedAnswers[question.QuestionID] === option ? (question.CorrectAnswer === option ? 'bg-green-300' : 'bg-red-300') : ''}`}
+                                >
+                                    {question[`Answer${option}`]}
+                                </li>
+                            )
+                        ))}
                     </div>
                 </div>
             ))}

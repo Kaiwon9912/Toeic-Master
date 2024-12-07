@@ -101,22 +101,20 @@ function ListeningQuestion() {
 
     const handleAnswerUpdate = async (isCorrect, questionId) => {
         setTotalCount((prev) => prev + 1);
-        setHistory((prev) => [...prev, { correct: isCorrect }]);
+        setHistory((prev) => [...prev, { questionId, correct: isCorrect }]); // Lưu questionId vào history
         if (isCorrect) {
             setCorrectCount((prev) => prev + 1);
         }
-        try{
-
+        try {
             const userId = 1; // Thay bằng cách lấy UserID hiện tại từ state hoặc context
             const response = await axios.post('http://localhost:3000/api/users/question/create', {
-              UserID: userId,
-              QuestionID: questionId,
-              Saved: 0, // Luôn lưu Saved = 0
+                UserID: userId,
+                QuestionID: questionId,
+                Saved: 0, // Luôn lưu Saved = 0
             });
-          } catch (error) {
+        } catch (error) {
             console.error('Lỗi khi lưu câu hỏi người dùng:', error);
-          }
-          
+        }
     };
 
     const handleNext = () => {
@@ -126,6 +124,7 @@ function ListeningQuestion() {
             setCurrentQuestionGroupIndex((prev) => prev + 1); // Chuyển đến nhóm câu hỏi tiếp theo
         }
     };
+
 
     return (
         <>
@@ -153,7 +152,7 @@ function ListeningQuestion() {
                         questions.length > 0 && currentQuestionIndex < questions.length && (
                             <QuestionView
                                 question={questions[currentQuestionIndex]}
-                                onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
+                                onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, questions[currentQuestionIndex].QuestionID)} // Cập nhật ở đây
                                 onNext={handleNext}
                             />
                         )
@@ -162,7 +161,7 @@ function ListeningQuestion() {
                             <QuestionGroupView
                                 questions={groupedQuestions[currentQuestionGroupIndex]}
                                 audio={groupAudio}
-                                onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
+                                onAnswerUpdate={(isCorrect, questionId) => handleAnswerUpdate(isCorrect, questionId)} // Cập nhật ở đây
                                 onNext={handleNext}
                             />
                         )
