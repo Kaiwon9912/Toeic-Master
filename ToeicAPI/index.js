@@ -11,6 +11,7 @@ const partsRoutes = require('./routes/parts');
 const examsRoutes = require('./routes/exams');
 const userRoutes = require('./routes/users');
 const lessonRoutes = require('./routes/lessons');
+const examResult = require('./routes/examResult');
 const app = express();
 const port = 3000;
 
@@ -31,6 +32,7 @@ app.use('/api/parts', partsRoutes);
 app.use('/api/exams', examsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/lessons', lessonRoutes);
+app.use('/api/results', examResult);
 
 // Khởi động server
 app.listen(port, () => {

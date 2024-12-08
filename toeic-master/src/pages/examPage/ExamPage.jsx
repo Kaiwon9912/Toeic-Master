@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Question from "./components/Question";
-
+import axios from "axios";
 const ExamPage = () => {
-  const userID = 1;
+  const userID = 2; // Giả lập UserID
   const location = useLocation();
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
@@ -11,7 +11,7 @@ const ExamPage = () => {
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
   const [remainingTime, setRemainingTime] = useState();
-  const [correctAnswers, setCorrectAnswers] = useState([]); // Thêm state để lưu trữ câu trả lời đúng
+  const [correctAnswers, setCorrectAnswers] = useState([]);
 
   const examData = location.state?.examData;
 
@@ -26,39 +26,53 @@ const ExamPage = () => {
     }, 0);
   };
 
-  const calculateCorrectAnswers = () => {
-    return Object.keys(answers).reduce((correct, questionId) => {
-      const question = questions.find((q) => q.questionID === questionId);
-      if (question) {
-        if (answers[questionId] === question.CorrectAnswer) {
-          return correct + 1;
-        }
-      }
-      return correct;
-    }, 0);
-  };
-
-
   const calculateScore = () => {
-    const totalQuestions = calculateTotalQuestions(questions);
-    const userAnswersArray = Object.keys(answers).map(id => answers[id]); // Chuyển đổi answers thành mảng
-    const correctCount = correctAnswers.reduce((count, correctAnswer, index) => {
-      return count + (correctAnswer === userAnswersArray[index] ? 1 : 0);
-    }, 0);
-    return Math.round((correctCount / totalQuestions) * 100);
+    
   };
 
-  const handleSubmitExam = () => {
-    const score = calculateScore();
-    alert(`Kết quả của bạn: ${score} điểm\nSố câu đúng: ${correctAnswers.filter((_, index) => correctAnswers[index] === answers[Object.keys(answers)[index]]).length}/${calculateTotalQuestions(questions)}`);
 
-    navigate("/submit", { state: { answers } });
+  const handleSubmitExam = async () => {
+  
+
+    const totalCorrect = Object.keys(answers).filter(
+      (id) => answers[id] === correctAnswers[id]
+    ).length;
+    const score = Math.round(100 / calculateTotalQuestions(questions) * totalCorrect);
+
+
+
+    // Hiển thị xác nhận và gửi dữ liệu
+    if (window.confirm(`Kết quả của bạn: ${score} điểm\nSố câu đúng: ${totalCorrect}/${calculateTotalQuestions(questions)}\nBạn có chắc chắn muốn nộp bài?`)) {
+      try {
+        // Gọi API createOrUpdateExamResult
+        const response = await axios.post("http://localhost:3000/api/results/", {
+          userId: userID, // ID người dùng
+          examId: examData.ExamID, // ID bài thi
+          score: score, // Điểm số
+        });
+  
+        if (response.status === 200) { // Kiểm tra thành công
+          alert("Nộp bài thành công! Điểm của bạn đã được lưu.");
+          navigate("/submit", { state: { answers } }); // Điều hướng đến trang kết quả hoặc trang chủ
+        } else {
+          console.error("Error submitting exam result:", response.data);
+          alert("Có lỗi xảy ra khi nộp bài. Vui lòng thử lại.");
+        }
+      } catch (error) {
+        console.error("Error submitting exam result:", error);
+        alert("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
+      }
+    }
   };
+  
+  
+
 
   useEffect(() => {
     if (!examData) {
-      navigate("/#/");
+      navigate("/#/"); // Điều hướng về trang chính nếu không có dữ liệu bài thi
     }
+    setRemainingTime(examData.DurationInMinutes * 60);
   }, [examData, navigate]);
 
   useEffect(() => {
@@ -72,13 +86,20 @@ const ExamPage = () => {
           const data = await response.json();
           setQuestions(data);
 
-          // Lưu correctAnswers vào mảng
-          const answersArray = data.map(question => question.correctAnswer);
-          console.log(answersArray);
-          setCorrectAnswers(answersArray);
+          // Lưu các câu trả lời đúng
+          const answersMap = {};
+          data.forEach((question) => {
+            if (question.type === "single") {
+              answersMap[question.questionID] = question.correctAnswer;
+            } else if (question.type === "group") {
+              question.questions.forEach((subQuestion) => {
+                answersMap[subQuestion.questionID] = subQuestion.correctAnswer;
+              });
+            }
+          });
+          setCorrectAnswers(answersMap);
 
           setLoading(false);
-          setRemainingTime(data.DurationInMinutes * 60);
         } catch (error) {
           console.error("Error fetching questions:", error);
           setLoading(false);
@@ -100,28 +121,21 @@ const ExamPage = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [remainingTime, navigate, answers]);
-
-
-
+  }, [remainingTime]);
 
   const handleAnswerUpdate = (answerIndex, questionId) => {
-    console.log(questionId, answerIndex);
     const answerMap = ["A", "B", "C", "D"]; // Ánh xạ từ index sang đáp án
     const mappedAnswer = answerMap[answerIndex]; // Lấy đáp án theo chỉ số
-    console.log(questionId, mappedAnswer);
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: questionId, // Lưu QuestionID và đáp án
+      [questionId]: mappedAnswer,
     }));
   };
-
-
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Cuộn mượt
+      behavior: "smooth",
     });
   };
 
@@ -146,10 +160,9 @@ const ExamPage = () => {
     if (currentQuestion.type === "single") {
       return (
         <Question
-
           data={currentQuestion}
           onAnswerUpdate={(answerIndex) =>
-            handleAnswerUpdate(answerIndex, currentQuestionIndex)
+            handleAnswerUpdate(answerIndex, currentQuestion.questionID)
           }
         />
       );
@@ -162,10 +175,10 @@ const ExamPage = () => {
           </div>
           {currentQuestion.questions.map((subQuestion) => (
             <Question
-              key={currentQuestion.content}
-              data={currentQuestion}
+              key={subQuestion.questionID}
+              data={subQuestion}
               onAnswerUpdate={(answerIndex) =>
-                handleAnswerUpdate(answerIndex, currentQuestion.index)
+                handleAnswerUpdate(answerIndex, subQuestion.questionID)
               }
             />
           ))}
@@ -182,13 +195,12 @@ const ExamPage = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <div className="w-1/4 bg-white shadow-lg p-4">
         <h2 className="text-xl font-bold mb-4">{examData?.ExamName}</h2>
         <p className="mb-4">
-          <b>Số câu đã làm:</b> {Object.keys(answers).length}/{calculateTotalQuestions(questions)}
+          <b>Số câu đã làm:</b> {Object.keys(answers).length}/
+          {calculateTotalQuestions(questions)}
         </p>
-
         <p className="mb-4 text-red-500 font-semibold">
           <b>Thời gian còn lại:</b> {formatTime(remainingTime)}
         </p>
@@ -196,22 +208,21 @@ const ExamPage = () => {
           {questions.map((question, index) => (
             <li
               key={index}
-              className={`p-2 rounded-lg cursor-pointer flex justify-between items-center ${currentQuestionIndex === index
-                ? "bg-blue-300 text-white"
-                : "bg-gray-200"
-                }`}
+              className={`p-2 rounded-lg cursor-pointer ${
+                currentQuestionIndex === index
+                  ? "bg-blue-300 text-white"
+                  : "bg-gray-200"
+              }`}
               onClick={() => {
                 setCurrentQuestionIndex(index);
                 scrollToTop();
               }}
             >
-              <span>Câu {index + 1}</span>
+              Câu {index + 1}
             </li>
           ))}
         </ul>
       </div>
-
-      {/* Nội dung chính */}
       <div className="w-3/4 p-8">
         {loading ? (
           <p>Đang tải câu hỏi...</p>
@@ -220,20 +231,22 @@ const ExamPage = () => {
             {renderQuestion()}
             <div className="mt-8 flex justify-between">
               <button
-                className={`px-4 py-2 rounded ${currentQuestionIndex === 0
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
-                  }`}
+                className={`px-4 py-2 rounded ${
+                  currentQuestionIndex === 0
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
                 disabled={currentQuestionIndex === 0}
                 onClick={handlePrevious}
               >
                 Previous
               </button>
               <button
-                className={`px-4 py-2 rounded ${currentQuestionIndex === questions.length - 1
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-green-500 text-white hover:bg-green-600"
-                  }`}
+                className={`px-4 py-2 rounded ${
+                  currentQuestionIndex === questions.length - 1
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-green-500 text-white hover:bg-green-600"
+                }`}
                 disabled={currentQuestionIndex === questions.length - 1}
                 onClick={handleNext}
               >
