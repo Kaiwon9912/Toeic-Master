@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SuccessMessage from '../../AdminArea/components/SuccessMessage'
+import FailMessage from '../../AdminArea/components/FailMessage'
 
 const Account = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(''); // State để lưu giá trị tìm kiếm
+  const [searchTerm, setSearchTerm] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [failMessage, setFailMessage] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -14,7 +18,7 @@ const Account = () => {
         setUsers(response.data); // Giả sử API trả về danh sách người dùng
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setFailMessage(`${err.message}`);
         setLoading(false);
       }
     };
@@ -25,9 +29,9 @@ const Account = () => {
   const resetPassword = async (userId) => {
     try {
       await axios.post(`http://localhost:3000/api/users/reset-password/${userId}`, { newPassword: '1' });
-      alert('Mật khẩu đã được reset thành công thành "1"!');
+      setSuccessMessage('Mật khẩu đã được reset thành công thành "1"!');
     } catch (error) {
-      alert('Lỗi khi reset mật khẩu: ' + error.message);
+      setFailMessage(`${error.message}`);
     }
   };
 
@@ -35,9 +39,9 @@ const Account = () => {
     try {
       await axios.delete(`http://localhost:3000/api/users/${userId}`);
       setUsers(users.filter(user => user.Username !== userId)); // Cập nhật danh sách người dùng
-      alert('Người dùng đã được xóa!');
+      setSuccessMessage('Người dùng đã được xóa!');
     } catch (error) {
-      alert('Lỗi khi xóa người dùng: ' + error.message);
+      setFailMessage('Lỗi khi xóa người dùng: ' + error.message);
     }
   };
 
@@ -49,8 +53,18 @@ const Account = () => {
   if (loading) return <div>Đang tải dữ liệu...</div>;
   if (error) return <div>Lỗi khi tải dữ liệu: {error}</div>;
 
+  const closeSuccessMessage = () => setSuccessMessage('');
+  const closeFailMessage = () => setFailMessage('');
+
+
   return (
     <div>
+
+      {/* Hiển thị thông báo thành công */}
+      <SuccessMessage message={successMessage} onClose={closeSuccessMessage} />
+      {/* Hiển thị thông báo thất bại */}
+      <FailMessage message={failMessage} onClose={closeFailMessage} />
+
       <h1 className="text-center text-2xl mb-4">Quản lý người dùng</h1>
 
       {/* Thanh tìm kiếm */}

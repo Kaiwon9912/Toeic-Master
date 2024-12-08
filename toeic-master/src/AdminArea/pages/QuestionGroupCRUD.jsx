@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ModalQuestionGroup from '../components/ModalQuestionGroup';
+import SuccessMessage from '../../AdminArea/components/SuccessMessage';
+import FailMessage from '../../AdminArea/components/FailMessage';
 
 const QuestionGroupCRUD = () => {
   const [questionGroups, setQuestionGroups] = useState([]);
@@ -9,6 +11,8 @@ const QuestionGroupCRUD = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [failMessage, setFailMessage] = useState('');
 
   // Lấy danh sách nhóm câu hỏi với phân trang
   const fetchQuestionGroups = async (page = 1) => {
@@ -20,7 +24,7 @@ const QuestionGroupCRUD = () => {
       setTotalPages(totalPages);
       setCurrentPage(page);
     } catch (error) {
-      console.error('Lỗi khi lấy nhóm câu hỏi:', error);
+      setFailMessage(`${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -35,9 +39,10 @@ const QuestionGroupCRUD = () => {
     if (window.confirm('Bạn có chắc chắn muốn xóa nhóm này không?')) {
       try {
         await axios.delete(`http://localhost:3000/api/questions/group/delete/${id}`);
+        setSuccessMessage('Xóa nhóm câu hỏi thành công!');
         fetchQuestionGroups(currentPage);
       } catch (error) {
-        console.error('Lỗi khi xóa nhóm câu hỏi:', error);
+        setFailMessage(`${error.message}`);
       }
     }
   };
@@ -55,15 +60,26 @@ const QuestionGroupCRUD = () => {
     fetchQuestionGroups(currentPage);
   };
 
+  const closeSuccessMessage = () => setSuccessMessage('');
+  const closeFailMessage = () => setFailMessage('');
+
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Quản lý nhóm câu hỏi</h1>
-      <button
-        onClick={() => handleOpenModal()}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Thêm nhóm mới
-      </button>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl text-blue-800">Quản lý nhóm câu hỏi</h1>
+        <button
+          onClick={() => handleOpenModal()}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Thêm nhóm mới
+        </button>
+      </div>
+
+      {/* Hiển thị thông báo thành công */}
+      <SuccessMessage message={successMessage} onClose={closeSuccessMessage} />
+      {/* Hiển thị thông báo thất bại */}
+      <FailMessage message={failMessage} onClose={closeFailMessage} />
+
       {loading ? (
         <p>Đang tải...</p>
       ) : (
@@ -138,6 +154,8 @@ const QuestionGroupCRUD = () => {
         <ModalQuestionGroup
           group={selectedGroup}
           onClose={handleCloseModal}
+          setSuccessMessage={setSuccessMessage}
+          setFailMessage={setFailMessage}
         />
       )}
     </div>

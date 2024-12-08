@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SuccessMessage from '../../AdminArea/components/SuccessMessage'
+import FailMessage from '../../AdminArea/components/FailMessage'
 
 const Vocabulary = () => {
   const [vocabulary, setVocabulary] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [wordToDelete, setWordToDelete] = useState(null);
-  const [successMessage, setSuccessMessage] = useState('');
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [wordInfo, setWordInfo] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -17,15 +16,11 @@ const Vocabulary = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newWord, setNewWord] = useState({ Word: '', Translation: '', TopicID: '' }); const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [failMessage, setFailMessage] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const topicsPerPage = 15;
 
-  const handleError = (message) => {
-    setError(message);
-    setTimeout(() => {
-      setError(null);
-    }, 3000);
-  };
 
   useEffect(() => {
     fetchVocabulary();
@@ -36,10 +31,8 @@ const Vocabulary = () => {
     try {
       const response = await axios.get('http://localhost:3000/api/vocabulary');
       setVocabulary(response.data);
-      setLoading(false);
     } catch (err) {
-      handleError(error.message); // Gọi hàm xử lý lỗi
-      setLoading(false);
+      setFailMessage(err.message); // Gọi hàm xử lý lỗi
     }
   };
 
@@ -49,8 +42,7 @@ const Vocabulary = () => {
       setTopics(response.data);
       setTotalPages(Math.ceil(response.data.length / topicsPerPage));
     } catch (err) {
-      handleError(error.message); // Gọi hàm xử lý lỗi
-      setTimeout(() => setError(null), 5000);
+      setFailMessage(err.message); // Gọi hàm xử lý lỗi
     }
   };
 
@@ -66,13 +58,10 @@ const Vocabulary = () => {
       setSuccessMessage(`Deleted successfully: "${wordToDelete.Word}"`);
       setIsDeleteModalOpen(false);
       setWordToDelete(null);
+      setSuccessMessage('Xóa từ vựng thành công!');
     } catch (error) {
-      handleError(error.message); // Gọi hàm xử lý lỗi
+      setFailMessage(error.message); // Gọi hàm xử lý lỗi
     }
-
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 5000);
   };
 
   const handleCancelDelete = () => {
@@ -135,36 +124,40 @@ const Vocabulary = () => {
 
   // Hàm gửi yêu cầu thêm từ mới
   const handleAddSubmit = async () => {
+    // Kiểm tra nếu newWord.Word là null hoặc chỉ chứa ký tự trắng
+    if (!newWord.Word || newWord.Word.trim() === '') {
+      setFailMessage('Từ không được để trống');
+      return; // Ngừng thực hiện nếu điều kiện không thỏa mãn
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/api/vocabulary', newWord);
       setVocabulary([...vocabulary, response.data]);
-      setSuccessMessage(`Added successfully: "${newWord.Word}"`);
       handleCloseModal();
       fetchVocabulary();
+      setSuccessMessage(`Thêm thành công từ "${newWord.Word}"`);
     } catch (error) {
-      handleError(error.message);
+      setFailMessage(error.message); // Gọi hàm xử lý lỗi
     }
-
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 5000);
   };
 
   // Hàm gửi yêu cầu chỉnh sửa từ
   const handleEditSubmit = async () => {
+    // Kiểm tra nếu newWord.Word là null hoặc chỉ chứa ký tự trắng
+    if (!editWord.Word || editWord.Word.trim() === '') {
+      setFailMessage('Từ không được để trống');
+      return; // Ngừng thực hiện nếu điều kiện không thỏa mãn
+    }
     try {
       await axios.put(`http://localhost:3000/api/vocabulary/${editWord.WordID}`, editWord);
       setVocabulary(vocabulary.map(item => item.Word === editWord.Word ? editWord : item));
       setSuccessMessage(`Edited successfully: "${editWord.Word}"`);
       handleCloseModal();
       fetchVocabulary();
+      setSuccessMessage('Sửa từ vựng thành công!');
     } catch (error) {
-      handleError(error.message);
+      setFailMessage(error.message); // Gọi hàm xử lý lỗi
     }
-
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 5000);
   };
 
 
@@ -177,6 +170,9 @@ const Vocabulary = () => {
 
   const currentItems = filteredVocabulary.slice(indexOfFirstItem, indexOfLastItem);
   const totalPagesVocabulary = Math.ceil(filteredVocabulary.length / itemsPerPage);
+
+  const closeSuccessMessage = () => setSuccessMessage('');
+  const closeFailMessage = () => setFailMessage('');
 
   const handleNextPage = () => {
     if (currentPage < totalPagesVocabulary) {
@@ -192,6 +188,12 @@ const Vocabulary = () => {
 
   return (
     <div className="p-5 bg-gray-100 rounded-lg">
+
+      {/* Hiển thị thông báo thành công */}
+      <SuccessMessage message={successMessage} onClose={closeSuccessMessage} />
+      {/* Hiển thị thông báo thất bại */}
+      <FailMessage message={failMessage} onClose={closeFailMessage} />
+
       <h1 className="text-center text-3xl text-blue-800 mb-5">Quản lý từ vựng</h1>
 
       <div className="flex justify-between mb-4">
@@ -213,19 +215,6 @@ const Vocabulary = () => {
           Thêm từ
         </button>
       </div>
-
-      {error && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded shadow-md">
-          {error}
-        </div>
-      )}
-
-      {successMessage && (
-        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-4 rounded shadow-md">
-          {successMessage}
-        </div>
-      )}
-
       <table className="w-full border-collapse bg-white rounded-lg overflow-hidden">
         <thead>
           <tr>

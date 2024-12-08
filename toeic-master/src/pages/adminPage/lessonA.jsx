@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SuccessMessage from '../../AdminArea/components/SuccessMessage'
+import FailMessage from '../../AdminArea/components/FailMessage'
 
 // Trang Bài Học
 const Lessons = () => {
@@ -8,11 +10,13 @@ const Lessons = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentLesson, setCurrentLesson] = useState({ Title: '', Content: '', QuestionType: '', Guide: '', Score: '', PartID: '' });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [failMessage, setFailMessage] = useState('');
+  const itemsPerPage = 4;
+
 
   const fetchLessons = async () => {
     setLoading(true);
@@ -20,7 +24,7 @@ const Lessons = () => {
       const response = await axios.get('http://localhost:3000/api/lessons');
       setLessons(response.data);
     } catch (err) {
-      setError(err.message);
+      setFailMessage(err.message);
     } finally {
       setLoading(false);
     }
@@ -31,7 +35,7 @@ const Lessons = () => {
       const response = await axios.get('http://localhost:3000/api/parts');
       setParts(response.data);
     } catch (error) {
-      console.error('Lỗi khi tải các phần:', error.message);
+      setFailMessage(error.message);
     }
   };
 
@@ -72,6 +76,14 @@ const Lessons = () => {
   };
 
   const saveLesson = async () => {
+    // Kiểm tra nếu Title, Content, và Guide đều không hợp lệ
+    if (!currentLesson.Title || currentLesson.Title.trim() === '' ||
+      !currentLesson.Content || currentLesson.Content.trim() === '' ||
+      !currentLesson.Guide || currentLesson.Guide.trim() === '') {
+      setFailMessage('Tiêu đề, nội dung và hướng dẫn không được để trống');
+      return; // Ngừng thực hiện nếu điều kiện không thỏa mãn
+    }
+
     try {
       if (isEditMode) {
         await axios.put(`http://localhost:3000/api/lessons/${currentLesson.LessonID}`, currentLesson);
@@ -80,8 +92,9 @@ const Lessons = () => {
       }
       fetchLessons();
       setIsModalOpen(false);
+      setSuccessMessage('Lưu bài học thành công!');
     } catch (error) {
-      console.error('Lỗi khi lưu bài học:', error.message);
+      setFailMessage(error.message);
     }
   };
 
@@ -89,8 +102,9 @@ const Lessons = () => {
     try {
       await axios.delete(`http://localhost:3000/api/lessons/${lessonId}`);
       fetchLessons();
+      setSuccessMessage('Xóa bài học thành công!');
     } catch (error) {
-      console.error('Lỗi khi xóa bài học:', error.message);
+      setFailMessage(error.message);
     }
   };
 
@@ -102,11 +116,20 @@ const Lessons = () => {
     '751 - 1000',
   ];
 
+
+  const closeSuccessMessage = () => setSuccessMessage('');
+  const closeFailMessage = () => setFailMessage('');
+
   return (
     <div className="p-5 bg-gray-100 rounded-lg max-w-full overflow-hidden relative">
-      <h1 className="text-center text-4xl text-blue-800 mb-5">Quản lý  Bài Học</h1>
 
-      <div className="absolute top-5 right-5">
+      {/* Hiển thị thông báo thành công */}
+      <SuccessMessage message={successMessage} onClose={closeSuccessMessage} />
+      {/* Hiển thị thông báo thất bại */}
+      <FailMessage message={failMessage} onClose={closeFailMessage} />
+
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-4xl text-blue-800">Quản lý Bài Học</h1>
         <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => openModal()}>
           Thêm Bài Học Mới
         </button>
@@ -192,7 +215,6 @@ const Lessons = () => {
                 <option key={part.PartID} value={part.PartID}>{part.Title}</option>
               ))}
             </select>
-            {/* Dropdown cho Điểm đứng sau Phần */}
             <select
               value={currentLesson.Score}
               onChange={e => setCurrentLesson({ ...currentLesson, Score: e.target.value })}

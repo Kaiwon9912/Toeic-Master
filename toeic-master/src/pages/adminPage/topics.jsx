@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SuccessMessage from '../../AdminArea/components/SuccessMessage'
+import FailMessage from '../../AdminArea/components/FailMessage'
 
 const Topics = () => {
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [editingTopic, setEditingTopic] = useState(null);
-  const [deleteSuccess, setDeleteSuccess] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const topicsPerPage = 10;
@@ -14,6 +14,8 @@ const Topics = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [topicToDelete, setTopicToDelete] = useState(null);
   const [newTopic, setNewTopic] = useState({ Name: '' });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [failMessage, setFailMessage] = useState('');
 
   const fetchTopics = async () => {
     try {
@@ -22,9 +24,7 @@ const Topics = () => {
       setTotalPages(Math.ceil(response.data.length / topicsPerPage));
       setLoading(false);
     } catch (err) {
-      setError(err.message);
-      setLoading(false);
-      setTimeout(() => setError(null), 5000);
+      setFailMessage(`${err.message}`);
     }
   };
 
@@ -37,12 +37,9 @@ const Topics = () => {
       try {
         await axios.delete(`http://localhost:3000/api/topic/${topicToDelete.TopicID}`);
         setTopics(prevTopics => prevTopics.filter((topic) => topic.TopicID !== topicToDelete.TopicID));
-        setDeleteSuccess('Xóa thành công!');
-        setTimeout(() => setDeleteSuccess(''), 3000);
-        setIsDeleteModalOpen(false);
+        setSuccessMessage('Xóa chủ đề thành công!');
       } catch (err) {
-        setError(`Lỗi khi xóa chủ đề: ${err.response ? err.response.data : err.message}`);
-        setTimeout(() => setError(null), 5000);
+        setFailMessage(`Lỗi khi xóa chủ đề: ${err.message}`);
       }
     }
   };
@@ -53,14 +50,20 @@ const Topics = () => {
   };
 
   const handleUpdateTopic = async () => {
+    // Kiểm tra xem editingTopic.Name có hợp lệ không
+    if (!editingTopic.Name || editingTopic.Name.trim() === '') {
+      setFailMessage('Tên chủ đề không được để trống.');
+      return;
+    }
+
     try {
       const response = await axios.put(`http://localhost:3000/api/topic/${editingTopic.TopicID}`, editingTopic);
       setTopics(topics.map(topic => topic.TopicID === editingTopic.TopicID ? response.data : topic));
       setEditingTopic(null);
       fetchTopics();
+      setSuccessMessage('Cập nhật chủ đề thành công!');
     } catch (err) {
-      setError(err.message);
-      setTimeout(() => setError(null), 5000);
+      setFailMessage(`Lỗi khi cập nhật chủ đề: ${err.message}`);
     }
   };
 
@@ -92,15 +95,21 @@ const Topics = () => {
   };
 
   const handleAddTopic = async () => {
+    // Kiểm tra xem newTopic.Name có hợp lệ không
+    if (!newTopic.Name || newTopic.Name.trim() === '') {
+      setFailMessage('Tên chủ đề không được để trống.');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/api/topic', newTopic);
       setTopics([...topics, response.data]);
       setIsAddModalOpen(false);
       setNewTopic({ Name: '' });
       fetchTopics();
+      setSuccessMessage('Thêm chủ đề thành công!');
     } catch (err) {
-      setError(err.message);
-      setTimeout(() => setError(null), 5000);
+      setFailMessage(`Lỗi khi thêm chủ đề: ${err.message}`);
     }
   };
 
@@ -108,25 +117,24 @@ const Topics = () => {
     setEditingTopic(topic);
   };
 
+  const closeSuccessMessage = () => setSuccessMessage('');
+  const closeFailMessage = () => setFailMessage('');
+
   const currentTopics = topics.slice((currentPage - 1) * topicsPerPage, currentPage * topicsPerPage);
 
   if (loading) return <p className="text-center text-lg text-blue-800 py-12">Đang tải chủ đề...</p>;
 
   return (
     <div className="p-6 bg-gray-100 rounded-lg ">
-      {/* Thông báo lỗi */}
-      {error && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out">
-          <span>{error}</span>
-        </div>
-      )}
+      {/* Hiển thị thông báo thành công */}
+      <SuccessMessage message={successMessage} onClose={closeSuccessMessage} />
+      {/* Hiển thị thông báo thất bại */}
+      <FailMessage message={failMessage} onClose={closeFailMessage} />
 
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl text-blue-800">Quản Lý Chủ Đề</h1>
         <button className="w-[10%] p-2 bg-blue-800 text-white rounded ml-auto" onClick={openAddModal}>Thêm Chủ Đề</button>
       </div>
-
-      {deleteSuccess && <p className="text-green-500 font-bold">{deleteSuccess}</p>}
 
       {/* Modal Thêm Chủ Đề */}
       {isAddModalOpen && (

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SuccessMessage from '../../AdminArea/components/SuccessMessage'
+import FailMessage from '../../AdminArea/components/FailMessage'
 
 const Parts = () => {
     const [parts, setParts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [editingPart, setEditingPart] = useState(null);
-    const [deleteSuccess, setDeleteSuccess] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const partsPerPage = 10;
@@ -14,6 +14,8 @@ const Parts = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [partToDelete, setPartToDelete] = useState(null);
     const [newPart, setNewPart] = useState({ Title: '', MediaURL: '' });
+    const [successMessage, setSuccessMessage] = useState('');
+    const [failMessage, setFailMessage] = useState('');
 
     const fetchParts = async () => {
         try {
@@ -22,9 +24,7 @@ const Parts = () => {
             setTotalPages(Math.ceil(response.data.length / partsPerPage));
             setLoading(false);
         } catch (err) {
-            setError(err.message);
-            setLoading(false);
-            setTimeout(() => setError(null), 5000);
+            setFailMessage(`${err.message}`);
         }
     };
 
@@ -37,12 +37,11 @@ const Parts = () => {
             try {
                 await axios.delete(`http://localhost:3000/api/parts/${partToDelete.PartID}`);
                 setParts(prevParts => prevParts.filter((part) => part.PartID !== partToDelete.PartID));
-                setDeleteSuccess('Xóa thành công!');
                 setTimeout(() => setDeleteSuccess(''), 3000);
                 setIsDeleteModalOpen(false);
+                setSuccessMessage('Xóa part thành công!');
             } catch (err) {
-                setError(`Lỗi khi xóa part: ${err.response ? err.response.data : err.message}`);
-                setTimeout(() => setError(null), 5000);
+                setFailMessage(`Lỗi khi xóa part: ${err.message}`);
             }
         }
     };
@@ -53,14 +52,20 @@ const Parts = () => {
     };
 
     const handleUpdatePart = async () => {
+        // Kiểm tra nếu editingPart.Title là null hoặc chỉ chứa khoảng trắng
+        if (!editingPart.Title || editingPart.Title.trim() === '') {
+            setFailMessage('Tiêu đề không được để trống');
+            return; // Ngừng thực hiện nếu điều kiện không thỏa mãn
+        }
+
         try {
             const response = await axios.put(`http://localhost:3000/api/parts/${editingPart.PartID}`, editingPart);
             setParts(parts.map(part => part.PartID === editingPart.PartID ? response.data : part));
             setEditingPart(null);
             fetchParts();
+            setSuccessMessage('Cập nhật part thành công!');
         } catch (err) {
-            setError(err.message);
-            setTimeout(() => setError(null), 5000);
+            setFailMessage(`Lỗi khi cập nhật part: ${err.message}`);
         }
     };
 
@@ -91,15 +96,21 @@ const Parts = () => {
     };
 
     const handleAddPart = async () => {
+        // Kiểm tra nếu newPart.Title là null hoặc chỉ chứa khoảng trắng
+        if (!newPart.Title || newPart.Title.trim() === '') {
+            setFailMessage('Tiêu đề không được để trống');
+            return; // Ngừng thực hiện nếu điều kiện không thỏa mãn
+        }
+
         try {
             const response = await axios.post('http://localhost:3000/api/parts', newPart);
             setParts([...parts, response.data]);
             setIsAddModalOpen(false);
             setNewPart({ Title: '', MediaURL: '' });
             fetchParts();
+            setSuccessMessage('Thêm part thành công!');
         } catch (err) {
-            setError(err.message);
-            setTimeout(() => setError(null), 5000);
+            setFailMessage(`Lỗi khi thêm part: ${err.message}`);
         }
     };
 
@@ -107,24 +118,24 @@ const Parts = () => {
         setEditingPart(part);
     };
 
+    const closeSuccessMessage = () => setSuccessMessage('');
+    const closeFailMessage = () => setFailMessage('');
+
     const currentParts = parts.slice((currentPage - 1) * partsPerPage, currentPage * partsPerPage);
 
     if (loading) return <p className="text-center text-lg text-blue-800 py-12">Đang tải phần...</p>;
 
     return (
         <div className="p-6 bg-gray-100 rounded-lg ">
-            {error && (
-                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out">
-                    <span>{error}</span>
-                </div>
-            )}
+            {/* Hiển thị thông báo thành công */}
+            <SuccessMessage message={successMessage} onClose={closeSuccessMessage} />
+            {/* Hiển thị thông báo thất bại */}
+            <FailMessage message={failMessage} onClose={closeFailMessage} />
 
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl text-blue-800">Quản Lý Part</h1>
                 <button className="w-[10%] p-2 bg-blue-800 text-white rounded ml-auto" onClick={openAddModal}>Thêm Part</button>
             </div>
-
-            {deleteSuccess && <p className="text-green-500 font-bold">{deleteSuccess}</p>}
 
             {/* Modal Thêm Part */}
             {isAddModalOpen && (
