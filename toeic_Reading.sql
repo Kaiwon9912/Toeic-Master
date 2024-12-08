@@ -625,6 +625,7 @@ VALUES
 
 
 
+-- Chèn nhóm câu hỏi vào bảng QuestionGroup
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6005', NULL, 'Employee Workshop\n\nT&R Group strives to help employees reach their potential by offering leadership retreats, employee training, and various workshops. This month, we (1) _____ workshops for those interested in (2) _____ their computer skills with several classes on how to use Professional Office, create a personal website, and run the message app. We have a couple of other slots that are currently (3) _____ and will accept suggestions from employees. (4) _____ Please email Jonas at jsmith@TRgroup.com if you are interested in attending any of the workshops.\nWe hope you take advantage of the programs offered.');
@@ -640,12 +641,8 @@ NULL,
 'C) improving', 
 'D) elaborating', 
 'C', 
-NULL, 
-'This question tests the correct verb tense to describe the workshop being organized for computer skills improvement. The correct answer is "improving", as it is the most logical and grammatically correct option.');
-
--- Câu hỏi 3
-INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
-VALUES 
+1, 
+'This question tests the correct verb tense to describe the workshop being organized for computer skills improvement. The correct answer is "improving", as it is the most logical and grammatically correct option.'),
 ('PART6005', 6, 2, NULL, 
 'We have a couple of other slots that are currently (3) _____ and will accept suggestions from employees.', 
 NULL, 
@@ -654,12 +651,8 @@ NULL,
 'C) free', 
 'D) obtainable', 
 'C', 
-NULL, 
-'The correct word here is "free", indicating that the slots are available for use. "Independent" and "dependent" are not appropriate in this context.');
-
--- Câu hỏi 4
-INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
-VALUES 
+1, 
+'The correct word here is "free", indicating that the slots are available for use. "Independent" and "dependent" are not appropriate in this context.'),
 ('PART6005', 6, 2, NULL, 
 '(4) _____ Please email Jonas at jsmith@TRgroup.com if you are interested in attending any of the workshops.', 
 NULL, 
@@ -668,9 +661,10 @@ NULL,
 'C) We ask all managers to make a suggestion.', 
 'D) We hope the workshop is a success and wish you the very best.', 
 'B', 
-NULL, 
+1, 
 'The best option is "The most popular requests will be considered for the workshops" because it directly addresses the process of selecting workshop ideas.');
 
+-- Chèn nhóm câu hỏi vào bảng QuestionGroup
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6006', NULL, 'Citrusine: Total Flu for Night-time
@@ -678,9 +672,9 @@ VALUES
 Get ready for cold and flu season with Citrusine. Citrusine is a (1) _____ medicated night-time tea that can treat symptoms of the flu including fever, aches and pains, nasal congestion, cough, and sore throat. Wake up feeling (2) _____ and ready to conquer another day. Citrusine should not be taken if you’re planning to operate machinery or drive a vehicle. Keep out of the reach of children (3) _____.
 
 Citrusine is the number-one-selling medication (4) _____ the flu and is guaranteed to provide results if taken as directed. Visit our website for more information. www.citrusine.com
-
 ');
 
+-- Chèn câu hỏi vào bảng Questions
 INSERT INTO Questions (
     QuestionGroupID, 
     PartID, 
@@ -697,11 +691,12 @@ INSERT INTO Questions (
     Explanation
 )
 VALUES
-('PART6006', 6, 1, NULL, 'Citrusine is a (1) _____ medicated night-time tea that can treat symptoms of the flu including fever, aches and pains, nasal congestion, cough, and sore throat.', NULL, 'A) easing', 'B) stimulating', 'C) soothing', 'D) consoling', 'C', 1, 'Citrusine helps alleviate flu symptoms and has a soothing effect.'),
-('PART6006', 6, 1, NULL, 'Wake up feeling (2) _____ and ready to conquer another day.', NULL, 'A) refreshing', 'B) refreshed', 'C) refreshes', 'D) refresh', 'B', 1, 'The correct adjective to describe how you feel after a good rest is "refreshed."'),
-('PART6006', 6, 1, NULL, 'Keep out of the reach of children (3) _____.', NULL, 'A) The medication may cause serious side effects if not taken properly.', 'B) Children should take Citrusine for Kids instead.', 'C) The packets look like candy and may pose problems.', 'D) And if symptoms persist for more than ten days, consult a physician.', 'C', 1, 'The warning refers to the appearance of the medication, which could be mistaken for candy.'),
-('PART6006', 6, 1, NULL, 'Citrusine is the number-one-selling medication (4) _____ the flu and is guaranteed to provide results if taken as directed.', NULL, 'A) for', 'B) during', 'C) with', 'D) after', 'A', 1, 'The correct preposition is "for", which indicates the medication is intended for treating the flu.');
+('PART6006', 6, 1, NULL, 'Citrusine is a (1) _____ medicated night-time tea that can treat symptoms of the flu including fever, aches and pains, nasal congestion, cough, and sore throat.', NULL, 'A) easing', 'B) stimulating', 'C) soothing', 'D) consoling', 'C', 0, 'Citrusine helps alleviate flu symptoms and has a soothing effect.'),
+('PART6006', 6, 1, NULL, 'Wake up feeling (2) _____ and ready to conquer another day.', NULL, 'A) refreshing', 'B) refreshed', 'C) refreshes', 'D) refresh', 'B', 0, 'The correct adjective to describe how you feel after a good rest is "refreshed."'),
+('PART6006', 6, 1, NULL, 'Keep out of the reach of children (3) _____.', NULL, 'A) The medication may cause serious side effects if not taken properly.', 'B) Children should take Citrusine for Kids instead.', 'C) The packets look like candy and may pose problems.', 'D) And if symptoms persist for more than ten days, consult a physician.', 'C', 0, 'The warning refers to the appearance of the medication, which could be mistaken for candy.'),
+('PART6006', 6, 1, NULL, 'Citrusine is the number-one-selling medication (4) _____ the flu and is guaranteed to provide results if taken as directed.', NULL, 'A) for', 'B) during', 'C) with', 'D) after', 'A', 0, 'The correct preposition is "for", which indicates the medication is intended for treating the flu.');
 
+-- Chèn nhóm câu hỏi vào bảng QuestionGroup
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6007', NULL, 'To:Janet Doe
@@ -710,29 +705,18 @@ Date:June 28
 Subject:Inquiry
 
 Ms. Doe,
-We thank you for your inquiry. Greenscape has been the leading landscaper for businesses in the greater downtown area for over 10 years. (1) _____ we specialize in gardens and Japanese- style landscape art, we also maintain lawns and fields. But to answer your question, yes, we even clear away thick shrubbery and trees. We can send a person to (2) _____ the amount of time it will take and the approximate costs. Furthermore, if you (3) _____ to replace the dense shrubs with a lawn or garden, you can work with one of our designers to come up with a landscape you can be happy with.
+We thank you for your inquiry. Greenscape has been the leading landscaper for businesses in the greater downtown area for over 10 years. (1) _____ we specialize in gardens and Japanese-style landscape art, we also maintain lawns and fields. But to answer your question, yes, we even clear away thick shrubbery and trees. We can send a person to (2) _____ the amount of time it will take and the approximate costs. Furthermore, if you (3) _____ to replace the dense shrubs with a lawn or garden, you can work with one of our designers to come up with a landscape you can be happy with.
 (4) _____ We are more than happy to serve you.');
-INSERT INTO Questions (
-    QuestionGroupID, 
-    PartID, 
-    Level, 
-    QuestionAudio, 
-    QuestionText, 
-    QuestionImage, 
-    AnswerA, 
-    AnswerB, 
-    AnswerC, 
-    AnswerD, 
-    CorrectAnswer, 
-    ExamQuestion, 
-    Explanation
-)
+
+-- Chèn câu hỏi vào bảng Questions
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 ('PART6007', 6, 1, NULL, '(1) _____ we specialize in gardens and Japanese-style landscape art, we also maintain lawns and fields.', NULL, 'A) Although', 'B) Because', 'C) However', 'D) Therefore', 'A', 1, 'The correct conjunction is "Although" which introduces a contrast between the two clauses.'),
 ('PART6007', 6, 1, NULL, 'We can send a person to (2) _____ the amount of time it will take and the approximate costs.', NULL, 'A) conclude', 'B) calculate', 'C) estimate', 'D) guess', 'C', 1, 'The correct verb is "estimate", which refers to approximating the time and costs.'),
 ('PART6007', 6, 1, NULL, 'Furthermore, if you (3) _____ to replace the dense shrubs with a lawn or garden, you can work with one of our designers to come up with a landscape you can be happy with.', NULL, 'A) wishing', 'B) wish', 'C) wished', 'D) wishes', 'B', 1, 'The correct form is "wish" because it is used in a conditional sentence.'),
 ('PART6007', 6, 1, NULL, '(4) _____ We are more than happy to serve you.', NULL, 'A) We welcome any business opportunity with you.', 'B) Please don’t hesitate to email any questions you have.', 'C) Please call us at 555-1245 if you are interested in a consultation.', 'D) Visit our website for more information.', 'B', 1, 'The correct response is "Please don’t hesitate to email any questions you have.", as it offers further assistance.');
 
+-- Chèn nhóm câu hỏi vào bảng QuestionGroup
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6008', NULL, 'To:Janet Doe
@@ -749,180 +733,104 @@ VALUES
 ('PART6008', NULL, 'Black Hill Beans is a Louisianan coffee company and the pioneer of the Louisiana coffee fruit. We oversee a vertically (1) _____ supply chain that starts with the highest quality coffee and coffee fruit from Black Hill, Louisiana. We (2) ______ three award-winning beans, Summer Harvest, Dark Southern, and Black Earth. All can be shipped to you (3) _____ 24 hours anywhere in the continental U.S. Black Hill Beans coffee is also sold at every Launders Superstore in the U.S.
 
 Whether you looking for excellent coffee or a bit of southern comfort, Black Hill Beans is the right choice for your coffee. (4) _____ Its nice to feel patriotic while you drink. Visit us online today to hear more about our story.');
-INSERT INTO Questions (
-    QuestionGroupID, 
-    PartID, 
-    Level, 
-    QuestionAudio, 
-    QuestionText, 
-    QuestionImage, 
-    AnswerA, 
-    AnswerB, 
-    AnswerC, 
-    AnswerD, 
-    CorrectAnswer, 
-    ExamQuestion, 
-    Explanation
-)
+
+-- Chèn câu hỏi vào bảng Questions
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
-('PART6008', 6, 1, NULL, 'We oversee a vertically (1) _____ supply chain that starts with the highest quality coffee and coffee fruit from Black Hill, Louisiana.', NULL, 'A) integrates', 'B) to integrate', 'C) integrated', 'D) integration', 'C', 1, 'The correct form is "integrated", which is an adjective that describes the supply chain.'),
-('PART6008', 6, 1, NULL, 'We (2) _____ three award-winning beans, Summer Harvest, Dark Southern, and Black Earth.', NULL, 'A) locate', 'B) select', 'C) evaluate', 'D) produce', 'B', 1, 'The correct verb is "select", which means to choose or pick out from a group.'),
-
--- Câu hỏi cấp độ 2 (trung bình)
-('PART6008', 6, 2, NULL, 'All can be shipped to you (3) _____ 24 hours anywhere in the continental U.S. Black Hill Beans'' coffee is also sold at every Launders Superstore in the U.S.', NULL, 'A) within', 'B) by', 'C) until', 'D) at', 'A', 1, 'The correct preposition is "within", which refers to a specific time frame, in this case, 24 hours.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6008', 6, 3, NULL, '(4) _____ It''s nice to feel patriotic while you drink.', NULL, 'A) Try the best-selling frozen beverage around.', 'B) It''s American-made and organic.', 'C) Let us help you find the right supplier.', 'D) This discount is only available through October 1.', 'B', 1, 'The correct answer is "It''s American-made and organic." because it explains the patriotism aspect of the product.');
+('PART6008', 6, 1, NULL, 'We oversee a vertically (1) _____ supply chain that starts with the highest quality coffee and coffee fruit from Black Hill, Louisiana.', NULL, 'A) integrates', 'B) to integrate', 'C) integrated', 'D) integration', 'C', 0, 'The correct form is "integrated", which is an adjective that describes the supply chain.'),
+('PART6008', 6, 1, NULL, 'We (2) _____ three award-winning beans, Summer Harvest, Dark Southern, and Black Earth.', NULL, 'A) locate', 'B) select', 'C) evaluate', 'D) produce', 'B', 0, 'The correct verb is "select", which means to choose or pick out from a group.'),
+('PART6008', 6, 2, NULL, 'All can be shipped to you (3) _____ 24 hours anywhere in the continental U.S. Black Hill Beans'' coffee is also sold at every Launders Superstore in the U.S.', NULL, 'A) within', 'B) by', 'C) until', 'D) at', 'A', 0, 'The correct preposition is "within", which refers to a specific time frame, in this case, 24 hours.'),
+('PART6008', 6, 3, NULL, '(4) _____ It''s nice to feel patriotic while you drink.', NULL, 'A) Try the best-selling frozen beverage around.', 'B) It''s American-made and organic.', 'C) Let us help you find the right supplier.', 'D) This discount is only available through October 1.', 'B', 0, 'The correct answer is "It''s American-made and organic." because it explains the patriotism aspect of the product.');
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6009', NULL, 'Date: June 21\nTo: Mike Harris\nFrom: Rhonda Cross\nSubject: RE: Landscaping and Maintenance\n\nThank you for your (1) _____ about our services. Arbor Care is a green lawn care and landscaping business. We only use environmentally friendly techniques and products when caring for the grounds of any business. We’ve been working in the Portland area for (2) _____ 20 years. Currently, we are serving more than 150 businesses in the downtown area.\nAs to your specific request, yes, we can easily remove dead trees and replace them with something that fits the (3) _____ landscaping. To give you an exact quote, we would need to stop by and access the situation in person. To have one of our garden technicians stop by, please call us at (713) 678-9916 (4) _____.');
+
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation) 
 VALUES 
-('PART6009', 6, 1, NULL, 'Thank you for your (1) _____ about our services.', NULL, 'A) submission', 'B) placement', 'C) review', 'D) inquiry', 'D', 1, 'The correct answer is "inquiry", which refers to a question or request for information.'),
-('PART6009', 6, 2, NULL, 'We’ve been working in the Portland area for (2) _____ 20 years.', NULL, 'A) over', 'B) around', 'C) until', 'D) through', 'A', 1, 'The correct preposition is "over", which refers to a period of time longer than 20 years.'),
-('PART6009', 6, 3, NULL, 'As to your specific request, yes, we can easily remove dead trees and replace them with something that fits the (3) _____ landscaping.', NULL, 'A) exist', 'B) existed', 'C) existing', 'D) exists', 'C', 1, 'The correct answer is "existing", which is the adjective form to describe the type of landscaping.'),
-('PART6009', 6, 3, NULL, 'To have one of our garden technicians stop by, please call us at (713) 678-9916 (4) _____.', NULL, 'A) It is a pleasure doing business with you', 'B) We hope to hear from you soon.', 'C) Please send us an email.', 'D) Best wishes for your continued success.', 'B', 1, 'The correct answer is "We hope to hear from you soon." because it is a polite way to encourage future contact.');
+('PART6009', 6, 1, NULL, 'Thank you for your (1) _____ about our services.', NULL, 'A) submission', 'B) placement', 'C) review', 'D) inquiry', 'D', 0, 'The correct answer is "inquiry", which refers to a question or request for information.'),
+('PART6009', 6, 2, NULL, 'We’ve been working in the Portland area for (2) _____ 20 years.', NULL, 'A) over', 'B) around', 'C) until', 'D) through', 'A', 0, 'The correct preposition is "over", which refers to a period of time longer than 20 years.'),
+('PART6009', 6, 3, NULL, 'As to your specific request, yes, we can easily remove dead trees and replace them with something that fits the (3) _____ landscaping.', NULL, 'A) exist', 'B) existed', 'C) existing', 'D) exists', 'C', 0, 'The correct answer is "existing", which is the adjective form to describe the type of landscaping.'),
+('PART6009', 6, 3, NULL, 'To have one of our garden technicians stop by, please call us at (713) 678-9916 (4) _____.', NULL, 'A) It is a pleasure doing business with you', 'B) We hope to hear from you soon.', 'C) Please send us an email.', 'D) Best wishes for your continued success.', 'B', 0, 'The correct answer is "We hope to hear from you soon." because it is a polite way to encourage future contact.');
 
+-- Chèn nhóm câu hỏi vào bảng QuestionGroup
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6010', NULL, 'Outbound Sales Lead Specialist/Telemarketer\n\nLocation: Atlanta, GA\n\nJob Code: 3766\n\n# of openings: 4\n\nThe Sales Lead Specialist will place outbound calls to (1) _____ customers seeking to purchase various services such as Insurance, tax help, financial help, telecommunications, or transportation. They will also call on leads from our existing customer base. Cold calls are required.\nYou will work directly with customers via the telephone and e-mail to describe products and services in order to persuade potential and current customers to purchase new products and services. The job will also require you to educate customers on product and service offerings (2) _____. There is also a minimum requirement for monthly sales that is set at $7,500 in net revenue. (3) _____ , the job calls for all employees to continually be taking product education course that will help you better serve our customers.\nTo be eligible for the position, you must have one or more years in telesales, strong customer service skills, and superior closing skills.\nIf you feel you (4) _____ these requirements and are looking for a lucrative exciting experience, please click below.');
+
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
-('PART6010', 6, 1, NULL, 'The Sales Lead Specialist will place outbound calls to (1) _____ customers seeking to purchase various services such as Insurance, tax help, financial help, telecommunications, or transportation.', NULL, 'A) substantial', 'B) potential', 'C) optimal', 'D) logical', 'B', 1, 'The correct answer is "potential", which refers to customers who have the ability or likelihood to make a purchase.'),
-
--- Câu hỏi cấp độ 2 (trung bình)
-('PART6010', 6, 2, NULL, 'The job will also require you to educate customers on product and service offerings (2) _____.', NULL, 'A) The more you purchase, the more opportunity you’ll have for advancement.', 'B) This managerial position will require an organized and highly motivated individual.', 'C) If you could help find your replacement, it would be much appreciated.', 'D) It will be crucial for you to place a minimum of 150 outbound calls each day.', 'D', 1, 'The correct answer is "It will be crucial for you to place a minimum of 150 outbound calls each day.", which describes the key responsibility for the role.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6010', 6, 3, NULL, '(3) _____ , the job calls for all employees to continually be taking product education course that will help you better serve our customers.', NULL, 'A) Actually', 'B) However', 'C) Additionally', 'D) Therefore', 'C', 1, 'The correct answer is "Additionally", which adds an extra responsibility for employees.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6010', 6, 3, NULL, 'If you feel you (4) _____ these requirements and are looking for a lucrative exciting experience, please click below.', NULL, 'A) meet', 'B) to meet', 'C) meeting', 'D) met', 'A', 1, 'The correct answer is "meet", which is the correct verb form to indicate that you fulfill the requirements.');
+('PART6010', 6, 1, NULL, 'The Sales Lead Specialist will place outbound calls to (1) _____ customers seeking to purchase various services such as Insurance, tax help, financial help, telecommunications, or transportation.', NULL, 'A) substantial', 'B) potential', 'C) optimal', 'D) logical', 'B', 0, 'The correct answer is "potential", which refers to customers who have the ability or likelihood to make a purchase.'),
+('PART6010', 6, 2, NULL, 'The job will also require you to educate customers on product and service offerings (2) _____.', NULL, 'A) The more you purchase, the more opportunity you’ll have for advancement.', 'B) This managerial position will require an organized and highly motivated individual.', 'C) If you could help find your replacement, it would be much appreciated.', 'D) It will be crucial for you to place a minimum of 150 outbound calls each day.', 'D', 0, 'The correct answer is "It will be crucial for you to place a minimum of 150 outbound calls each day.", which describes the key responsibility for the role.'),
+('PART6010', 6, 3, NULL, '(3) _____ , the job calls for all employees to continually be taking product education course that will help you better serve our customers.', NULL, 'A) Actually', 'B) However', 'C) Additionally', 'D) Therefore', 'C', 0, 'The correct answer is "Additionally", which adds an extra responsibility for employees.'),
+('PART6010', 6, 3, NULL, 'If you feel you (4) _____ these requirements and are looking for a lucrative exciting experience, please click below.', NULL, 'A) meet', 'B) to meet', 'C) meeting', 'D) met', 'A', 0, 'The correct answer is "meet", which is the correct verb form to indicate that you fulfill the requirements.');
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6011', NULL, 'From: James Jones, Executive Manager\nTo: Sales Agents\nDate: July 15\nSubject: Policy Change\n\nDear Sales Agents,\nThere has been a recent change to our reimbursement policy. In the past, you simply had to pay out of pocket first then provide your receipts after renting vehicles, taking business trips, or (1) _____ other business expenses. (2) _____, now you will be required to fill out an application which will need to be approved by the accounting department first. (3) _____ If you spend beyond the amount given in the card, you will have to pay out of your own pocket and will not be reimbursed for that.\nPlease read the attachment to get further details on what expenses can and cannot be (4) _____ by the company.');
-go
+
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
-('PART6011', 6, 1, NULL, 'In the past, you simply had to pay out of pocket first then provide your receipts after renting vehicles, taking business trips, or (1) _____ other business expenses.', NULL, 'A) incur', 'B) incurred', 'C) incurring', 'D) to incur', 'A', 1, 'The correct answer is "incur", which is the base form of the verb used after "had to".'),
-
--- Câu hỏi cấp độ 2 (trung bình)
-('PART6011', 6, 2, NULL, '(2) _____, now you will be required to fill out an application which will need to be approved by the accounting department first.', NULL, 'A) However', 'B) Therefore', 'C) Furthermore', 'D) Since', 'B', 1, 'The correct answer is "Therefore", which is used to indicate a consequence or result of the previous statement.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6011', 6, 3, NULL, '(3) _____ If you spend beyond the amount given in the card, you will have to pay out of your own pocket and will not be reimbursed for that.', NULL, 'A) They will not approve any card not authorized by a bank.', 'B) You will have to spend from your own credit card.', 'C) Then you will be provided with a company card which holds limited funds.', 'D) They must decide whether our budget allows for our expenses.', 'C', 1, 'The correct answer is "Then you will be provided with a company card which holds limited funds.", which explains the consequence of spending beyond the limit.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6011', 6, 3, NULL, 'Please read the attachment to get further details on what expenses can and cannot be (4) _____ by the company.', NULL, 'A) certain', 'B) acknowledged', 'C) established', 'D) approved', 'D', 1, 'The correct answer is "approved", which means that the company will officially accept or validate certain expenses.');
-go
+('PART6011', 6, 1, NULL, 'In the past, you simply had to pay out of pocket first then provide your receipts after renting vehicles, taking business trips, or (1) _____ other business expenses.', NULL, 'A) incur', 'B) incurred', 'C) incurring', 'D) to incur', 'A', 0, 'The correct answer is "incur", which is the base form of the verb used after "had to".'),
+('PART6011', 6, 2, NULL, '(2) _____, now you will be required to fill out an application which will need to be approved by the accounting department first.', NULL, 'A) However', 'B) Therefore', 'C) Furthermore', 'D) Since', 'B', 0, 'The correct answer is "Therefore", which is used to indicate a consequence or result of the previous statement.'),
+('PART6011', 6, 3, NULL, '(3) _____ If you spend beyond the amount given in the card, you will have to pay out of your own pocket and will not be reimbursed for that.', NULL, 'A) They will not approve any card not authorized by a bank.', 'B) You will have to spend from your own credit card.', 'C) Then you will be provided with a company card which holds limited funds.', 'D) They must decide whether our budget allows for our expenses.', 'C', 0, 'The correct answer is "Then you will be provided with a company card which holds limited funds.", which explains the consequence of spending beyond the limit.'),
+('PART6011', 6, 3, NULL, 'Please read the attachment to get further details on what expenses can and cannot be (4) _____ by the company.', NULL, 'A) certain', 'B) acknowledged', 'C) established', 'D) approved', 'D', 0, 'The correct answer is "approved", which means that the company will officially accept or validate certain expenses.');
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6012', NULL, 'Come visit Wild Water Parks, your summer destination for family and friends of all ages. We have kiddie pools, we have outdoor pools, we have indoor pools, we have waves, and we have (1) _____ water slides, including our Death Fall, the largest slide in the state. We have everything for everyone in (2) _____ group. Don''t forget our delicious snack stands and restaurants. We also have gift shops and playgrounds. (3) _____ You can get tickets by calling 123-5555 or a season''s pass for a (4) _____ of the price. Call now and experience the fun!');
-go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
-('PART6012', 6, 1, NULL, 'We have (1) _____ water slides, including our Death Fall, the largest slide in the state.', NULL, 'A) excite', 'B) excited', 'C) exciting', 'D) excitement', 'C', 1, 'The correct answer is "exciting", which is the correct adjective to describe the water slides.'),
+('PART6012', 6, 1, NULL, 'We have (1) _____ water slides, including our Death Fall, the largest slide in the state.', NULL, 'A) excite', 'B) excited', 'C) exciting', 'D) excitement', 'C', 0, 'The correct answer is "exciting", which is the correct adjective to describe the water slides.'),
+('PART6012', 6, 2, NULL, 'We have everything for everyone in (2) _____ group.', NULL, 'A) their', 'B) his', 'C) our', 'D) your', 'C', 0, 'The correct answer is "our", which refers to the group being addressed by the speaker (the park''s visitors).'),
+('PART6012', 6, 3, NULL, '(3) _____ You can get tickets by calling 123-5555.', NULL, 'A) The pools are the best place to stay.', 'B) We even have a dog park for that furry companion of yours.', 'C) The chefs are top notch and the food is second to none.', 'D) Hurry before the season is over and the promotion finishes.', 'D', 0, 'The correct answer is "Hurry before the season is over and the promotion finishes." because it encourages action in a timely manner.'),
+('PART6012', 6, 3, NULL, 'You can get tickets by calling 123-5555 or a season''s pass for a (4) _____ of the price.', NULL, 'A) fraction', 'B) section', 'C) division', 'D) total', 'A', 0, 'The correct answer is "fraction", which refers to a small part or portion of the total price.');
 
--- Câu hỏi cấp độ 2 (trung bình)
-('PART6012', 6, 2, NULL, 'We have everything for everyone in (2) _____ group.', NULL, 'A) their', 'B) his', 'C) our', 'D) your', 'C', 1, 'The correct answer is "our", which refers to the group being addressed by the speaker (the park''s visitors).'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6012', 6, 3, NULL, '(3) _____ You can get tickets by calling 123-5555.', NULL, 'A) The pools are the best place to stay.', 'B) We even have a dog park for that furry companion of yours.', 'C) The chefs are top notch and the food is second to none.', 'D) Hurry before the season is over and the promotion finishes.', 'D', 1, 'The correct answer is "Hurry before the season is over and the promotion finishes." because it encourages action in a timely manner.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6012', 6, 3, NULL, 'You can get tickets by calling 123-5555 or a season''s pass for a (4) _____ of the price.', NULL, 'A) fraction', 'B) section', 'C) division', 'D) total', 'A', 1, 'The correct answer is "fraction", which refers to a small part or portion of the total price.');
-go
-
+-- Chèn nhóm câu hỏi vào bảng QuestionGroup
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6013', NULL, 'An issue was brought up at the executives meeting last Thursday. Complaints of damaged goods after being shipped (1) _____ dramatically in the last month. This may be a result of more fragile items being added to the products we now ship. (2) _____. We are reviewing the packaging procedures for our products and are looking to add more steps to (3) _____ that the products are packaged securely and delivered without damage.\nPlease inform the managers on the manufacturing team to attend an (4) _____ meeting tonight at 7:00 P.M. We hope to address this problem and come up with a sound solution as quickly as possible so that normal business can resume.');
-go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
 ('PART6013', 6, 1, NULL, 'Complaints of damaged goods after being shipped (1) _____ dramatically in the last month.', NULL, 'A) increasing', 'B) have increased', 'C) were increased', 'D) increases', 'B', 1, 'The correct answer is "have increased", which indicates the change has already occurred in the past and continues to be relevant in the present.'),
-
--- Câu hỏi cấp độ 2 (trung bình)
 ('PART6013', 6, 2, NULL, 'This may be a result of more fragile items being added to the products we now ship. (2) _____.', NULL, 'A) We are thinking of dropping such items from our product list.', 'B) We may need to increase the shipping and handling cost.', 'C) An added insurance cost for such items has been suggested.', 'D) Because of this, we have temporarily suspended the shipping of accessories and other fragile items.', 'D', 1, 'The correct answer is "Because of this, we have temporarily suspended the shipping of accessories and other fragile items." because it directly follows the concern about fragile items being added.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6013', 6, 3, NULL, 'We are reviewing the packaging procedures for our products and are looking to add more steps to (3) _____ that the products are packaged securely and delivered without damage.', NULL, 'A) secure', 'B) affect', 'C) ensure', 'D) warrant', 'C', 1, 'The correct answer is "ensure", which means to make certain that something happens or is done properly.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6013', 6, 3, NULL, 'Please inform the managers on the manufacturing team to attend an (4) _____ meeting tonight at 7:00 P.M.', NULL, 'A) emergency', 'B) necessity', 'C) decisive', 'D) extensive', 'A', 1, 'The correct answer is "emergency", because it indicates a meeting is required urgently to address a pressing issue.');
-go
-
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6014', NULL, 'Green Clean Services\n\nCall us: 347-281-7834\n\n(1) _____ 2005, Green Clean has been providing professional and environmentally friendly cleaning services of consistent high quality to all types of commercial and industrial facilities. (2) _____. We understand the contributions a good employee makes toward our (3) _____ , and we commit to selecting the best available people to work for you.\nGreen Clean’s mission is to satisfy our customers needs on a daily basis while providing the best combination of quality, price, and delivery. We accomplish this by continually improving our systems of (4) _____ . Our goal is to make your facility extremely clean in the greenest way possible. Visit our website today at www.greenclean.com');
-go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
 ('PART6014', 6, 1, NULL, '(1) _____ 2005, Green Clean has been providing professional and environmentally friendly cleaning services of consistent high quality to all types of commercial and industrial facilities.', NULL, 'A) Until', 'B) Around', 'C) Since', 'D) Through', 'C', 1, 'The correct answer is "Since", which refers to the starting point of an action that continues to the present.'),
-
--- Câu hỏi cấp độ 2 (trung bình)
 ('PART6014', 6, 2, NULL, '_____ 2005, Green Clean has been providing professional and environmentally friendly cleaning services of consistent high quality to all types of commercial and industrial facilities. (2) _____.', NULL, 'A) Drop in today to schedule a tour of one of our twenty facilities.', 'B) We are the biggest manufacturer of environmentally cleaning supplies in the Northwest.', 'C) As a service company, we consider our employees to be our most important asset.', 'D) Allow us to work for you by calling us today to take care of all of your accounting needs.', 'C', 1, 'The correct answer is "As a service company, we consider our employees to be our most important asset." as it aligns with the values of the company.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6014', 6, 3, NULL, 'We understand the contributions a good employee makes toward our (3) _____ , and we commit to selecting the best available people to work for you.', NULL, 'A) success', 'B) drive', 'C) support', 'D) determination', 'A', 1, 'The correct answer is "success", as employees contribute to the overall success of the company.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6014', 6, 3, NULL, 'We accomplish this by continually improving our systems of (4) _____ .', NULL, 'A) to operate', 'B) operates', 'C) operated', 'D) operation', 'D', 1, 'The correct answer is "operation", which refers to the process or method of operating the systems.');
-go
-
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6015', NULL, 'Florist Wanted\n\nDo you love making people smile? Does the idea of (1) _____ your day being creative and working with nature appeal to you? If so, we would like to encourage you to apply to join our team at Wild Flowers Florists. (2) _____. We are looking for someone who is customer- (3) _____ first. Creativity is important, but it is secondary to the vision of the client. If you think (4) _____ have what it takes to make people smile, please fill out our online application form on our website, www.WildFlowersFlorists.com.');
-go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
 ('PART6015', 6, 1, NULL, 'Does the idea of (1) _____ your day being creative and working with nature appeal to you?', NULL, 'A) spend', 'B) to spend', 'C) spending', 'D) spent', 'C', 1, 'The correct answer is "spending", which is the correct gerund form to describe an activity that happens over time.'),
- 
--- Câu hỏi cấp độ 2 (trung bình)
 ('PART6015', 6, 2, NULL, 'If so, we would like to encourage you to apply to join our team at Wild Flowers Florists. (2) _____.', NULL, 'A) You must be good with animals.', 'B) Our company is committed to providing the best floral arrangements for our clients, no matter what their needs.', 'C) We use the best fabrics in our designs.', 'D) All people love our commitment to safety.', 'B', 1, 'The correct answer is "Our company is committed to providing the best floral arrangements for our clients, no matter what their needs." as it aligns with the job description of the florist.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6015', 6, 3, NULL, 'We are looking for someone who is customer- (3) _____ first.', NULL, 'A) oriented', 'B) prime', 'C) located', 'D) sourced', 'A', 1, 'The correct answer is "oriented", which is the appropriate adjective to describe someone who prioritizes the needs of customers.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6015', 6, 3, NULL, 'If you think (4) _____ have what it takes to make people smile, please fill out our online application form on our website, www.WildFlowersFlorists.com.', NULL, 'A) you', 'B) I', 'C) they', 'D) we', 'A', 1, 'The correct answer is "you", which refers to the person being addressed directly.');
-go
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
 ('PART6016', NULL, 'October 21\nLarry Mills\n226 Highland Rivers\nFairbank, WA 20037\n\nDear Mr. Mills,\nI am writing in reply to your complaint about the noise levels coming from the surrounding businesses around the apartment complex. (1) _____, a few people living on the west wing of the building (2) _____ concern over the noise levels. The building committee has conducted meetings over this issue and we have talked to the businesses. (3) _____. Because of this, we are also looking to fortify the windows with noise-proof glass for residences living on the west wing. Once we have agreed upon the proposals, we will post the announcement on our bulletin board and you may receive a call. Until then, we ask for your (4) _____ patience.');
-go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi cấp độ 1 (dễ)
 ('PART6016', 6, 1, NULL, '(1) _____, a few people living on the west wing of the building (2) _____ concern over the noise levels.', NULL, 'A) As a result', 'B) Moreover', 'C) On the other hand', 'D) Unfortunately', 'A', 1, 'The correct answer is "As a result" because it indicates the outcome of the complaint regarding the noise levels.'),
-
--- Câu hỏi cấp độ 2 (trung bình)
 ('PART6016', 6, 2, NULL, '_____ , a few people living on the west wing of the building (2) _____ concern over the noise levels.', NULL, 'A) is expressing', 'B) have expressed', 'C) expression', 'D) be expressive', 'B', 1, 'The correct answer is "have expressed", which is the correct verb tense to show the action that has occurred in the past and continues to the present.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6016', 6, 3, NULL, 'The building committee has conducted meetings over this issue and we have talked to the businesses. (3) _____.', NULL, 'A) However, some of the noises are inevitable due to the nature of the businesses.', 'B) They will fully cooperate with our committee.', 'C) They have responded to our concerns and will work to keep noise levels low.', 'D) However, they are losing money over this matter.', 'C', 1, 'The correct answer is "They have responded to our concerns and will work to keep noise levels low." as it shows the response from the businesses regarding the complaint.'),
-
--- Câu hỏi cấp độ 3 (khó)
 ('PART6016', 6, 3, NULL, 'Until then, we ask for your (4) _____ patience.', NULL, 'A) continue', 'B) continues', 'C) continued', 'D) be continuing', 'C', 1, 'The correct answer is "continued", which is the correct adjective form to describe patience that persists over time.');
-go
-
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
@@ -932,16 +840,16 @@ go
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6017', 6, 1, NULL, 'Receiving the federal grant money last month (1) _____ us to invest in upgrading a few areas of our building.', NULL, 'A) did allow', 'B) has allowed', 'C) allows', 'D) are allowing', 'B', 1, 'The correct answer is "has allowed", which is the correct present perfect tense to indicate that the grant money has enabled investment in the building up until now.'),
+('PART6017', 6, 1, NULL, 'Receiving the federal grant money last month (1) _____ us to invest in upgrading a few areas of our building.', NULL, 'A) did allow', 'B) has allowed', 'C) allows', 'D) are allowing', 'B', 0, 'The correct answer is "has allowed", which is the correct present perfect tense to indicate that the grant money has enabled investment in the building up until now.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6017', 6, 2, NULL, '(2) _____. We will be remodeling the lobby starting July 12th. It should take approximately two weeks.', NULL, 'A) Construction will begin when the building permits are received.', 'B) This celebration will last for most of the month of July.', 'C) Considering the cost, the renovation might be postponed.', 'D) The first area that will benefit from this is the lobby.', 'D', 1, 'The correct answer is "The first area that will benefit from this is the lobby." as it logically follows the context of the renovation.'),
+('PART6017', 6, 2, NULL, '(2) _____. We will be remodeling the lobby starting July 12th. It should take approximately two weeks.', NULL, 'A) Construction will begin when the building permits are received.', 'B) This celebration will last for most of the month of July.', 'C) Considering the cost, the renovation might be postponed.', 'D) The first area that will benefit from this is the lobby.', 'D', 0, 'The correct answer is "The first area that will benefit from this is the lobby." as it logically follows the context of the renovation.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6017', 6, 3, NULL, '(3) _____ that time, if you have a meeting with anyone from outside of the company, please schedule to have it at the Rose street Café on the corner.', NULL, 'A) Upon', 'B) During', 'C) Until', 'D) Around', 'A', 1, 'The correct answer is "Upon", which is used to indicate when something will happen (after the renovation begins).'),
+('PART6017', 6, 3, NULL, '(3) _____ that time, if you have a meeting with anyone from outside of the company, please schedule to have it at the Rose street Café on the corner.', NULL, 'A) Upon', 'B) During', 'C) Until', 'D) Around', 'A', 0, 'The correct answer is "Upon", which is used to indicate when something will happen (after the renovation begins).'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6017', 6, 3, NULL, 'We are (4) _____ that this is a bit of an inconvenience, and we thank you for your cooperation.', NULL, 'A) aware', 'B) disciplined', 'C) reluctant', 'D) content', 'A', 1, 'The correct answer is "aware", which means that the company recognizes or acknowledges the inconvenience caused by the renovation.');
+('PART6017', 6, 3, NULL, 'We are (4) _____ that this is a bit of an inconvenience, and we thank you for your cooperation.', NULL, 'A) aware', 'B) disciplined', 'C) reluctant', 'D) content', 'A', 0, 'The correct answer is "aware", which means that the company recognizes or acknowledges the inconvenience caused by the renovation.');
 go
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
@@ -952,16 +860,16 @@ go
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6018', 6, 1, NULL, 'Paradise Café is looking (1) _____ a part-time line cook.', NULL, 'A) hiring', 'B) hire', 'C) to hire', 'D) to hiring', 'C', 1, 'The correct answer is "to hire", which is the correct infinitive form used to express the purpose or intention of the action.'),
+('PART6018', 6, 1, NULL, 'Paradise Café is looking (1) _____ a part-time line cook.', NULL, 'A) hiring', 'B) hire', 'C) to hire', 'D) to hiring', 'C', 0, 'The correct answer is "to hire", which is the correct infinitive form used to express the purpose or intention of the action.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6018', 6, 2, NULL, 'Applicants must be able to work in a fast-paced environment and be familiar with all standard breakfast fare. (2) _____.', NULL, 'A) Applicants should know how to make scrambled eggs.', 'B) People applying should know how to wash dishes.', 'C) Anyone applying should be able to work nights.', 'D) Currently, we can only offer weekday shifts but the applicant must be willing to work weekends if required.', 'D', 1, 'The correct answer is "Currently, we can only offer weekday shifts but the applicant must be willing to work weekends if required.", which explains the flexible scheduling.'),
+('PART6018', 6, 2, NULL, 'Applicants must be able to work in a fast-paced environment and be familiar with all standard breakfast fare. (2) _____.', NULL, 'A) Applicants should know how to make scrambled eggs.', 'B) People applying should know how to wash dishes.', 'C) Anyone applying should be able to work nights.', 'D) Currently, we can only offer weekday shifts but the applicant must be willing to work weekends if required.', 'D', 0, 'The correct answer is "Currently, we can only offer weekday shifts but the applicant must be willing to work weekends if required.", which explains the flexible scheduling.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6018', 6, 3, NULL, 'This weekend schedule could change in the future. Ideally we are looking for an applicant that has (3) _____ one year of experience working as a short-order cook.', NULL, 'A) at most', 'B) below', 'C) at least', 'D) the least', 'C', 1, 'The correct answer is "at least", which indicates a minimum amount of experience required.'),
+('PART6018', 6, 3, NULL, 'This weekend schedule could change in the future. Ideally we are looking for an applicant that has (3) _____ one year of experience working as a short-order cook.', NULL, 'A) at most', 'B) below', 'C) at least', 'D) the least', 'C', 0, 'The correct answer is "at least", which indicates a minimum amount of experience required.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6018', 6, 3, NULL, 'We (4) _____ forward to welcoming you to our team!', NULL, 'A) look', 'B) looking', 'C) looked', 'D) looks', 'A', 1, 'The correct answer is "look", which is the correct form of the verb for expressing future expectation or anticipation.');
+('PART6018', 6, 3, NULL, 'We (4) _____ forward to welcoming you to our team!', NULL, 'A) look', 'B) looking', 'C) looked', 'D) looks', 'A', 0, 'The correct answer is "look", which is the correct form of the verb for expressing future expectation or anticipation.');
 go
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
@@ -972,16 +880,16 @@ go
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6019', 6, 1, NULL, 'We (1) _____ recognized as the state’s leading experts in the industry and many of our agents have been awarded for their excellence in service by Forbes Property Magazine.', NULL, 'A) been', 'B) had been', 'C) are being', 'D) have been', 'D', 1, 'The correct answer is "have been", which is the correct form of the present perfect passive voice, indicating a state that started in the past and continues to the present.'),
+('PART6019', 6, 1, NULL, 'We (1) _____ recognized as the state’s leading experts in the industry and many of our agents have been awarded for their excellence in service by Forbes Property Magazine.', NULL, 'A) been', 'B) had been', 'C) are being', 'D) have been', 'D', 0, 'The correct answer is "have been", which is the correct form of the present perfect passive voice, indicating a state that started in the past and continues to the present.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6019', 6, 2, NULL, 'Our agents are (2) _____ to bringing their best knowledge and expertise to the table, and they have extensive know-how about the housing market dos and don’ts.', NULL, 'A) attached', 'B) faithful', 'C) committed', 'D) loyal', 'C', 1, 'The correct answer is "committed", which means dedicated or devoted to a particular cause or action.'),
+('PART6019', 6, 2, NULL, 'Our agents are (2) _____ to bringing their best knowledge and expertise to the table, and they have extensive know-how about the housing market dos and don’ts.', NULL, 'A) attached', 'B) faithful', 'C) committed', 'D) loyal', 'C', 0, 'The correct answer is "committed", which means dedicated or devoted to a particular cause or action.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6019', 6, 3, NULL, 'Our agents specialize in different areas of the industry including corporate real estate, residential real estate, and rental properties. (3) _____.', NULL, 'A) You can be confident that they serve your specific needs.', 'B) You can rent hundreds of properties from our listings.', 'C) The agents in corporate real estate make the most earnings.', 'D) The residential agents are very busy with the rising housing market.', 'A', 1, 'The correct answer is "You can be confident that they serve your specific needs.", which reassures customers about the expertise and specialization of the agents.'),
+('PART6019', 6, 3, NULL, 'Our agents specialize in different areas of the industry including corporate real estate, residential real estate, and rental properties. (3) _____.', NULL, 'A) You can be confident that they serve your specific needs.', 'B) You can rent hundreds of properties from our listings.', 'C) The agents in corporate real estate make the most earnings.', 'D) The residential agents are very busy with the rising housing market.', 'A', 0, 'The correct answer is "You can be confident that they serve your specific needs.", which reassures customers about the expertise and specialization of the agents.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6019', 6, 3, NULL, 'Our headquarters is located in the central downtown area where you can meet with one of our agents (4) _____ a free consultation.', NULL, 'A) with', 'B) for', 'C) to', 'D) from', 'B', 1, 'The correct answer is "for", which indicates the purpose of meeting with an agent for a free consultation.');
+('PART6019', 6, 3, NULL, 'Our headquarters is located in the central downtown area where you can meet with one of our agents (4) _____ a free consultation.', NULL, 'A) with', 'B) for', 'C) to', 'D) from', 'B', 0, 'The correct answer is "for", which indicates the purpose of meeting with an agent for a free consultation.');
 go
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
@@ -992,18 +900,17 @@ go
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6020', 6, 1, NULL, 'I want to thank everyone who (1) _____ make this party a success.', NULL, 'A) helps', 'B) helped', 'C) helping', 'D) had help', 'A', 1, 'The correct answer is "helps", which is the present simple tense used to refer to a habitual or general action. The sentence is thanking those who regularly help make the event a success.'),
+('PART6020', 6, 1, NULL, 'I want to thank everyone who (1) _____ make this party a success.', NULL, 'A) helps', 'B) helped', 'C) helping', 'D) had help', 'A', 0, 'The correct answer is "helps", which is the present simple tense used to refer to a habitual or general action. The sentence is thanking those who regularly help make the event a success.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6020', 6, 2, NULL, '(2) _____. We had some ups and downs as we started preparing for this but the final result has been extraordinary.', NULL, 'A) I really enjoyed all the food and chatting with everyone.', 'B) I worked really hard to plan this event.', 'C) Special thanks to Keith, Grant, Vanessa, and Melissa, who spent many hours outside of work to help plan everything.', 'D) I’m glad to see that everyone made it to work today.', 'C', 1, 'The correct answer is "Special thanks to Keith, Grant, Vanessa, and Melissa, who spent many hours outside of work to help plan everything.", which specifically acknowledges the contributions of certain individuals.'),
+('PART6020', 6, 2, NULL, '(2) _____. We had some ups and downs as we started preparing for this but the final result has been extraordinary.', NULL, 'A) I really enjoyed all the food and chatting with everyone.', 'B) I worked really hard to plan this event.', 'C) Special thanks to Keith, Grant, Vanessa, and Melissa, who spent many hours outside of work to help plan everything.', 'D) I’m glad to see that everyone made it to work today.', 'C', 0, 'The correct answer is "Special thanks to Keith, Grant, Vanessa, and Melissa, who spent many hours outside of work to help plan everything.", which specifically acknowledges the contributions of certain individuals.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6020', 6, 3, NULL, 'In fact, the (3) _____ consensus seems to be that this year’s party was the best yet.', NULL, 'A) regular', 'B) familiar', 'C) different', 'D) general', 'D', 1, 'The correct answer is "general", which refers to the overall or majority opinion.'),
+('PART6020', 6, 3, NULL, 'In fact, the (3) _____ consensus seems to be that this year’s party was the best yet.', NULL, 'A) regular', 'B) familiar', 'C) different', 'D) general', 'D', 0, 'The correct answer is "general", which refers to the overall or majority opinion.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6020', 6, 3, NULL, 'We even (4) _____ our children’s charity fundraising goals by over $1000.', NULL, 'A) overstepped', 'B) surrendered', 'C) exceeded', 'D) overwhelmed', 'C', 1, 'The correct answer is "exceeded", which means to go beyond a set limit or goal.');
+('PART6020', 6, 3, NULL, 'We even (4) _____ our children’s charity fundraising goals by over $1000.', NULL, 'A) overstepped', 'B) surrendered', 'C) exceeded', 'D) overwhelmed', 'C', 0, 'The correct answer is "exceeded", which means to go beyond a set limit or goal.');
 go
-
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
@@ -1013,16 +920,16 @@ go
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6021', 6, 1, NULL, 'If you want (1) _____ your packaged goods to an international audience, join the 8th annual International Goods Fair.', NULL, 'A) promotion', 'B) promoting', 'C) to promote', 'D) have promoted', 'C', 1, 'The correct answer is "to promote", which is the infinitive form used after "want" to indicate the action someone desires to do.'),
+('PART6021', 6, 1, NULL, 'If you want (1) _____ your packaged goods to an international audience, join the 8th annual International Goods Fair.', NULL, 'A) promotion', 'B) promoting', 'C) to promote', 'D) have promoted', 'C', 0, 'The correct answer is "to promote", which is the infinitive form used after "want" to indicate the action someone desires to do.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6021', 6, 2, NULL, 'With over 200 booths (2) _____ by companies from all over the world, you can make business connections while promoting your own products to interested customers and businesses.', NULL, 'A) represented', 'B) expressed', 'C) delivered', 'D) revealed', 'A', 1, 'The correct answer is "represented", which is the most appropriate verb to indicate that companies are displaying their products at the booths.'),
+('PART6021', 6, 2, NULL, 'With over 200 booths (2) _____ by companies from all over the world, you can make business connections while promoting your own products to interested customers and businesses.', NULL, 'A) represented', 'B) expressed', 'C) delivered', 'D) revealed', 'A', 0, 'The correct answer is "represented", which is the most appropriate verb to indicate that companies are displaying their products at the booths.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6021', 6, 3, NULL, 'The products should be mainly packaged foods ranging (3) _____ desserts and snacks to canned meats and dried jerky.', NULL, 'A) to', 'B) for', 'C) from', 'D) with', 'C', 1, 'The correct answer is "from", as it is used to show the range or scope of something, indicating the starting point of the range.'),
+('PART6021', 6, 3, NULL, 'The products should be mainly packaged foods ranging (3) _____ desserts and snacks to canned meats and dried jerky.', NULL, 'A) to', 'B) for', 'C) from', 'D) with', 'C', 0, 'The correct answer is "from", as it is used to show the range or scope of something, indicating the starting point of the range.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6021', 6, 3, NULL, 'The products should be mainly packaged foods ranging _____ desserts and snacks to canned meats and dried jerky. (4) _____ .', NULL, 'A) Ice creams will not be allowed on the premises.', 'B) You can sample items as you browse.', 'C) You’ll have a chance to promote your food of choice.', 'D) Apply for a booth now before they’re all taken.', 'D', 1, 'The correct answer is "Apply for a booth now before they’re all taken.", which makes sense as a call to action regarding limited availability.');
+('PART6021', 6, 3, NULL, 'The products should be mainly packaged foods ranging _____ desserts and snacks to canned meats and dried jerky. (4) _____ .', NULL, 'A) Ice creams will not be allowed on the premises.', 'B) You can sample items as you browse.', 'C) You’ll have a chance to promote your food of choice.', 'D) Apply for a booth now before they’re all taken.', 'D', 0, 'The correct answer is "Apply for a booth now before they’re all taken.", which makes sense as a call to action regarding limited availability.');
 go
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
@@ -1204,65 +1111,52 @@ VALUES
 -- Câu hỏi cấp độ 4 (khó)
 ('PART6030', 6, 3, NULL, 'If you are interested in (4) ______ for the position, we will be holding interviews and auditions this Saturday at 12:00 at our main studio on Elm street and Dupont Ave.', NULL, 'A) apply', 'B) applied', 'C) applying', 'D) to apply', 'C', 1, 'The correct answer is "applying" because it follows the structure "interested in" and requires the gerund form.');
 go
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6031', NULL, 'Saldesta is (1) ______ for helping people fall asleep quickly and stay asleep the entire night. It is the only non-narcotic sleeping aid, and it’s (2) ______ for long-term use. (3) ______ Talk to your doctor before using sleeping aids for extended periods. Saldesta works quickly and should be taken right (4) ______ bed.');
+
+INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
+VALUES
+-- Câu hỏi cấp độ 1 (dễ)
+('PART6031', 6, 1, NULL, 'That’s what Saldesta (1) ______ .', NULL, 'A) offers', 'B) sustains', 'C) mitigates', 'D) maintains', 'A', 0, 'The correct answer is "offers" because it indicates what Saldesta provides or makes available.'),
+
+-- Câu hỏi cấp độ 2 (trung bình)
+('PART6031', 6, 2, NULL, 'It’s the only non-narcotic sleeping aid, and it’s (2) ______ for long-term use.', NULL, 'A) to approve', 'B) approves', 'C) approving', 'D) approved', 'D', 0, 'The correct answer is "approved" because it refers to the sleeping aid being officially sanctioned for long-term use.'),
+
+-- Câu hỏi cấp độ 3 (khó)
+('PART6031', 6, 3, NULL, '(3) ______ Talk to your doctor first before using sleeping aids for extended periods.', NULL, 'A) So you can feel comfortable taking it night after night.', 'B) Talk to your doctor today to see if it’s right for you.', 'C) This is the only stimulant approved for prolonged use that is approved by the FDA.', 'D) Enter this code for a free sample and discounts.', 'B', 0, 'The correct answer is "Talk to your doctor today to see if it’s right for you." This is the most appropriate advice before using sleeping aids long-term.'),
+
+-- Câu hỏi cấp độ 4 (khó)
+('PART6031', 6, 3, NULL, 'Saldesta works quickly and should be taken right (4) ______ bed.', NULL, 'A) during', 'B) around', 'C) before', 'D) after', 'C', 0, 'The correct answer is "before" because the medication should be taken prior to going to bed.');
 
 go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6031', 6, 1, NULL, 'That’s what Saldesta (1) ______ .', NULL, 'A) offers', 'B) sustains', 'C) mitigates', 'D) maintains', 'A', 1, 'The correct answer is "offers" because it indicates what Saldesta provides or makes available.'),
+('PART6032', 6, 1, NULL, 'The holiday season is fast approaching and we need to (1) ______ our office party!', NULL, 'A) make', 'B) plan', 'C) conceive', 'D) deliver', 'B', 0, 'The correct answer is "plan" because the context is about organizing the event. "Make" is less appropriate for this context.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6031', 6, 2, NULL, 'It’s the only non-narcotic sleeping aid, and it’s (2) ______ for long-term use.', NULL, 'A) to approve', 'B) approves', 'C) approving', 'D) approved', 'D', 1, 'The correct answer is "approved" because it refers to the sleeping aid being officially sanctioned for long-term use.'),
+('PART6032', 6, 2, NULL, 'There have been several (2) ______ for locations and themes made to me directly, but I wanted to invite everyone in the office to give me their feedback.', NULL, 'A) comments', 'B) suggestions', 'C) spots', 'D) suggested', 'B', 0, 'The correct answer is "suggestions" because it implies proposals or ideas for consideration.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6031', 6, 3, NULL, '(3) ______ Talk to your doctor first before using sleeping aids for extended periods.', NULL, 'A) So you can feel comfortable taking it night after night.', 'B) Talk to your doctor today to see if it’s right for you.', 'C) This is the only stimulant approved for prolonged use that is approved by the FDA.', 'D) Enter this code for a free sample and discounts.', 'B', 1, 'The correct answer is "Talk to your doctor today to see if it’s right for you." This is the most appropriate advice before using sleeping aids long-term.'),
+('PART6032', 6, 3, NULL, 'All ideas are welcome, but I must remind everyone that our office (3) ______ .', NULL, 'A) is a safe space for all customs and cultures', 'B) stays open late on Tuesday', 'C) needs a new janitor', 'D) will move next week', 'A', 0, 'The correct answer is "is a safe space for all customs and cultures" because it fits the context of the office environment being inclusive.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6031', 6, 3, NULL, 'Saldesta works quickly and should be taken right (4) ______ bed.', NULL, 'A) during', 'B) around', 'C) before', 'D) after', 'C', 1, 'The correct answer is "before" because the medication should be taken prior to going to bed.');
-go
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6032', NULL, 'The holiday season is fast approaching and we need to (1) ______ our office party! There have been several (2) ______ for locations and themes made to me directly, but I wanted to invite everyone in the office to give me their feedback. All ideas are welcome, but I must remind everyone that our office (3) ______ . Our party can include all forms of secular celebration, but out of respect for everyone, there may be no religious themes. Please respond to me directly by e-mail at jamesfrohm@ccn.net, so I can get started making plans. (4) ______.');
+('PART6032', 6, 3, NULL, 'Please respond to me directly by e-mail at jamesfrohm@ccn.net, so I can get started making plans. (4) ______.', NULL, 'A) I look forward to your ideas and enthusiasm.', 'B) I’m look forward to your ideas and enthusiasm.', 'C) I look forward to your undivided attention.', 'D) I hope you reply before its too late.', 'A', 0, 'The correct answer is "I look forward to your ideas and enthusiasm" because it is grammatically correct and fits the tone of the message.');
+
 go
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6032', 6, 1, NULL, 'The holiday season is fast approaching and we need to (1) ______ our office party!', NULL, 'A) make', 'B) plan', 'C) conceive', 'D) deliver', 'B', 1, 'The correct answer is "plan" because the context is about organizing the event. "Make" is less appropriate for this context.'),
+('PART6033', 6, 1, NULL, 'We are in the process of (1) __________ our facilities so that we can increase our production of paper approximately 25% by the end of the year.', NULL, 'A) designing', 'B) expanding', 'C) planning', 'D) financing', 'B', 0, 'The correct answer is "expanding" because it refers to increasing or growing the size or capacity of the facilities.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6032', 6, 2, NULL, 'There have been several (2) ______ for locations and themes made to me directly, but I wanted to invite everyone in the office to give me their feedback.', NULL, 'A) comments', 'B) suggestions', 'C) spots', 'D) suggested', 'B', 1, 'The correct answer is "suggestions" because it implies proposals or ideas for consideration.'),
+('PART6033', 6, 2, NULL, 'For a list of the materials that we need as well as the required amounts, please visit our website at www.delmontpaper.com/supplies. (2)_________', NULL, 'A) Please do not contact us by phone to get more information.', 'B) All the information that is necessary to know may be found there.', 'C) Suppliers can learn about the needed materials by calling us.', 'D) The bidding process will be closed in the month of November.', 'B', 0, 'The correct answer is "All the information that is necessary to know may be found there." because it guides suppliers to the website where the information is available.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6032', 6, 3, NULL, 'All ideas are welcome, but I must remind everyone that our office (3) ______ .', NULL, 'A) is a safe space for all customs and cultures', 'B) stays open late on Tuesday', 'C) needs a new janitor', 'D) will move next week', 'A', 1, 'The correct answer is "is a safe space for all customs and cultures" because it fits the context of the office environment being inclusive.'),
+('PART6033', 6, 3, NULL, 'Those interested in bidding to become a supplier can then contact Mr. Peter Hopkins at 850-3043. (3) _________ parties will be contacted on or around October 10.', NULL, 'A) win', 'B) winner', 'C) winning', 'D) winners', 'D', 0, 'The correct answer is "winners" because it refers to the parties who are selected and win the bid.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6032', 6, 3, NULL, 'Please respond to me directly by e-mail at jamesfrohm@ccn.net, so I can get started making plans. (4) ______.', NULL, 'A) I look forward to your ideas and enthusiasm.', 'B) I’m look forward to your ideas and enthusiasm.', 'C) I look forward to your undivided attention.', 'D) I hope you reply before its too late.', 'A', 1, 'The correct answer is "I look forward to your ideas and enthusiasm" because it is grammatically correct and fits the tone of the message.');
-
-go
-
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6033', NULL, 'The Delmont Paper Mill has been in business since 1878. During that time, we have made all kinds of paper products that have been sold around the country. We are in the process of (1) __________ our facilities so that we can increase our production of paper approximately 25% by the end of the year. When the process is complete, we will require more raw materials, especially wood pulp, for our mill. We are now accepting bids from suppliers. For a list of the materials that we need as well as the required amounts, please visit our website at www.delmontpaper.com/supplies. (2)_________ Those interested in bidding to become a supplier can then contact Mr. Peter Hopkins at 850-3043. All bids must be submitted no later than October 1. (3) _________ parties will be contacted on or around October 10. Those companies selected to become new suppliers (4) _________ providing shipments of supplies by the middle of December.');
-go
-
-INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
-VALUES
--- Câu hỏi cấp độ 1 (dễ)
-('PART6033', 6, 1, NULL, 'We are in the process of (1) __________ our facilities so that we can increase our production of paper approximately 25% by the end of the year.', NULL, 'A) designing', 'B) expanding', 'C) planning', 'D) financing', 'B', 1, 'The correct answer is "expanding" because it refers to increasing or growing the size or capacity of the facilities.'),
-
--- Câu hỏi cấp độ 2 (trung bình)
-('PART6033', 6, 2, NULL, 'For a list of the materials that we need as well as the required amounts, please visit our website at www.delmontpaper.com/supplies. (2)_________', NULL, 'A) Please do not contact us by phone to get more information.', 'B) All the information that is necessary to know may be found there.', 'C) Suppliers can learn about the needed materials by calling us.', 'D) The bidding process will be closed in the month of November.', 'B', 1, 'The correct answer is "All the information that is necessary to know may be found there." because it guides suppliers to the website where the information is available.'),
-
--- Câu hỏi cấp độ 3 (khó)
-('PART6033', 6, 3, NULL, 'Those interested in bidding to become a supplier can then contact Mr. Peter Hopkins at 850-3043. (3) _________ parties will be contacted on or around October 10.', NULL, 'A) win', 'B) winner', 'C) winning', 'D) winners', 'D', 1, 'The correct answer is "winners" because it refers to the parties who are selected and win the bid.'),
-
--- Câu hỏi cấp độ 4 (khó)
-('PART6033', 6, 3, NULL, 'Those companies selected to become new suppliers (4) _________ providing shipments of supplies by the middle of December.', NULL, 'A) began', 'B) have begun', 'C) are beginning', 'D) must begin', 'D', 1, 'The correct answer is "must begin" because it expresses the necessity for the suppliers to start providing the shipments by the middle of December.');
+('PART6033', 6, 3, NULL, 'Those companies selected to become new suppliers (4) _________ providing shipments of supplies by the middle of December.', NULL, 'A) began', 'B) have begun', 'C) are beginning', 'D) must begin', 'D', 0, 'The correct answer is "must begin" because it expresses the necessity for the suppliers to start providing the shipments by the middle of December.');
 
 go
 
@@ -1452,104 +1346,80 @@ VALUES
 GO
 
 
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6043', NULL, 'The Association of Auto Mechanics (AAM) is going to hold its annual conference on September 14 and 15. The event is going to be held in Memphis, Tennessee. This is the same location as last year’s event. Due to the tremendous (1) ________ of the conference last year, it was unanimously decided by the members of the executive staff at the AAM to have it in Memphis once again. This year’s conference will have a large number of events, including talks, workshops, and a sales fair. The keynote speaker will be (2) ________ mechanic Robert McGuffin, an expert in the art of repairing antique vehicles. As a member of the AAM, you are (3) ________ to pay the discounted registration rate of $75. That will get you access to every event that is being held at the conference. Some airlines and hotels are offering discounts to our members. Please call (405) 326-8695 for more information regarding that. (4) ________ Sincerely, Tim Matterhorn President, Association of Auto Mechanics');
-GO
-
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6043', 6, 1, NULL, 'Due to the tremendous (1) ________ of the conference last year.', NULL, 'A) succeed', 'B) success', 'C) succession', 'D) succeeding', 'B', 1, 'The correct answer is "success" as it is a noun that refers to the favorable outcome of the conference.'),
+('PART6043', 6, 1, NULL, 'Due to the tremendous (1) ________ of the conference last year.', NULL, 'A) succeed', 'B) success', 'C) succession', 'D) succeeding', 'B', 0, 'The correct answer is "success" as it is a noun that refers to the favorable outcome of the conference.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6043', 6, 2, NULL, 'The keynote speaker will be (2) ________ mechanic Robert McGuffin.', NULL, 'A) famed', 'B) imitation', 'C) novice', 'D) incompetent', 'A', 1, 'The correct answer is "famed" as it indicates that Robert McGuffin is a well-known and respected mechanic.'),
+('PART6043', 6, 2, NULL, 'The keynote speaker will be (2) ________ mechanic Robert McGuffin.', NULL, 'A) famed', 'B) imitation', 'C) novice', 'D) incompetent', 'A', 0, 'The correct answer is "famed" as it indicates that Robert McGuffin is a well-known and respected mechanic.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6043', 6, 3, NULL, 'As a member of the AAM, you are (3) ________ to pay the discounted registration rate of $75.', NULL, 'A) excepted', 'B) avoided', 'C) entitled', 'D) reported', 'C', 1, 'The correct answer is "entitled" as it means you have the right to pay the discounted rate.'),
+('PART6043', 6, 3, NULL, 'As a member of the AAM, you are (3) ________ to pay the discounted registration rate of $75.', NULL, 'A) excepted', 'B) avoided', 'C) entitled', 'D) reported', 'C', 0, 'The correct answer is "entitled" as it means you have the right to pay the discounted rate.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6043', 6, 3, NULL, '(4) ________', NULL, 'A) Thanks for attending the event.', 'B) A great time was had by everyone.', 'C) We hope to see you in September.', 'D) Calls regarding this matter will be ignored.', 'C', 1, 'The correct answer is "We hope to see you in September." as it expresses anticipation for attendance at the upcoming event.');
+('PART6043', 6, 3, NULL, '(4) ________', NULL, 'A) Thanks for attending the event.', 'B) A great time was had by everyone.', 'C) We hope to see you in September.', 'D) Calls regarding this matter will be ignored.', 'C', 0, 'The correct answer is "We hope to see you in September." as it expresses anticipation for attendance at the upcoming event.');
 
-GO
-
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6044', NULL, 'In a ceremony held at city hall last night, Jason O’Brien was (1) ________ the Resident of the Year by Mayor Anna Harper. Mr. O’Brien, who has lived in Pearl for more than forty years since moving to the city as a child, has been in the news a lot this year. First, when a tornado swept through the city in the spring, Mr. O’Brien helped organize groups of residents to rescue those needing assistance. (2) ________ He also (3) ________ a large amount of money to relief efforts in the city. He came to the rescue once again when the Red River flooded its banks in summer and left half the city under two feet of water. Finally, Mr. O’Brien provided $2 million for the building of a local community center, where residents will be able to go for various leisure activities once construction on it is complete 14 months from now. According to Mayor Harper, (4) ________ else was even considered for the award.');
 GO
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6044', 6, 1, NULL, 'Jason O’Brien was (1) ________ the Resident of the Year by Mayor Anna Harper.', NULL, 'A) nominated', 'B) reported', 'C) named', 'D) stated', 'C', 1, 'The correct answer is "named" as it directly refers to being given the title of Resident of the Year.'),
+('PART6044', 6, 1, NULL, 'Jason O’Brien was (1) ________ the Resident of the Year by Mayor Anna Harper.', NULL, 'A) nominated', 'B) reported', 'C) named', 'D) stated', 'C', 0, 'The correct answer is "named" as it directly refers to being given the title of Resident of the Year.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6044', 6, 2, NULL, '(2) ________ He also helped organize groups of residents to rescue those needing assistance.', NULL, 'A) He was on a team that stopped the flooding from affecting the entire city.', 'B) His efforts resulted in 20 people being saved from inside collapsed homes.', 'C) Those groups warned local residents about the tornado and led them to safety.', 'D) The money that he provided helped repair people’s homes that burned in fires.', 'C', 1, 'The correct answer is "Those groups warned local residents about the tornado and led them to safety." as it reflects the actions taken during the tornado incident.'),
+('PART6044', 6, 2, NULL, '(2) ________ He also helped organize groups of residents to rescue those needing assistance.', NULL, 'A) He was on a team that stopped the flooding from affecting the entire city.', 'B) His efforts resulted in 20 people being saved from inside collapsed homes.', 'C) Those groups warned local residents about the tornado and led them to safety.', 'D) The money that he provided helped repair people’s homes that burned in fires.', 'C', 0, 'The correct answer is "Those groups warned local residents about the tornado and led them to safety." as it reflects the actions taken during the tornado incident.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6044', 6, 3, NULL, 'He also (3) ________ a large amount of money to relief efforts in the city.', NULL, 'A) donated', 'B) deposited', 'C) invested', 'D) contracted', 'A', 1, 'The correct answer is "donated" as it means he gave money to help with relief efforts.'),
+('PART6044', 6, 3, NULL, 'He also (3) ________ a large amount of money to relief efforts in the city.', NULL, 'A) donated', 'B) deposited', 'C) invested', 'D) contracted', 'A', 0, 'The correct answer is "donated" as it means he gave money to help with relief efforts.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6044', 6, 3, NULL, 'According to Mayor Harper, (4) ________ else was even considered for the award.', NULL, 'A) everybody', 'B) anybody', 'C) somebody', 'D) nobody', 'D', 1, 'The correct answer is "nobody" as it indicates that no other candidates were considered for the award.');
+('PART6044', 6, 3, NULL, 'According to Mayor Harper, (4) ________ else was even considered for the award.', NULL, 'A) everybody', 'B) anybody', 'C) somebody', 'D) nobody', 'D', 0, 'The correct answer is "nobody" as it indicates that no other candidates were considered for the award.');
 
-GO
-
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6045', NULL, 'I’ve been giving some thought to an idea, and I’d like to find out what (1) _________ of you think about it. Since the Sales and Marketing departments collaborate so much, I’m considering putting the two offices in the same room. So Sales would no longer be on the first floor, (2) _________ would Marketing be on the third floor. Instead, they’ll be on the second floor in a large, open area. There will be no individual offices except for those of the director and assistant director of each department. I believe this would foster a sense of teamwork between the members of both departments. By (3) _________ what the salespeople are doing, the marketing people could create better advertisements and devise more ways to induce shoppers to buy our products. And by learning how the marketers think, the sales staff could come up with more effective ways to pitch our products. What do you two think of this proposal? (4) _________');
 GO
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6045', 6, 1, NULL, 'I’d like to find out what (1) _________ of you think about it.', NULL, 'A) each', 'B) some', 'C) either', 'D) both', 'D', 1, 'The correct answer is "both" as it refers to the two people being addressed in the email.'),
+('PART6045', 6, 1, NULL, 'I’d like to find out what (1) _________ of you think about it.', NULL, 'A) each', 'B) some', 'C) either', 'D) both', 'D', 0, 'The correct answer is "both" as it refers to the two people being addressed in the email.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6045', 6, 2, NULL, 'So Sales would no longer be on the first floor, (2) _________ would Marketing be on the third floor.', NULL, 'A) and', 'B) nor', 'C) thus', 'D) which', 'B', 1, 'The correct answer is "nor" as it correctly indicates that neither sales nor marketing will be on their original floors.'),
+('PART6045', 6, 2, NULL, 'So Sales would no longer be on the first floor, (2) _________ would Marketing be on the third floor.', NULL, 'A) and', 'B) nor', 'C) thus', 'D) which', 'B', 0, 'The correct answer is "nor" as it correctly indicates that neither sales nor marketing will be on their original floors.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6045', 6, 3, NULL, 'By (3) _________ what the salespeople are doing, the marketing people could create better advertisements.', NULL, 'A) knowledge', 'B) knowing', 'C) knowable', 'D) will know', 'B', 1, 'The correct answer is "knowing" as it is the gerund form that fits the sentence structure.'),
+('PART6045', 6, 3, NULL, 'By (3) _________ what the salespeople are doing, the marketing people could create better advertisements.', NULL, 'A) knowledge', 'B) knowing', 'C) knowable', 'D) will know', 'B', 0, 'The correct answer is "knowing" as it is the gerund form that fits the sentence structure.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6045', 6, 3, NULL, '(4) _________', NULL, 'A) Wouldn’t you agree that everything I did worked out well?', 'B) Don’t you think that everyone approves of the changes we made?', 'C) How about providing feedback on this idea when you have some time?', 'D) When will you two have some time to start moving the desks around?', 'C', 1, 'The correct answer is "How about providing feedback on this idea when you have some time?" as it invites input on the proposal.');
+('PART6045', 6, 3, NULL, '(4) _________', NULL, 'A) Wouldn’t you agree that everything I did worked out well?', 'B) Don’t you think that everyone approves of the changes we made?', 'C) How about providing feedback on this idea when you have some time?', 'D) When will you two have some time to start moving the desks around?', 'C', 0, 'The correct answer is "How about providing feedback on this idea when you have some time?" as it invites input on the proposal.');
 
-GO
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6046', NULL, 'The area that is going to be covered by the blackout will be on Carter street between Eastern Avenue and Kenmore Road. Work crews from Alameda Power are going to be working on some high-powered lines on Carter street, so electricity there must be turned off to let them do their jobs (1) _________. Electricity will be disconnected at 9 A.M. and should be turned back on around 11:30 A.M. Residents who will be (3) _________ ought to take precautions so that they will be prepared during this time. If the work is not complete by 11:30, the electricity will remain off. City employees will make (4) _________ by loudspeaker in the area so that residents can be updated on the work crews’ progress. Please visit the Alameda Power website at www.alamedapower.com/carterstreet to learn more about which areas will be covered by the blackout. Questions or complaints can be e-mailed to info@alamedapower.com and will be responded to within 4 hours of being received.');
 GO
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6046', 6, 1, NULL, '(1) _________ The area that is going to be covered by the blackout will be on Carter street.', NULL, 'A) Work crews are going to be repairing the street this Friday, October 10.', 'B) On Wednesday, July 25, a water pipe is going to be repaired on Carter street.', 'C) Some parts of the city will not have electricity on Thursday, September 14.', 'D) This Saturday, August 11, the gas will be shut off in the Freemont neighborhood.', 'C', 1, 'The correct answer is "Some parts of the city will not have electricity on Thursday, September 14." as it directly relates to the blackout mentioned.'),
+('PART6046', 6, 1, NULL, '(1) _________ The area that is going to be covered by the blackout will be on Carter street.', NULL, 'A) Work crews are going to be repairing the street this Friday, October 10.', 'B) On Wednesday, July 25, a water pipe is going to be repaired on Carter street.', 'C) Some parts of the city will not have electricity on Thursday, September 14.', 'D) This Saturday, August 11, the gas will be shut off in the Freemont neighborhood.', 'C', 0, 'The correct answer is "Some parts of the city will not have electricity on Thursday, September 14." as it directly relates to the blackout mentioned.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6046', 6, 2, NULL, 'Residents who will be (3) _________ ought to take precautions.', NULL, 'A) safer', 'B) the safest', 'C) safely', 'D) affected', 'D', 1, 'The correct answer is "affected" as it describes the residents who will experience the blackout.'),
+('PART6046', 6, 2, NULL, 'Residents who will be (3) _________ ought to take precautions.', NULL, 'A) safer', 'B) the safest', 'C) safely', 'D) affected', 'D', 0, 'The correct answer is "affected" as it describes the residents who will experience the blackout.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6046', 6, 3, NULL, 'City employees will make (4) _________ by loudspeaker in the area.', NULL, 'A) decisions', 'B) announcements', 'C) repairs', 'D) upgrades', 'B', 1, 'The correct answer is "announcements" as it refers to the information being relayed to residents about the situation.');
+('PART6046', 6, 3, NULL, 'City employees will make (4) _________ by loudspeaker in the area.', NULL, 'A) decisions', 'B) announcements', 'C) repairs', 'D) upgrades', 'B', 0, 'The correct answer is "announcements" as it refers to the information being relayed to residents about the situation.');
 
-GO
-
-INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
-VALUES 
-('PART6047', NULL, 'I know we are supposed to meet today right after lunch, but I’m afraid I’m not going to be able to get together with you then. Mr. Colter, my supervisor, requested that I give a presentation for the delegation from Spain (1) _________ arrived last night. I need to discuss the benefits of our latest line of software with them at 2:30 this afternoon. (2) _________ I therefore need to spend every minute until then working on what I intend to say. How does your schedule look tomorrow morning? I’ve got (3) _________ time between 9 and noon, so I can meet you then. If that doesn’t work for you, I’m also available between the hours of 4 and 6. Why don’t you let me know what the best time for you to meet is? I apologize for canceling our meeting on such (4) _________ notice, but this is a matter that is out of my control. I hope you understand.');
 GO
 
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi cấp độ 1 (dễ)
-('PART6047', 6, 1, NULL, '(1) _________ arrived last night.', NULL, 'A) what', 'B) when', 'C) where', 'D) that', 'D', 1, 'The correct answer is "that" as it is the appropriate relative pronoun to introduce the clause describing the delegation.'),
+('PART6047', 6, 1, NULL, '(1) _________ arrived last night.', NULL, 'A) what', 'B) when', 'C) where', 'D) that', 'D', 0, 'The correct answer is "that" as it is the appropriate relative pronoun to introduce the clause describing the delegation.'),
 
 -- Câu hỏi cấp độ 2 (trung bình)
-('PART6047', 6, 2, NULL, '(2) _________ I therefore need to spend every minute until then working on what I intend to say.', NULL, 'A) However, I haven’t prepared any of my remarks yet.', 'B) In case you don’t know, I was the lead designer on the software.', 'C) Unfortunately, the software still has some big problems.', 'D) Consequently, I’ll be leaving for Spain as soon as possible.', 'A', 1, 'The correct answer is "However, I haven’t prepared any of my remarks yet." as it explains the situation regarding the preparation for the presentation.'),
+('PART6047', 6, 2, NULL, '(2) _________ I therefore need to spend every minute until then working on what I intend to say.', NULL, 'A) However, I haven’t prepared any of my remarks yet.', 'B) In case you don’t know, I was the lead designer on the software.', 'C) Unfortunately, the software still has some big problems.', 'D) Consequently, I’ll be leaving for Spain as soon as possible.', 'A', 0, 'The correct answer is "However, I haven’t prepared any of my remarks yet." as it explains the situation regarding the preparation for the presentation.'),
 
 -- Câu hỏi cấp độ 3 (khó)
-('PART6047', 6, 3, NULL, 'I’ve got (3) _________ time between 9 and noon, so I can meet you then.', NULL, 'A) a variety of', 'B) very little', 'C) no type of', 'D) plenty of', 'D', 1, 'The correct answer is "plenty of" as it indicates that there is enough time to meet.'),
+('PART6047', 6, 3, NULL, 'I’ve got (3) _________ time between 9 and noon, so I can meet you then.', NULL, 'A) a variety of', 'B) very little', 'C) no type of', 'D) plenty of', 'D', 0, 'The correct answer is "plenty of" as it indicates that there is enough time to meet.'),
 
 -- Câu hỏi cấp độ 4 (khó)
-('PART6047', 6, 3, NULL, 'I apologize for canceling our meeting on such (4) _________ notice.', NULL, 'A) apparent', 'B) short', 'C) surprising', 'D) tight', 'B', 1, 'The correct answer is "short" as it describes the limited time given for the notice of cancellation.');
+('PART6047', 6, 3, NULL, 'I apologize for canceling our meeting on such (4) _________ notice.', NULL, 'A) apparent', 'B) short', 'C) surprising', 'D) tight', 'B', 0, 'The correct answer is "short" as it describes the limited time given for the notice of cancellation.');
 
 GO
 
@@ -1953,19 +1823,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 1
-('PART7011', 7, 1, NULL, 'What can be inferred about Ms. Russell?', NULL, 'A) She is Ms. Bennett’s co-worker.', 'B) She is planning a honeymoon.', 'C) She is currently engaged.', 'D) She works for a catering company.', 'C', 1, 'Ms. Russell is most likely engaged, as she is inquiring about wedding services.'),
+('PART7011', 7, 1, NULL, 'What can be inferred about Ms. Russell?', NULL, 'A) She is Ms. Bennett’s co-worker.', 'B) She is planning a honeymoon.', 'C) She is currently engaged.', 'D) She works for a catering company.', 'C', 0, 'Ms. Russell is most likely engaged, as she is inquiring about wedding services.'),
 
 -- Câu hỏi 2
-('PART7011', 7, 2, NULL, 'Who most likely is Ms. Bennett?', NULL, 'A) A professional musician', 'B) A wedding photographer', 'C) An interior designer', 'D) An event planner', 'D', 1, 'Ms. Bennett is an event planner as she offers wedding planning and event services.'),
+('PART7011', 7, 2, NULL, 'Who most likely is Ms. Bennett?', NULL, 'A) A professional musician', 'B) A wedding photographer', 'C) An interior designer', 'D) An event planner', 'D', 0, 'Ms. Bennett is an event planner as she offers wedding planning and event services.'),
 
 -- Câu hỏi 3
-('PART7011', 7, 3, NULL, 'What is suggested about all the locations on the list?', NULL, 'A) They are close to a main road.', 'B) They are indoor venues.', 'C) They are located in the same city.', 'D) They require a down payment.', 'A', 1, 'All the locations on the list are within 15 minutes of Highway 519, suggesting they are close to a main road.'),
+('PART7011', 7, 3, NULL, 'What is suggested about all the locations on the list?', NULL, 'A) They are close to a main road.', 'B) They are indoor venues.', 'C) They are located in the same city.', 'D) They require a down payment.', 'A', 0, 'All the locations on the list are within 15 minutes of Highway 519, suggesting they are close to a main road.'),
 
 -- Câu hỏi 4
-('PART7011', 7, 3, NULL, 'What information is Ms. Russell asked to provide?', NULL, 'A) A potential date', 'B) A meal selection', 'C) A list of guests', 'D) A meeting location', 'A', 1, 'Ms. Russell is asked to inform Ms. Bennett of the desired wedding date to secure a reservation.'),
+('PART7011', 7, 3, NULL, 'What information is Ms. Russell asked to provide?', NULL, 'A) A potential date', 'B) A meal selection', 'C) A list of guests', 'D) A meeting location', 'A', 0, 'Ms. Russell is asked to inform Ms. Bennett of the desired wedding date to secure a reservation.'),
 
 -- Câu hỏi 5
-('PART7011', 7, 3, NULL, 'What package would probably best suit Ms. Russell’s needs?', NULL, 'A) Diamond', 'B) Emerald', 'C) Ruby', 'D) Sapphire', 'B', 1, 'Ms. Russell needs a package that includes a large venue and outdoor location. The Emerald package meets her needs, offering a venue with photo and video shoots included.' );
+('PART7011', 7, 3, NULL, 'What package would probably best suit Ms. Russell’s needs?', NULL, 'A) Diamond', 'B) Emerald', 'C) Ruby', 'D) Sapphire', 'B', 0, 'Ms. Russell needs a package that includes a large venue and outdoor location. The Emerald package meets her needs, offering a venue with photo and video shoots included.' );
 GO
 
 
@@ -1977,19 +1847,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 6
-('PART7012', 7, 1, NULL, 'Who most likely is the lecture series intended for?', NULL, 'A) Community members', 'B) Building superintendents', 'C) University professors', 'D) Hospital patients', 'A', 1, 'The lecture series is about budgeting issues for local governments, which is most relevant to community members.'),
+('PART7012', 7, 1, NULL, 'Who most likely is the lecture series intended for?', NULL, 'A) Community members', 'B) Building superintendents', 'C) University professors', 'D) Hospital patients', 'A', 0, 'The lecture series is about budgeting issues for local governments, which is most relevant to community members.'),
 
 -- Câu hỏi 7
-('PART7012', 7, 2, NULL, 'In the brochure, the word “through” in paragraph 1, line 5, is closest in meaning to', NULL, 'A) over', 'B) via', 'C) across', 'D) until', 'C', 1, 'The word "through" in this context suggests a meaning of "across" in terms of reaching the goals.'),
+('PART7012', 7, 2, NULL, 'In the brochure, the word “through” in paragraph 1, line 5, is closest in meaning to', NULL, 'A) over', 'B) via', 'C) across', 'D) until', 'C', 0, 'The word "through" in this context suggests a meaning of "across" in terms of reaching the goals.'),
 
 -- Câu hỏi 8
-('PART7012', 7, 3, NULL, 'What most likely will be discussed at the lecture on February 10?', NULL, 'A) How to balance yearly budgets', 'B) How to meet infrastructure needs', 'C) How to avoid environmental damage', 'D) How to stimulate economic development', 'C', 1, 'The topic of balancing economic opportunity with environmental concerns suggests that the lecture will focus on avoiding environmental damage.'),
+('PART7012', 7, 3, NULL, 'What most likely will be discussed at the lecture on February 10?', NULL, 'A) How to balance yearly budgets', 'B) How to meet infrastructure needs', 'C) How to avoid environmental damage', 'D) How to stimulate economic development', 'C', 0, 'The topic of balancing economic opportunity with environmental concerns suggests that the lecture will focus on avoiding environmental damage.'),
 
 -- Câu hỏi 9
-('PART7012', 7, 3, NULL, 'According to Mr. Patterson, whose lecture must be rescheduled?', NULL, 'A) Mr. Watson’s', 'B) Mr. Ross’s', 'C) Ms. Simmons’s', 'D) Mr. Powell’s', 'D', 1, 'The text does not mention Mr. Patterson, but this is a sample question likely referring to a necessary rescheduling of one lecture.'),
+('PART7012', 7, 3, NULL, 'According to Mr. Patterson, whose lecture must be rescheduled?', NULL, 'A) Mr. Watson’s', 'B) Mr. Ross’s', 'C) Ms. Simmons’s', 'D) Mr. Powell’s', 'D', 0, 'The text does not mention Mr. Patterson, but this is a sample question likely referring to a necessary rescheduling of one lecture.'),
 
 -- Câu hỏi 10
-('PART7012', 7, 3, NULL, 'What is Ms. Flores instructed to do on a website?', NULL, 'A) Download a document', 'B) Change a room reservation', 'C) Update personal information', 'D) Facilitate a forum', 'B', 1, 'Ms. Flores is mentioned as the contact for further details, and it logical that she may be instructed to help with a room reservation for the lecture series.');
+('PART7012', 7, 3, NULL, 'What is Ms. Flores instructed to do on a website?', NULL, 'A) Download a document', 'B) Change a room reservation', 'C) Update personal information', 'D) Facilitate a forum', 'B', 0, 'Ms. Flores is mentioned as the contact for further details, and it logical that she may be instructed to help with a room reservation for the lecture series.');
 GO
 
 
@@ -2001,19 +1871,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 1
-('PART7013', 7, 1, NULL, 'Who most likely is Mr. Dell?', NULL, 'A) A designer', 'B) A salesperson', 'C) A customer', 'D) A manufacturer', 'B', 1, 'Mr. Dell is the one who took the order, indicating he is likely a salesperson.'),
+('PART7013', 7, 1, NULL, 'Who most likely is Mr. Dell?', NULL, 'A) A designer', 'B) A salesperson', 'C) A customer', 'D) A manufacturer', 'B', 0, 'Mr. Dell is the one who took the order, indicating he is likely a salesperson.'),
 
 -- Câu hỏi 2
-('PART7013', 7, 2, NULL, 'What is implied about Ms. Fleck?', NULL, 'A) She is a long-term customer of Taylor Fabrics.', 'B) She is a professional fashion designer', 'C) She is a former employee of Taylor Fabrics.', 'D) She will be partially paid back for her purchase.', 'A', 1, 'Ms. Fleck has made an order with Taylor Fabrics and is inquiring about an issue with delivery, suggesting she has been a customer for some time.'),
+('PART7013', 7, 2, NULL, 'What is implied about Ms. Fleck?', NULL, 'A) She is a long-term customer of Taylor Fabrics.', 'B) She is a professional fashion designer', 'C) She is a former employee of Taylor Fabrics.', 'D) She will be partially paid back for her purchase.', 'A', 0, 'Ms. Fleck has made an order with Taylor Fabrics and is inquiring about an issue with delivery, suggesting she has been a customer for some time.'),
 
 -- Câu hỏi 3
-('PART7013', 7, 3, NULL, 'Why did Ms. Fleck send the e-mail?', NULL, 'A) Her credit card was incorrectly charged.', 'B) She wants to return an item.', 'C) She received the incorrect quantity of an item.', 'D) One of her orders had the wrong pattern.', 'C', 1, 'Ms. Fleck mentions receiving only 2 yards of the floral pattern fabric, which was an incorrect quantity based on her order.'),
+('PART7013', 7, 3, NULL, 'Why did Ms. Fleck send the e-mail?', NULL, 'A) Her credit card was incorrectly charged.', 'B) She wants to return an item.', 'C) She received the incorrect quantity of an item.', 'D) One of her orders had the wrong pattern.', 'C', 0, 'Ms. Fleck mentions receiving only 2 yards of the floral pattern fabric, which was an incorrect quantity based on her order.'),
 
 -- Câu hỏi 4
-('PART7013', 7, 3, NULL, 'Which fabric will Ms. Fleck need more of to make a dress?', NULL, 'A) Fabric 10', 'B) Fabric 38', 'C) Fabric 41', 'D) Fabric 48', 'B', 1, 'Ms. Fleck ordered 5 yards of Fabric 38, but only received 2 yards, so she needs more of that fabric to complete the dress.'),
+('PART7013', 7, 3, NULL, 'Which fabric will Ms. Fleck need more of to make a dress?', NULL, 'A) Fabric 10', 'B) Fabric 38', 'C) Fabric 41', 'D) Fabric 48', 'B', 0, 'Ms. Fleck ordered 5 yards of Fabric 38, but only received 2 yards, so she needs more of that fabric to complete the dress.'),
 
 -- Câu hỏi 5
-('PART7013', 7, 3, NULL, 'How should Taylor Fabrics customer service contact Ms. Fleck?', NULL, 'A) By text message', 'B) By voice mail', 'C) By e-mail', 'D) By letter', 'A', 1, 'Ms. Fleck requests that Taylor Fabrics send a text message to her mobile phone once the issue is resolved.');
+('PART7013', 7, 3, NULL, 'How should Taylor Fabrics customer service contact Ms. Fleck?', NULL, 'A) By text message', 'B) By voice mail', 'C) By e-mail', 'D) By letter', 'A', 0, 'Ms. Fleck requests that Taylor Fabrics send a text message to her mobile phone once the issue is resolved.');
 GO
  
 
@@ -2025,19 +1895,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 6
-('PART7014', 7, 1, NULL, 'What is indicated about the Belmont Historical Society?', NULL, 'A) It does not allow children into some events.', 'B) It is run by the city of Belmont.', 'C) It was founded by Linda Cameron.', 'D) It will hold its events at several places.', 'D', 1, 'The Belmont Historical Society holds events at multiple venues such as the Spruce Theater, Linda Cameron Art Gallery, and Chris Charlton Auditorium.'),
+('PART7014', 7, 1, NULL, 'What is indicated about the Belmont Historical Society?', NULL, 'A) It does not allow children into some events.', 'B) It is run by the city of Belmont.', 'C) It was founded by Linda Cameron.', 'D) It will hold its events at several places.', 'D', 0, 'The Belmont Historical Society holds events at multiple venues such as the Spruce Theater, Linda Cameron Art Gallery, and Chris Charlton Auditorium.'),
 
 -- Câu hỏi 7
-('PART7014', 7, 2, NULL, 'What most likely is Mr. Tate currently teaching?', NULL, 'A) Environmental conditions of the Arctic', 'B) Early American history', 'C) American folk music', 'D) Modern photography', 'B', 1, 'Mr. Tate mentions that Mr. Campbell talk is pertinent to the subjects covered in his history course, which suggests he teaches Early American history.'),
+('PART7014', 7, 2, NULL, 'What most likely is Mr. Tate currently teaching?', NULL, 'A) Environmental conditions of the Arctic', 'B) Early American history', 'C) American folk music', 'D) Modern photography', 'B', 0, 'Mr. Tate mentions that Mr. Campbell talk is pertinent to the subjects covered in his history course, which suggests he teaches Early American history.'),
 
 -- Câu hỏi 8
-('PART7014', 7, 3, NULL, 'What is NOT mentioned as being available on the Belmont Historical Society website?', NULL, 'A) Information about scheduled events', 'B) Member registration', 'C) Rental details', 'D) Descriptions of previous events', 'D', 1, 'The website mentions information on scheduled events, member registration, and rental details, but there is no mention of descriptions of past events.'),
+('PART7014', 7, 3, NULL, 'What is NOT mentioned as being available on the Belmont Historical Society website?', NULL, 'A) Information about scheduled events', 'B) Member registration', 'C) Rental details', 'D) Descriptions of previous events', 'D', 0, 'The website mentions information on scheduled events, member registration, and rental details, but there is no mention of descriptions of past events.'),
 
 -- Câu hỏi 9
-('PART7014', 7, 3, NULL, 'In the e-mail, the word “introductory” in paragraph 2, line 1, is closest in meaning to', NULL, 'A) basic', 'B) required', 'C) profound', 'D) optional', 'A', 1, 'The term "introductory" refers to something basic, such as an introductory history course.'),
+('PART7014', 7, 3, NULL, 'In the e-mail, the word “introductory” in paragraph 2, line 1, is closest in meaning to', NULL, 'A) basic', 'B) required', 'C) profound', 'D) optional', 'A', 0, 'The term "introductory" refers to something basic, such as an introductory history course.'),
 
 -- Câu hỏi 10
-('PART7014', 7, 3, NULL, 'What does Mr. Tate request?', NULL, 'A) A signed copy of a book', 'B) A detailed survey', 'C) A chance to meet a speaker', 'D) A group discount', 'C', 1, 'Mr. Tate requests the opportunity for a question-and-answer session with Mr. Campbell for his group of students.');
+('PART7014', 7, 3, NULL, 'What does Mr. Tate request?', NULL, 'A) A signed copy of a book', 'B) A detailed survey', 'C) A chance to meet a speaker', 'D) A group discount', 'C', 0, 'Mr. Tate requests the opportunity for a question-and-answer session with Mr. Campbell for his group of students.');
 GO
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES 
@@ -2047,19 +1917,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 1
-('PART15', 7, 1, NULL, 'What is the purpose of the first e-mail?', NULL, 'A) To request cost information', 'B) To inquire about a policy change', 'C) To postpone an order', 'D) To report an incorrect invoice', 'A', 1, 'In the first e-mail, Emily Hall requests a price estimate for the cost of regular deliveries of vegetables for her restaurant.'),
+('PART15', 7, 1, NULL, 'What is the purpose of the first e-mail?', NULL, 'A) To request cost information', 'B) To inquire about a policy change', 'C) To postpone an order', 'D) To report an incorrect invoice', 'A', 0, 'In the first e-mail, Emily Hall requests a price estimate for the cost of regular deliveries of vegetables for her restaurant.'),
 
 -- Câu hỏi 2
-('PART15', 7, 2, NULL, 'What package option most likely fits Ms. Hall’s needs best?', NULL, 'A) Personal', 'B) Small', 'C) Medium', 'D) Large', 'B', 1, 'The Small package, which includes 50 lbs of fresh seasonal vegetables delivered weekly, is appropriate for a small business like Ms. Hall’s restaurant.'),
+('PART15', 7, 2, NULL, 'What package option most likely fits Ms. Hall’s needs best?', NULL, 'A) Personal', 'B) Small', 'C) Medium', 'D) Large', 'B', 0, 'The Small package, which includes 50 lbs of fresh seasonal vegetables delivered weekly, is appropriate for a small business like Ms. Hall’s restaurant.'),
 
 -- Câu hỏi 3
-('PART15', 7, 3, NULL, 'What information is not needed for a final price?', NULL, 'A) Length of contract', 'B) Method of delivery', 'C) Additional items', 'D) Distance of shipping', 'D', 1, 'The distance of shipping is not mentioned as a factor affecting the final price; however, delivery method and additional items can change the cost.'),
+('PART15', 7, 3, NULL, 'What information is not needed for a final price?', NULL, 'A) Length of contract', 'B) Method of delivery', 'C) Additional items', 'D) Distance of shipping', 'D', 0, 'The distance of shipping is not mentioned as a factor affecting the final price; however, delivery method and additional items can change the cost.'),
 
 -- Câu hỏi 4
-('PART15', 7, 2, NULL, 'What is indicated in Emily Hall’s e-mail?', NULL, 'A) She wants to try it for a month.', 'B) She wants the free gift.', 'C) She is interested in a long-term contract.', 'D) She doesn’t want winter produce.', 'C', 1, 'In the email, Emily expresses interest in long-term regular deliveries and mentions possibly setting up a year’s worth of deliveries.'),
+('PART15', 7, 2, NULL, 'What is indicated in Emily Hall’s e-mail?', NULL, 'A) She wants to try it for a month.', 'B) She wants the free gift.', 'C) She is interested in a long-term contract.', 'D) She doesn’t want winter produce.', 'C', 0, 'In the email, Emily expresses interest in long-term regular deliveries and mentions possibly setting up a year’s worth of deliveries.'),
 
 -- Câu hỏi 5
-('PART15', 7, 3, NULL, 'Why does Emily Hall want to know about the vegetables that will be available throughout the year?', NULL, 'A) She loves vegetables.', 'B) She is thinking about adding meat.', 'C) She might hire another employee.', 'D) She wants to plan her future menus', 'D', 1, 'Emily wants to know about the seasonal produce to plan her vegetarian restaurant’s menus accordingly.');
+('PART15', 7, 3, NULL, 'Why does Emily Hall want to know about the vegetables that will be available throughout the year?', NULL, 'A) She loves vegetables.', 'B) She is thinking about adding meat.', 'C) She might hire another employee.', 'D) She wants to plan her future menus', 'D', 0, 'Emily wants to know about the seasonal produce to plan her vegetarian restaurant’s menus accordingly.');
 GO
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
@@ -2070,19 +1940,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 6
-('PART7016', 7, 1, NULL, 'Why was the inspection conducted?', NULL, 'A) To monitor compliance with food industry regulations', 'B) To rate the taste and quality of the cuisine', 'C) To inspect the structural safety of the building', 'D) To evaluate the effectiveness of new policies', 'A', 1, 'The inspection was conducted to monitor the compliance with safety and health regulations, particularly food safety standards and cleanliness.'),
+('PART7016', 7, 1, NULL, 'Why was the inspection conducted?', NULL, 'A) To monitor compliance with food industry regulations', 'B) To rate the taste and quality of the cuisine', 'C) To inspect the structural safety of the building', 'D) To evaluate the effectiveness of new policies', 'A', 0, 'The inspection was conducted to monitor the compliance with safety and health regulations, particularly food safety standards and cleanliness.'),
 
 -- Câu hỏi 7
-('PART7016', 7, 2, NULL, 'Why has Polito’s Pizza been charged a fine?', NULL, 'A) Because fire extinguishers were not in place.', 'B) Because containers of food were not marked appropriately.', 'C) Because raw meats and vegetables were handled incorrectly.', 'D) Because the facilities were not cleaned according to standards.', 'B', 1, 'Polito’s Pizza was fined due to improper storage and labeling of food, which can lead to spoiled food being served to customers.'),
+('PART7016', 7, 2, NULL, 'Why has Polito’s Pizza been charged a fine?', NULL, 'A) Because fire extinguishers were not in place.', 'B) Because containers of food were not marked appropriately.', 'C) Because raw meats and vegetables were handled incorrectly.', 'D) Because the facilities were not cleaned according to standards.', 'B', 0, 'Polito’s Pizza was fined due to improper storage and labeling of food, which can lead to spoiled food being served to customers.'),
 
 -- Câu hỏi 8
-('PART7016', 7, 3, NULL, 'What does Mr. Kluck ask his employees to do?', NULL, 'A) Apologize to customers', 'B) Wear a name tag at all times', 'C) File a complaint with Ms. Tenner', 'D) Fill out a required form', 'D', 1, 'Mr. Kluck asks employees to complete and sign a checklist each day, ensuring they meet health standards.'),
+('PART7016', 7, 3, NULL, 'What does Mr. Kluck ask his employees to do?', NULL, 'A) Apologize to customers', 'B) Wear a name tag at all times', 'C) File a complaint with Ms. Tenner', 'D) Fill out a required form', 'D', 0, 'Mr. Kluck asks employees to complete and sign a checklist each day, ensuring they meet health standards.'),
 
 -- Câu hỏi 9
-('PART7016', 7, 3, NULL, 'What will happen if an employee fails to sign the work checklist?', NULL, 'A) They will have a violation on their record.', 'B) They will have to pay a fine.', 'C) They will have to come in on the weekends.', 'D) They will be fired.', 'A', 1, 'Failure to sign the checklist will be treated as a violation, and employees will be held accountable for it.'),
+('PART7016', 7, 3, NULL, 'What will happen if an employee fails to sign the work checklist?', NULL, 'A) They will have a violation on their record.', 'B) They will have to pay a fine.', 'C) They will have to come in on the weekends.', 'D) They will be fired.', 'A', 0, 'Failure to sign the checklist will be treated as a violation, and employees will be held accountable for it.'),
 
 -- Câu hỏi 10
-('PART7016', 7, 1, NULL, 'Based on Polito’s Checklist, what can we infer about K.P.?', NULL, 'A) He works at night.', 'B) He did not work on Thursday and Friday.', 'C) He will be fired for violations.', 'D) He is slow at work.', 'B', 1, 'K.P. is marked as completing tasks only on certain days, indicating he may not have worked on Thursday and Friday.');
+('PART7016', 7, 1, NULL, 'Based on Polito’s Checklist, what can we infer about K.P.?', NULL, 'A) He works at night.', 'B) He did not work on Thursday and Friday.', 'C) He will be fired for violations.', 'D) He is slow at work.', 'B', 0, 'K.P. is marked as completing tasks only on certain days, indicating he may not have worked on Thursday and Friday.');
 GO
 
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
@@ -2093,21 +1963,20 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 11
-('PART7017', 7, 1, NULL, 'Where would the notice most likely be found?', NULL, 'A) In a restaurant', 'B) In a staff break room', 'C) In a shipping agency', 'D) In a grocery store', 'D', 1, 'The notice is about a product defect and would most likely be found in a grocery store where the products are sold.'),
+('PART7017', 7, 1, NULL, 'Where would the notice most likely be found?', NULL, 'A) In a restaurant', 'B) In a staff break room', 'C) In a shipping agency', 'D) In a grocery store', 'D', 0, 'The notice is about a product defect and would most likely be found in a grocery store where the products are sold.'),
 
 -- Câu hỏi 12
-('PART7017', 7, 2, NULL, 'What is indicated about the jars?', NULL, 'A) They were not closed tightly.', 'B) They are currently out of stock.', 'C) They were priced incorrectly.', 'D) They were delivered to the wrong address.', 'A', 1, 'The notice states that the jars had an improper seal on the lid, which could have caused the contents to spoil due to exposure to air.'),
+('PART7017', 7, 2, NULL, 'What is indicated about the jars?', NULL, 'A) They were not closed tightly.', 'B) They are currently out of stock.', 'C) They were priced incorrectly.', 'D) They were delivered to the wrong address.', 'A', 0, 'The notice states that the jars had an improper seal on the lid, which could have caused the contents to spoil due to exposure to air.'),
 
 -- Câu hỏi 13
-('PART7017', 7, 3, NULL, 'According to the notice, what is NOT mentioned as advice for customers?', NULL, 'A) Avoiding consuming the product', 'B) Reporting on the product', 'C) Returning the product to a store', 'D) Purchasing other Castelli products', 'C', 1, 'The notice advises customers not to consume the product and to report it, but it does not mention returning it to a store.'),
+('PART7017', 7, 3, NULL, 'According to the notice, what is NOT mentioned as advice for customers?', NULL, 'A) Avoiding consuming the product', 'B) Reporting on the product', 'C) Returning the product to a store', 'D) Purchasing other Castelli products', 'C', 0, 'The notice advises customers not to consume the product and to report it, but it does not mention returning it to a store.'),
 
 -- Câu hỏi 14
-('PART7017', 7, 2, NULL, 'In the e-mail to Mr. Hester, what additional gift does Castelli offer?', NULL, 'A) Pasta sauce', 'B) A recipe book', 'C) Vouchers for produce', 'D) Vouchers for new products', 'D', 1, 'In the e-mail, Castelli offers vouchers for their new line of linguini and spaghetti pasta as an additional gift.'),
+('PART7017', 7, 2, NULL, 'In the e-mail to Mr. Hester, what additional gift does Castelli offer?', NULL, 'A) Pasta sauce', 'B) A recipe book', 'C) Vouchers for produce', 'D) Vouchers for new products', 'D', 0, 'In the e-mail, Castelli offers vouchers for their new line of linguini and spaghetti pasta as an additional gift.'),
 
 -- Câu hỏi 15
-('PART7017', 7, 3, NULL, 'Castelli is sending the vouchers for several reasons; what is NOT one of them?', NULL, 'A) To keep customers loyal', 'B) To say that they were sorry', 'C) To be fair to their customers', 'D) To gain new customers', 'D', 1, 'The vouchers are sent to maintain customer loyalty, apologize, and ensure fairness, but not to gain new customers.');
+('PART7017', 7, 3, NULL, 'Castelli is sending the vouchers for several reasons; what is NOT one of them?', NULL, 'A) To keep customers loyal', 'B) To say that they were sorry', 'C) To be fair to their customers', 'D) To gain new customers', 'D', 0, 'The vouchers are sent to maintain customer loyalty, apologize, and ensure fairness, but not to gain new customers.');
 GO
-
 -- Chèn thông tin câu hỏi cho PART7018
 INSERT INTO QuestionGroup (QuestionGroupID, Audio, Content)
 VALUES
@@ -2119,19 +1988,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 1
-('PART7018', 7, 1, NULL, 'What is suggested about Newton Library?', NULL, 'A) It recently renovated its facilities.', 'B) It will hold a fundraising event soon.', 'C) It offers educational activities for various ages.', 'D) It is closed on Mondays.', 'C', 1, 'The library offers various educational activities, as shown in the schedule of events.'),
+('PART7018', 7, 1, NULL, 'What is suggested about Newton Library?', NULL, 'A) It recently renovated its facilities.', 'B) It will hold a fundraising event soon.', 'C) It offers educational activities for various ages.', 'D) It is closed on Mondays.', 'C', 0, 'The library offers various educational activities, as shown in the schedule of events.'),
 
 -- Câu hỏi 2
-('PART7018', 7, 2, NULL, 'What event is most suited for film students?', NULL, 'A) Story Play', 'B) Youth Creative Writing Workshop', 'C) A Trip to the Past', 'D) Never Too Late to Learn', 'C', 1, 'The event "A Trip to the Past" features early American film history, which is most relevant to film students.'),
+('PART7018', 7, 2, NULL, 'What event is most suited for film students?', NULL, 'A) Story Play', 'B) Youth Creative Writing Workshop', 'C) A Trip to the Past', 'D) Never Too Late to Learn', 'C', 0, 'The event "A Trip to the Past" features early American film history, which is most relevant to film students.'),
 
 -- Câu hỏi 3
-('PART7018', 7, 3, NULL, 'In the first e-mail, the word “held” in paragraph 1, line 2, is closest in meaning to', NULL, 'A) carried', 'B) attended', 'C) conducted', 'D) delayed', 'C', 1, 'In this context, "held" means "conducted" in reference to the class being organized.'),
+('PART7018', 7, 3, NULL, 'In the first e-mail, the word “held” in paragraph 1, line 2, is closest in meaning to', NULL, 'A) carried', 'B) attended', 'C) conducted', 'D) delayed', 'C', 0, 'In this context, "held" means "conducted" in reference to the class being organized.'),
 
 -- Câu hỏi 4
-('PART7018', 7, 4, NULL, 'Why can’t Richard White send Linda’s students an e-mail?', NULL, 'A) He doesn’t have their e-mails.', 'B) It is not his job.', 'C) He does not have the time.', 'D) The library is not equipped with that kind of technology.', 'A', 1, 'Richard White does not have the students’ email addresses to contact them directly.'),
+('PART7018', 7, 4, NULL, 'Why can’t Richard White send Linda’s students an e-mail?', NULL, 'A) He doesn’t have their e-mails.', 'B) It is not his job.', 'C) He does not have the time.', 'D) The library is not equipped with that kind of technology.', 'A', 0, 'Richard White does not have the students’ email addresses to contact them directly.'),
 
 -- Câu hỏi 5
-('PART7018', 7, 5, NULL, 'What is Richard White’s solution to the problem of informing Linda’s students about the room change?', NULL, 'A) He can e-mail them.', 'B) He can direct them to the right room when they enter.', 'C) He will post a sign.', 'D) He will draw them a map with directions.', 'C', 1, 'Richard White suggests posting a sign at the library entrance to inform students about the room change.');
+('PART7018', 7, 5, NULL, 'What is Richard White’s solution to the problem of informing Linda’s students about the room change?', NULL, 'A) He can e-mail them.', 'B) He can direct them to the right room when they enter.', 'C) He will post a sign.', 'D) He will draw them a map with directions.', 'C', 0, 'Richard White suggests posting a sign at the library entrance to inform students about the room change.');
 
 GO
 
@@ -2146,19 +2015,19 @@ GO
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 -- Câu hỏi 6
-('PART7019', 7, 1, NULL, 'What does Ms. Mason suggest doing?', NULL, 'A) Keeping within a budget for recreational activities', 'B) Appointing a new manager of human resources', 'C) Increasing the number of temporary employees', 'D) Scheduling more outdoor activities compared to last year', 'A', 1, 'Ms. Mason suggests finding more affordable recreational activities to stay within the budget for summer events.'),
+('PART7019', 7, 1, NULL, 'What does Ms. Mason suggest doing?', NULL, 'A) Keeping within a budget for recreational activities', 'B) Appointing a new manager of human resources', 'C) Increasing the number of temporary employees', 'D) Scheduling more outdoor activities compared to last year', 'A', 0, 'Ms. Mason suggests finding more affordable recreational activities to stay within the budget for summer events.'),
 
 -- Câu hỏi 7
-('PART7019', 7, 2, NULL, 'What date does Ms. Mason suggest for this year’s new activity?', NULL, 'A) July 6', 'B) July 22', 'C) August 6', 'D) August 19', 'C', 1, 'Ms. Mason suggests the new activity for August 6, which is the date for the bicycle tours.'),
+('PART7019', 7, 2, NULL, 'What date does Ms. Mason suggest for this year’s new activity?', NULL, 'A) July 6', 'B) July 22', 'C) August 6', 'D) August 19', 'C', 0, 'Ms. Mason suggests the new activity for August 6, which is the date for the bicycle tours.'),
 
 -- Câu hỏi 8
-('PART7019', 7, 3, NULL, 'In what section of the website would the article most likely appear?', NULL, 'A) Economy', 'B) Leisure', 'C) Entertainment', 'D) Politics', 'B', 1, 'The article about the bike tours would most likely appear in the "Leisure" section of the website.'),
+('PART7019', 7, 3, NULL, 'In what section of the website would the article most likely appear?', NULL, 'A) Economy', 'B) Leisure', 'C) Entertainment', 'D) Politics', 'B', 0, 'The article about the bike tours would most likely appear in the "Leisure" section of the website.'),
 
 -- Câu hỏi 9
-('PART7019', 7, 4, NULL, 'Based upon the Bicycle Tour Sign-up Sheet, what can we infer about the upcoming bicycle tour?', NULL, 'A) It will be cancelled.', 'B) There will be two groups, one for beginners, one for advanced.', 'C) There will be only one group.', 'D) They will stop along the way for a group meal and photo.', 'B', 1, 'There will likely be two groups for the bike tour based on the sign-up sheet, with one for beginners and another for advanced riders.'),
+('PART7019', 7, 4, NULL, 'Based upon the Bicycle Tour Sign-up Sheet, what can we infer about the upcoming bicycle tour?', NULL, 'A) It will be cancelled.', 'B) There will be two groups, one for beginners, one for advanced.', 'C) There will be only one group.', 'D) They will stop along the way for a group meal and photo.', 'B', 0, 'There will likely be two groups for the bike tour based on the sign-up sheet, with one for beginners and another for advanced riders.'),
 
 -- Câu hỏi 10
-('PART7019', 7, 5, NULL, 'What will Barbara Blaster most likely do on the bicycle tour?', NULL, 'A) She will become bored and quit the tour.', 'B) She will complain that more people should sign up as advanced.', 'C) She will join a faster-paced group of more experienced bikers.', 'D) She will stay with the group to participate in group activities.', 'C', 1, 'Barbara Blaster is likely to join a faster-paced group of more experienced bikers as she is signed up as advanced.');
+('PART7019', 7, 5, NULL, 'What will Barbara Blaster most likely do on the bicycle tour?', NULL, 'A) She will become bored and quit the tour.', 'B) She will complain that more people should sign up as advanced.', 'C) She will join a faster-paced group of more experienced bikers.', 'D) She will stay with the group to participate in group activities.', 'C', 0, 'Barbara Blaster is likely to join a faster-paced group of more experienced bikers as she is signed up as advanced.');
 GO
 
 
@@ -2172,20 +2041,6 @@ GO
 -- Chèn câu hỏi cho PART7020
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
--- Câu hỏi 11
-('PART7020', 7, 1, NULL, 'What problem with the original shipment does Ms. Nelson report?', NULL, 'A) It was damaged.', 'B) It does not fit.', 'C) It arrived late.', 'D) It has not reached its destination.', 'B', 1, 'Ms. Nelson reported receiving the wrong size of the sweater, indicating that the problem was related to the fit.'),
-
--- Câu hỏi 12
-('PART7020', 7, 2, NULL, 'In the e-mail from Debra Clarke, the phrase “as per” in paragraph 1, line 2, is closest in meaning to', NULL, 'A) regardless of', 'B) except for', 'C) rather than', 'D) according to', 'D', 1, 'The phrase "as per" means "according to," which is used to indicate compliance with a request or instruction.'),
-
--- Câu hỏi 13
-('PART7020', 7, 3, NULL, 'What is indicated about Ms. Nelson?', NULL, 'A) She recently moved to Denver.', 'B) She ordered a gift for a friend.', 'C) She has a Four Seasons Apparel Outlet membership.', 'D) She waited too long to request a refund.', 'C', 1, 'Ms. Nelson is using the exchange service, which suggests she may have an official membership, though it is not directly stated in the text.'),
-
--- Câu hỏi 14
-('PART7020', 7, 4, NULL, 'What problem with the replacement shipment does Ms. Nelson report?', NULL, 'A) The size was incorrect.', 'B) The design was incorrect.', 'C) The size and design were incorrect.', 'D) Too much money was refunded to her from her original purchase.', 'B', 1, 'Ms. Nelson received the correct size sweater, but the design was not as expected, it was a different design called Winter Festival.'),
-
--- Câu hỏi 15
-('PART7020', 7, 5, NULL, 'When will Ms. Nelson return her Winter Festival sweater?', NULL, 'A) When she receives her correct order and the shipping refund.', 'B) When she has time.', 'C) When her husband is happy with his sweater.', 'D) When Four Seasons apologizes for her inconvenience.', 'A', 1, 'Ms. Nelson states that she will return the Winter Festival sweater once she receives the correct order and the shipping refund.');
-GO
+-- Câu hỏi
 
 
