@@ -1,23 +1,65 @@
 const sql = require('mssql');
 
-// Lấy kết quả thi theo UserID
+
 exports.getResultsByUser = async (req, res) => {
     const { userId } = req.params;
+    const { page = 1, pageSize = 5 } = req.query;  // Mặc định trang 1 và mỗi trang 5 kết quả
+
+    const offset = (page - 1) * pageSize;  // Tính toán OFFSET dựa trên trang và số kết quả mỗi trang
+
     try {
         const pool = await sql.connect();
+        
+        // Truy vấn lấy kết quả thi theo phân trang
         const result = await pool.request()
             .input('UserID', sql.Int, userId)
-            .query('SELECT * FROM ExamResults WHERE UserID = @UserID');
+            .input('Offset', sql.Int, offset)
+            .input('PageSize', sql.Int, pageSize)
+            .query(`
+                SELECT 
+                    ResultID, 
+                    UserID, 
+                    ExamID, 
+                    Score, 
+                    FORMAT(CompletedAt, 'dd/MM/yyyy') AS CompletedDate
+                FROM ExamResults 
+                WHERE UserID = @UserID
+                ORDER BY CompletedAt DESC
+                OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY
+            `);
+
+        // Truy vấn tổng số kết quả thi của người dùng
+        const totalResultsQuery = await pool.request()
+            .input('UserID', sql.Int, userId)
+            .query(`
+                SELECT COUNT(*) AS TotalResults
+                FROM ExamResults
+                WHERE UserID = @UserID
+            `);
+
+        const totalResults = totalResultsQuery.recordset[0].TotalResults;
+        const totalPages = Math.ceil(totalResults / pageSize);
 
         if (result.recordset.length === 0) {
             return res.status(404).json({ message: 'Không tìm thấy kết quả thi cho người dùng này.' });
         }
-        res.status(200).json(result.recordset);
+
+        res.status(200).json({
+            results: result.recordset,
+            pagination: {
+                currentPage: parseInt(page),
+                pageSize: parseInt(pageSize),
+                totalPages,
+                totalResults
+            }
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Lỗi khi lấy kết quả thi của người dùng.');
     }
 };
+
+
 
 // Thêm kết quả thi mới hoặc cập nhật nếu đã tồn tại
 exports.createOrUpdateExamResult = async (req, res) => {

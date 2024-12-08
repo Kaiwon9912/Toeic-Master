@@ -21,7 +21,7 @@ import ExamList from './pages/examPage/ExamList';
 import ExamPage from './pages/examPage/ExamPage';
 
 import Login from './pages/Auth/Login';
-import UserInfo from './pages/Auth/UserInfo';
+import UserInfo from './pages/userPage/UserInfo';
 
 import Topics from './pages/adminPage/topics';
 import AdminHome from './pages/adminPage/adminHome';
@@ -33,7 +33,7 @@ import AdminInfo from './pages/adminPage/adminInfo';
 import ExamControl from './AdminArea/pages/ExamControl';
 import QuestionCRUD from './AdminArea/pages/QuestionCRUD';
 import QuestionGroupCRUD from './AdminArea/pages/QuestionGroupCRUD';
-
+import SubmitPage from './pages/examPage/SubmitPage';
 
 
 
@@ -61,7 +61,7 @@ function App() {
 
           <Route path="/exam" element={<PrivateRoute element={<ExamList />} />} />
           <Route path="/exam/:examID" element={<PrivateRoute element={<ExamPage />} />} />
-
+          <Route path="/submit" element={<SubmitPage />} />
           <Route path="/admin" element={<PrivateRoute element={<AdminHome />} />}>
             <Route path="question" element={<PrivateRoute element={<QuestionCRUD />} />} />
             <Route path="group" element={<PrivateRoute element={<QuestionGroupCRUD />} />} />
@@ -72,6 +72,7 @@ function App() {
             <Route path="exams" element={<PrivateRoute element={<ExamControl />} />} />
             <Route path="adminInfo" element={<PrivateRoute element={<AdminInfo />} />} />
             <Route path="part" element={<PrivateRoute element={<Parts />} />} />
+           
           </Route>
         </Routes>
       </Router>

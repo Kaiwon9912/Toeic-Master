@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Question from "./components/Question";
 import axios from "axios";
 const ExamPage = () => {
-  const userID = 2; // Giả lập UserID
+  const userID = 1; // Giả lập UserID
   const location = useLocation();
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
@@ -39,21 +39,23 @@ const ExamPage = () => {
     ).length;
     const score = Math.round(100 / calculateTotalQuestions(questions) * totalCorrect);
 
-
-
-    // Hiển thị xác nhận và gửi dữ liệu
-    if (window.confirm(`Kết quả của bạn: ${score} điểm\nSố câu đúng: ${totalCorrect}/${calculateTotalQuestions(questions)}\nBạn có chắc chắn muốn nộp bài?`)) {
+    const completionTime = Math.ceil((examData.DurationInMinutes * 60 - remainingTime) / 60);
       try {
         // Gọi API createOrUpdateExamResult
         const response = await axios.post("http://localhost:3000/api/results/", {
           userId: userID, // ID người dùng
-          examId: examData.ExamID, // ID bài thi
+          examId: examData.ExamID, // ID bài th
           score: score, // Điểm số
         });
   
         if (response.status === 200) { // Kiểm tra thành công
-          alert("Nộp bài thành công! Điểm của bạn đã được lưu.");
-          navigate("/submit", { state: { answers } }); // Điều hướng đến trang kết quả hoặc trang chủ
+          const result = {
+            score,
+            totalCorrect,
+            totalQuestions: calculateTotalQuestions(questions),
+            completionTime:completionTime ,
+          };
+          navigate("/submit", { state: { result } });
         } else {
           console.error("Error submitting exam result:", response.data);
           alert("Có lỗi xảy ra khi nộp bài. Vui lòng thử lại.");
@@ -62,7 +64,7 @@ const ExamPage = () => {
         console.error("Error submitting exam result:", error);
         alert("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
       }
-    }
+    
   };
   
   
