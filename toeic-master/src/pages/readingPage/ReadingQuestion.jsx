@@ -12,7 +12,7 @@ const Progress = ({ totalCount, correctCount }) => {
     <div className="p-5 w-full shadow-xl border rounded-lg mb-4">
       <h3 className="font-bold text-lg">Tiến trình</h3>
       <p>
-        Đã trả lời <span className="font-bold">{totalCount}</span> câu hỏi, 
+        Đã trả lời <span className="font-bold">{totalCount}</span> câu hỏi,
         trong đó <span className="text-green-500 font-bold">{correctCount}</span> câu đúng.
       </p>
     </div>
@@ -52,7 +52,7 @@ function ReadingQuestion() {
   const fetchQuestions = async () => {
     const partNumber = Number(part);
     if (partNumber) {
-      if (partNumber === 6) {
+      if (partNumber === 6 || partNumber == 7) {
         try {
           const response = await axios.get(
             `http://localhost:3000/api/questions/random-group/${partNumber}`
@@ -88,11 +88,11 @@ function ReadingQuestion() {
     setAnsweredCount((prev) => prev + 1); // Tăng số câu hỏi đã trả lời
     setIsSelected(true);
     setHistory((prev) => [...prev, { correct: isCorrect }]); // Cập nhật lịch sử
-  
+
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
     }
-  
+
     try {
       const response = await axios.post('http://localhost:3000/api/users/question/create', {
         UserID: user.id,
@@ -104,7 +104,7 @@ function ReadingQuestion() {
       console.error('Lỗi khi lưu câu hỏi người dùng:', error);
     }
   };
-  
+
 
   const handleNext = () => {
     setIsSelected(false);
@@ -114,53 +114,53 @@ function ReadingQuestion() {
 
   return (
     <>
-    <Header/>
-     <div className="w-auto md:w-[64rem] m-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div className="col-span-1 space-y-4">
-        <Progress totalCount={totalCount} correctCount={correctCount} />
-        <AnswerHistory history={history} />
-        
-      </div>
+      <Header />
+      <div className="w-auto md:w-[64rem] m-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="col-span-1 space-y-4">
+          <Progress totalCount={totalCount} correctCount={correctCount} />
+          <AnswerHistory history={history} />
 
-      <div className="col-span-2">
-        {part === '6' && content && (
-          <div className="mb-5">
-            <div className="text-lg bg-yellow-100 p-5 rounded-lg h-96 overflow-scroll">
-              <b>  Question: {totalCount +1} </b> <PassageConvert content={content} />
+        </div>
+
+        <div className="col-span-2">
+          {(part === '6' || part === '7') && content && (
+            <div className="mb-5">
+              <div className="text-lg bg-yellow-100 p-5 rounded-lg h-96 overflow-scroll">
+                <b>  Question: {totalCount + 1} </b> <PassageConvert content={content} />
+              </div>
             </div>
+          )}
+
+          {(part === '6' || part === '7') && (
+            <div className="h-96 overflow-scroll py-5">
+              {questions.map((question, index) => (
+                <Question
+                  onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
+                  data={question}
+                  key={index}
+                />
+              ))}
+            </div>
+          )}
+
+          {part === '5' && questions.length > 0 && (
+            <Question
+              onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, questions[0][0].QuestionID)}
+              data={questions[0][0]}
+            />
+          )}
+
+          <div className="w-full flex justify-between mt-5">
+            <button
+              className={`bg-green-400 p-2 rounded-xl text-white ${isSelected ? 'block' : 'hidden'}`} // Hiển thị nút khi tất cả câu hỏi đã được trả lời
+              onClick={handleNext}
+            >
+              Câu tiếp theo
+            </button>
           </div>
-        )}
-
-        {part === '6' && (
-          <div className="h-96 overflow-scroll py-5">
-            {questions.map((question, index) => (
-              <Question
-              onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, question.QuestionID)}
-                data={question}
-                key={index}
-              />
-            ))}
-          </div>
-        )}
-
-        {part === '5' && questions.length > 0 && (
-          <Question
-          onAnswerUpdate={(isCorrect) => handleAnswerUpdate(isCorrect, questions[0][0].QuestionID)}
-            data={questions[0][0]}
-          />
-        )}
-
-        <div className="w-full flex justify-between mt-5">
-          <button
-            className={`bg-green-400 p-2 rounded-xl text-white ${isSelected ? 'block' : 'hidden'}`} // Hiển thị nút khi tất cả câu hỏi đã được trả lời
-            onClick={handleNext}
-          >
-            Câu tiếp theo
-          </button>
         </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer />
     </>
   );
 }

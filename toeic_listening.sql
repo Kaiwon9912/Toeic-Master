@@ -1,4 +1,5 @@
 ﻿
+USE ToeicData
 ---Part1
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES

@@ -55,7 +55,7 @@ function App() {
 
           <Route path="/lessons" element={<LessonList />} />
           <Route path="/lessons/:id" element={<LessonDetail />} />
-          <Route path="/saved/:id" element={<SavedQuestions/>} />
+          <Route path="/saved/:id" element={<SavedQuestions />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user-info" element={<PrivateRoute element={<UserInfo />} />} />
 
@@ -63,6 +63,7 @@ function App() {
           <Route path="/exam/:examID" element={<PrivateRoute element={<ExamPage />} />} />
           <Route path="/submit" element={<SubmitPage />} />
           <Route path="/admin" element={<PrivateRoute element={<AdminHome />} />}>
+            <Route index element={<AdminInfo />} /> {/* Route mặc định */}
             <Route path="question" element={<PrivateRoute element={<QuestionCRUD />} />} />
             <Route path="group" element={<PrivateRoute element={<QuestionGroupCRUD />} />} />
             <Route path="topics" element={<PrivateRoute element={<Topics />} />} />
@@ -72,7 +73,7 @@ function App() {
             <Route path="exams" element={<PrivateRoute element={<ExamControl />} />} />
             <Route path="adminInfo" element={<PrivateRoute element={<AdminInfo />} />} />
             <Route path="part" element={<PrivateRoute element={<Parts />} />} />
-           
+
           </Route>
         </Routes>
       </Router>

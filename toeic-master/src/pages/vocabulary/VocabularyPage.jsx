@@ -168,7 +168,7 @@ const VocabularyPage = () => {
                                 {/* Hàng hiển thị Dịch nghĩa và Phát âm */}
                                 <div className="flex-grow mr-4">
                                     {/* Dịch nghĩa */}
-                                    <p className="bg-gray-100 text-lg font-semibold rounded-lg p-4 shadow-md mb-3">Phiên âm: {selectedWord.phonetic}</p>
+                                    <p className="bg-gray-100 text-lg font-semibold rounded-lg p-4 shadow-md mb-3">Phiên dịch: {selectedWord.phonetic}</p>
 
                                     {/* Phần Phát âm */}
                                     <div className="bg-gray-100 rounded-lg p-4 shadow-md mb-3">

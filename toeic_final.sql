@@ -61,6 +61,10 @@ CREATE TABLE Questions (
     FOREIGN KEY (PartID) REFERENCES Parts(PartID)
 );
 
+ALTER TABLE dbo.User_Question NOCHECK CONSTRAINT FK__User_Ques__Quest__52593CB8;
+
+delete from Questions
+
 CREATE TABLE Topics (
     TopicID VARCHAR(10) PRIMARY KEY,
     Name NVARCHAR(100) NOT NULL,

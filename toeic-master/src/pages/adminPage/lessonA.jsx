@@ -13,6 +13,8 @@ const Lessons = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentLesson, setCurrentLesson] = useState({ Title: '', Content: '', QuestionType: '', Guide: '', Score: '', PartID: '' });
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [lessonToDelete, setLessonToDelete] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [failMessage, setFailMessage] = useState('');
   const itemsPerPage = 4;
@@ -62,6 +64,11 @@ const Lessons = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  const openConfirmDeleteModal = (lesson) => {
+    setLessonToDelete(lesson);
+    setIsConfirmDeleteOpen(true);
   };
 
   const openModal = (lesson = null) => {
@@ -159,7 +166,7 @@ const Lessons = () => {
                 <td className="py-3 text-center border-b border-gray-300">{lesson.PartID}</td>
                 <td className="py-3 text-center border-b border-gray-300">
                   <button className="bg-yellow-500 text-white px-2 py-1 rounded mr-4 w-full mb-2" onClick={() => openModal(lesson)}>Sửa</button>
-                  <button className="bg-red-500 text-white px-2 py-1 rounded w-full" onClick={() => deleteLesson(lesson.LessonID)}>Xóa</button>
+                  <button className="bg-red-500 text-white px-2 py-1 rounded w-full" onClick={() => openConfirmDeleteModal(lesson)}>Xóa</button>
                 </td>
               </tr>
             ))}
@@ -256,6 +263,26 @@ const Lessons = () => {
                 {isEditMode ? 'Cập Nhật' : 'Thêm'}
               </button>
               <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setIsModalOpen(false)}>
+                Hủy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isConfirmDeleteOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded shadow-md w-1/3">
+            <h2 className="text-xl mb-4">Xác Nhận Xóa</h2>
+            <p>Bạn có chắc chắn muốn xóa bài học <strong >{lessonToDelete?.Title}</strong>?</p>
+            <div className="flex justify-end mt-4">
+              <button className="bg-red-500 text-white px-4 py-2 rounded mr-2" onClick={() => {
+                deleteLesson(lessonToDelete.LessonID);
+                setIsConfirmDeleteOpen(false);
+              }}>
+                Xóa
+              </button>
+              <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={() => setIsConfirmDeleteOpen(false)}>
                 Hủy
               </button>
             </div>
