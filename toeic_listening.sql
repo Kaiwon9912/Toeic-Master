@@ -3,7 +3,7 @@ USE ToeicData
 ---Part1
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
-(NULL, 1, 1, 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/87425510.mp3', 'What is happening in the audio?', 'question_image.jpg', 'The plane is docked at the airport.', 'There is luggage being put onto the plane.', 'There are many people boarding the plane.', 'There are maintenance workers fixing the plane.', 'C', 1, NULL);
+(NULL, 1, 1, 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/87425510.mp3', 'What is happening in the audio?', 'https://estudyme.hoc102.com/legacy-data/kstoeic/images/6539040_1562638443130.png', 'They are looking at each other.', 'The woman is typing on her computer.', 'The man is using the calculator.', ' The man is writing something onto the notepad.', 'D', 1, NULL);
 INSERT INTO Questions (QuestionGroupID, PartID, Level, QuestionAudio, QuestionText, QuestionImage, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer, ExamQuestion, Explanation)
 VALUES
 (NULL, 1, 1, 'https://storage.googleapis.com/estudyme/toeic/2024/10/08/41293683.mp3', 'What is happening in the audio?', 'question_image.jpg', 'The woman is drinking a cup of coffee.', 'The woman is listening to music.', 'The woman is talking on her cell phone.', 'The woman is looking at the newspaper.', 'A', 0, NULL);
