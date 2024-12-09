@@ -1,7 +1,7 @@
 const config = {
   user: 'sa',
   password: '123',
-  server: 'DESKTOP-KVMLTGB', // có thể là 'DESKTOP-KVMLTGB' hoặc 'MSI'
+  server: 'MSI', // có thể là 'DESKTOP-KVMLTGB' hoặc 'MSI'
   database: 'ToeicData',
   options: {
 

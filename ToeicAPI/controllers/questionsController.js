@@ -160,9 +160,7 @@ exports.getRandomGroupByStoredProc = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
 exports.getRandomQuestionsByPartAndLevel = async (req, res) => {
-    // Lấy các tham số từ query string
     const n = parseInt(req.query.n);
     const part = parseInt(req.query.part);
     const level = parseInt(req.query.level);
@@ -179,20 +177,19 @@ exports.getRandomQuestionsByPartAndLevel = async (req, res) => {
 
         // Truyền tham số vào stored procedure
         request.input('N', sql.Int, n);
-        request.input('Part', sql.Int, part);
+        request.input('PartID', sql.Int, part);
         request.input('Level', sql.Int, level);
 
         // Gọi stored procedure
         const result = await request.execute('GetRandomQuestionsByPartAndLevel');
 
         // Trả về kết quả câu hỏi
-        res.json(result.recordset);
+        res.status(200).json(result.recordset);
     } catch (err) {
         console.error('Error executing stored procedure:', err);
         res.status(500).send('Internal Server Error');
     }
 };
-
 
 
 exports.getQuestionById = async (req, res) => {

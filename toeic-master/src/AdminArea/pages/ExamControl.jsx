@@ -12,8 +12,8 @@ const ExamControl = () => {
   const handleAddQuestions = ({ part, level, quantity }) => {
     let apiUrl = "";
 
-    if ([4, 6, 7].includes(part)) {
-      apiUrl = `http://localhost:3000/api/questions/group?n=${quantity}&part=${part}&level=${level}`;
+    if ([3,4, 6, 7].includes(part)) {
+      apiUrl = `http://localhost:3000/api/questions/group/?n=${quantity}&part=${part}&level=${level}`;
     } else {
       apiUrl = `http://localhost:3000/api/questions/random?part=${part}&level=${level}&examQuestion=1&n=${quantity}`;
     }

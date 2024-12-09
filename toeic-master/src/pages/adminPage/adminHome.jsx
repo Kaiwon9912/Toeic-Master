@@ -19,7 +19,7 @@ const AdminHome = () => {
   const styles = {
     adminContainer: {
       display: 'flex',
-      height: '100vh',
+      height: '100%',
     },
     sidebar: {
       width: '250px',
