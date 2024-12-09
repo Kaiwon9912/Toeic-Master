@@ -546,3 +546,46 @@ exports.getExamQuestions = async (req, res) => {
         res.status(500).json({ success: false, message: err });
     }
 };
+
+
+exports.getExamQuestions = async (req, res) => {
+    const examID = req.params
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('ExamID', sql.VarChar(100), examID)
+            .query(`
+                SELECT 
+                    q.QuestionID,
+                    q.QuestionGroupID,
+                    q.PartID,
+                    q.Level,
+                    q.QuestionAudio,
+                    q.QuestionText,
+                    q.QuestionImage,
+                    q.AnswerA,
+                    q.AnswerB,
+                    q.AnswerC,
+                    q.AnswerD,
+                    q.CorrectAnswer,
+                    q.Explanation,
+                    q.ExamQuestion,
+                    g.Content AS GroupContent,
+                    g.Audio AS GroupAudio
+                FROM ExamDetail ed
+                JOIN Questions q ON ed.QuestionID = q.QuestionID
+                LEFT JOIN QuestionGroup g ON q.QuestionGroupID = g.QuestionGroupID
+                WHERE ed.ExamID = @ExamID
+                ORDER BY q.PartID, q.QuestionGroupID, q.QuestionID;
+            `);
+
+        const formattedData = formatQuestions(result.recordset);
+        res.status(200).json(result.recordset);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: err });
+    }
+};
+
+

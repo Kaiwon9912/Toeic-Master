@@ -34,7 +34,7 @@ import ExamControl from './AdminArea/pages/ExamControl';
 import QuestionCRUD from './AdminArea/pages/QuestionCRUD';
 import QuestionGroupCRUD from './AdminArea/pages/QuestionGroupCRUD';
 import SubmitPage from './pages/examPage/SubmitPage';
-
+import SavedQuestions from './pages/userPage/SavedQuestion';
 
 
 
@@ -55,7 +55,7 @@ function App() {
 
           <Route path="/lessons" element={<LessonList />} />
           <Route path="/lessons/:id" element={<LessonDetail />} />
-
+          <Route path="/saved/:id" element={<SavedQuestions/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/user-info" element={<PrivateRoute element={<UserInfo />} />} />
 

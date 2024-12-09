@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-const SavedQuestions = ({ userID }) => {
+import { useUser } from '../../hooks/UserContext';
+const SavedQuestions = () => {
   const [questions, setQuestions] = useState([]);
   const [totalSaved, setTotalSaved] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  const { user } = useUser();
   useEffect(() => {
     const fetchSavedQuestions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/saved-questions/${userID}`);
-        setQuestions(response.data.questions);
+        const response = await axios.get(`http://localhost:3000/api/users/question/saved/${user.id}`);
+        console.log(response);
+        setQuestions(response.data);
         setTotalSaved(response.data.totalSavedQuestions);
       } catch (error) {
         console.error("Error fetching saved questions:", error);
@@ -21,7 +22,7 @@ const SavedQuestions = ({ userID }) => {
     };
 
     fetchSavedQuestions();
-  }, [userID]);
+  }, [user.id]);
 
   if (loading) {
     return <div className="text-center mt-10 text-gray-600">Loading...</div>;

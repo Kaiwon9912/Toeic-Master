@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUser } from '../../hooks/UserContext';
 import Question from "./components/Question";
 import axios from "axios";
 const ExamPage = () => {
-  const userID = 1; // Giả lập UserID
+
   const location = useLocation();
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
@@ -12,9 +13,8 @@ const ExamPage = () => {
   const [loading, setLoading] = useState(true);
   const [remainingTime, setRemainingTime] = useState();
   const [correctAnswers, setCorrectAnswers] = useState([]);
-
+  const { user } = useUser();
   const examData = location.state?.examData;
-
   const calculateTotalQuestions = (questions) => {
     return questions.reduce((total, question) => {
       if (question.type === "single") {
@@ -24,10 +24,6 @@ const ExamPage = () => {
       }
       return total;
     }, 0);
-  };
-
-  const calculateScore = () => {
-    
   };
 
 
@@ -43,7 +39,7 @@ const ExamPage = () => {
       try {
         // Gọi API createOrUpdateExamResult
         const response = await axios.post("http://localhost:3000/api/results/", {
-          userId: userID, // ID người dùng
+          userId: user.id,
           examId: examData.ExamID, // ID bài th
           score: score, // Điểm số
         });

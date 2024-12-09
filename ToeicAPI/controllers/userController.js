@@ -200,3 +200,42 @@ exports.getUserQuestionsByUserId = async (req, res) => {
         res.status(500).json({ message: 'Error fetching user questions by UserID', error: error.message });
     }
 };
+
+exports.getSavedQuestions = async (req, res) => {
+    const userId = req.params.userId; // Lấy userID từ params
+
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('userId', sql.Int, userId)
+            .query(`
+                SELECT 
+                    q.QuestionID,
+                    q.QuestionGroupID,
+                    q.PartID,
+                    q.Level,
+                    q.QuestionAudio,
+                    q.QuestionText,
+                    q.QuestionImage,
+                    q.AnswerA,
+                    q.AnswerB,
+                    q.AnswerC,
+                    q.AnswerD,
+                    q.CorrectAnswer,
+                    q.Explanation,
+                    q.ExamQuestion,
+                    g.Content AS GroupContent,
+                    g.Audio AS GroupAudio
+                FROM User_Question uq
+                JOIN Questions q ON uq.QuestionID = q.QuestionID
+                LEFT JOIN QuestionGroup g ON q.QuestionGroupID = g.QuestionGroupID
+                WHERE uq.UserID = @userId AND uq.Saved = 1
+                ORDER BY q.PartID, q.QuestionGroupID, q.QuestionID;
+            `);
+
+        res.status(200).json(result.recordset); // Trả về danh sách câu hỏi
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: err.message }); // Trả lỗi nếu có vấn đề
+    }
+};

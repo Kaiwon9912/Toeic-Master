@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import Question from '../../components/Question';
 import axios from 'axios';
+import { useUser } from '../../hooks/UserContext';
 import PassageConvert from '../../components/PassageConvert';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -47,7 +48,7 @@ function ReadingQuestion() {
   const [totalCount, setTotalCount] = useState(0);
   const [history, setHistory] = useState([]);
   const [answeredCount, setAnsweredCount] = useState(0); // Số câu hỏi đã trả lời
-
+  const { user } = useUser();
   const fetchQuestions = async () => {
     const partNumber = Number(part);
     if (partNumber) {
@@ -83,30 +84,27 @@ function ReadingQuestion() {
   }, []);
 
   const handleAnswerUpdate = async (isCorrect, questionId) => {
-
-        
     setTotalCount((prev) => prev + 1);
     setAnsweredCount((prev) => prev + 1); // Tăng số câu hỏi đã trả lời
     setIsSelected(true);
     setHistory((prev) => [...prev, { correct: isCorrect }]); // Cập nhật lịch sử
+  
     if (isCorrect) {
       setCorrectCount((prev) => prev + 1);
     }
-    try{
-
-      const userId = 1; // Thay bằng cách lấy UserID hiện tại từ state hoặc context
+  
+    try {
       const response = await axios.post('http://localhost:3000/api/users/question/create', {
-        UserID: userId,
+        UserID: user.id,
         QuestionID: questionId,
-        Saved: 0, // Luôn lưu Saved = 0
+        Saved: isCorrect ? 0 : 1, // Nếu đúng thì Saved = 0, nếu sai thì Saved = 1
       });
+      console.log('Câu hỏi đã được lưu:', response.data);
     } catch (error) {
       console.error('Lỗi khi lưu câu hỏi người dùng:', error);
     }
-    
-
-    
   };
+  
 
   const handleNext = () => {
     setIsSelected(false);

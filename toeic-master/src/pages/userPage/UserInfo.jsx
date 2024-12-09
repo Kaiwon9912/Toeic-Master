@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useUser } from '../../hooks/UserContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Header from "../../components/header";
 import Footer from "../../components/Footer";
 import SuccessMessage from "../../AdminArea/components/SuccessMessage";
 import FailMessage from "../../AdminArea/components/FailMessage";
+import { useUser } from '../../hooks/UserContext';
+import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
+    const navigate = useNavigate();
     const { user } = useUser();
     const [userInfo, setUserInfo] = useState({
         fullName: '',
@@ -29,7 +31,9 @@ const UserInfo = () => {
     const pageSize = 5;
 
     useEffect(() => {
-        const userId = 2; // Giả lập userId
+  
+     
+        
 
         // Fetch thông tin người dùng
         axios.get(`http://localhost:3000/api/users/${user.username}`)
@@ -45,25 +49,26 @@ const UserInfo = () => {
             });
 
         // Fetch lịch sử thi
-        fetchExamHistory(userId, currentPage);
+        fetchExamHistory(user.id, currentPage);
 
         // Fetch từ vựng đã lưu
-        axios.get(`http://localhost:3000/api/vocabulary/user/${userId}`).then((response) => {
+        axios.get(`http://localhost:3000/api/vocabulary/user/${user.id}`).then((response) => {
             setSavedVocabulary(response.data);
         });
 
         // Fetch câu hỏi đã lưu
-        axios.get(`http://localhost:3000/api/saved-questions/user/${userId}`).then((response) => {
+        axios.get(`http://localhost:3000/api/saved-questions/user/${user.id}`).then((response) => {
             setSavedQuestions(response.data);
         });
     }, [currentPage, user.username]);
 
     const fetchExamHistory = async (userId, page) => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/results/user/${userId}`, {
+            const response = await axios.get(`http://localhost:3000/api/results/user/${user.id}`, {
                 params: { page, pageSize }
             });
-            setExamHistory(response.data);
+            console.log(response.data.results);
+            setExamHistory(response.data.results);
             setTotalPages(response.data.totalPages);
         } catch (error) {
             setFailMessage(`${error.message}`);
@@ -115,7 +120,10 @@ const UserInfo = () => {
 
     const closeSuccessMessage = () => setSuccessMessage('');
     const closeFailMessage = () => setFailMessage('');
-
+    const handleSavedQuestion = () => {
+        // Truyền thông tin bài thi qua state
+        navigate(`/saved/${user.id}`);
+      };
     return (
         <>
             <Header />
@@ -224,6 +232,7 @@ const UserInfo = () => {
                         {/* Lịch sử thi */}
                         <div className="mb-6">
                             <h2 className="text-2xl font-semibold mb-4">Lịch Sử Thi</h2>
+                            <div className="h-52">
                             {examHistory.length > 0 ? (
                                 <ul>
                                     {examHistory.map((exam) => (
@@ -235,6 +244,7 @@ const UserInfo = () => {
                             ) : (
                                 <p>Chưa có lịch sử thi nào.</p>
                             )}
+                            </div>
 
                             {/* Phân trang */}
                             <div className="flex justify-between mt-4">
@@ -258,19 +268,15 @@ const UserInfo = () => {
                             </div>
                         </div>
 
-                        {/* Câu hỏi đã lưu */}
-                        <div>
-                            <h2 className="text-2xl font-semibold mb-4">Câu Hỏi Đã Lưu</h2>
-                            {savedQuestions.length > 0 ? (
-                                <ul>
-                                    {savedQuestions.map((question, index) => (
-                                        <li key={index}>{question.questionText}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>Chưa có câu hỏi đã lưu.</p>
-                            )}
-                        </div>
+                    
+                      
+                           
+                            <h2 className="text-xl font-semibold mb-4">Câu Hỏi Đã Lưu</h2>
+                           <div onClick={handleSavedQuestion}>
+                                Ôn tập
+                           </div>
+                      
+                  
                     </div>
                 </div>
             </div>

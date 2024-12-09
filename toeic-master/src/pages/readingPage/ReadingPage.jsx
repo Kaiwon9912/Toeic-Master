@@ -4,16 +4,17 @@ import axios from 'axios';
 import Header from "../../components/header";
 import Footer from "../../components/Footer";
 import { useNavigate } from 'react-router-dom';
-
+import { useUser } from '../../hooks/UserContext';
 function ReadingPage() {
+    const { user } = useUser();
     const [stats, setStats] = useState([]);
     const navigate = useNavigate();
-    const userId = 1; // Cố định userId là 1
 
-    useEffect(() => {
+
+    useEffect(() => {  
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/questions/user-question-stats/${userId}`);
+                const response = await axios.get(`http://localhost:3000/api/questions/user-question-stats/${user.id}`);
                 console.log("Fetched data:", response.data); // Kiểm tra dữ liệu
                 setStats(response.data);
             } catch (error) {

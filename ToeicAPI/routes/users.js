@@ -15,4 +15,5 @@ router.get('/question/:userId', userController.getUserQuestionsByUserId); // Th√
 router.post('/question/create', userController.createUserQuestion);
 router.put('/question/:id', userController.updateUserQuestion);
 router.get('/question/:userId', userController.getUserQuestionsByUserId); 
+router.get('/question/saved/:userId', userController.getSavedQuestions); 
 module.exports = router;
