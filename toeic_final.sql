@@ -81,17 +81,6 @@ CREATE TABLE Vocabulary (
     FOREIGN KEY (TopicID) REFERENCES Topics(TopicID)
 );
 
-CREATE TABLE User_Vocabulary (
-    ID INT PRIMARY KEY IDENTITY(1,1),
-    UserID INT,
-    WordID INT,
-    Learned BIT DEFAULT 0,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (WordID) REFERENCES Vocabulary(WordID)
-);
-
-
-
 CREATE TABLE User_Question(
     Id INT PRIMARY KEY IDENTITY(1,1),
     UserID INT,

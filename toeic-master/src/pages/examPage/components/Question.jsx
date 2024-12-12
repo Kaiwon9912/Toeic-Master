@@ -39,17 +39,22 @@ const Question = ({ data, onAnswerUpdate }) => {
 
       {/* Các đáp án */}
       <div className="space-y-2">
-        {data.answers.map((answer, index) => (
+        {answerLabels.slice(0, data.answers.length).map((label, index) => (
           <button
             key={index}
-            className={`w-full text-left p-2 border rounded-lg ${selectedAnswer === answerLabels[index]
+            className={`w-full text-left p-2 border rounded-lg ${selectedAnswer === label
               ? "bg-blue-300 text-white"
               : "bg-gray-100"
               } hover:bg-blue-100`}
             onClick={() => handleAnswerSelect(index)} // Truyền chỉ số đáp án
           >
-            <span className="font-bold mr-2">{answerLabels[index]}.</span>
-            {answer}
+            <span className="font-bold mr-2">{label}.</span>
+            {/* Chỉ hiển thị nội dung đáp án nếu không có audio */}
+            {!data.audio ? (
+              data.answers[index]
+            ) : (
+              <span> Answer {label}</span> // Hiển thị A, B, C, D cho người dùng chọn
+            )}
           </button>
         ))}
       </div>

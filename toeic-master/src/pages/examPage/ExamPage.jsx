@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useUser } from '../../hooks/UserContext';
 import Question from "./components/Question";
 import axios from "axios";
+import Header from '../../components/Header';
 const ExamPage = () => {
 
   const location = useLocation();
@@ -28,7 +29,7 @@ const ExamPage = () => {
 
 
   const handleSubmitExam = async () => {
-  
+
 
     const totalCorrect = Object.keys(answers).filter(
       (id) => answers[id] === correctAnswers[id]
@@ -36,34 +37,34 @@ const ExamPage = () => {
     const score = Math.round(100 / calculateTotalQuestions(questions) * totalCorrect);
 
     const completionTime = Math.ceil((examData.DurationInMinutes * 60 - remainingTime) / 60);
-      try {
-        // Gọi API createOrUpdateExamResult
-        const response = await axios.post("http://localhost:3000/api/results/", {
-          userId: user.id,
-          examId: examData.ExamID, // ID bài th
-          score: score, // Điểm số
-        });
-  
-        if (response.status === 200) { // Kiểm tra thành công
-          const result = {
-            score,
-            totalCorrect,
-            totalQuestions: calculateTotalQuestions(questions),
-            completionTime:completionTime ,
-          };
-          navigate("/submit", { state: { result } });
-        } else {
-          console.error("Error submitting exam result:", response.data);
-          alert("Có lỗi xảy ra khi nộp bài. Vui lòng thử lại.");
-        }
-      } catch (error) {
-        console.error("Error submitting exam result:", error);
-        alert("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
+    try {
+      // Gọi API createOrUpdateExamResult
+      const response = await axios.post("http://localhost:3000/api/results/", {
+        userId: user.id,
+        examId: examData.ExamID, // ID bài th
+        score: score, // Điểm số
+      });
+
+      if (response.status === 200) { // Kiểm tra thành công
+        const result = {
+          score,
+          totalCorrect,
+          totalQuestions: calculateTotalQuestions(questions),
+          completionTime: completionTime,
+        };
+        navigate("/submit", { state: { result } });
+      } else {
+        console.error("Error submitting exam result:", response.data);
+        alert("Có lỗi xảy ra khi nộp bài. Vui lòng thử lại.");
       }
-    
+    } catch (error) {
+      console.error("Error submitting exam result:", error);
+      alert("Không thể kết nối đến máy chủ. Vui lòng thử lại.");
+    }
+
   };
-  
-  
+
+
 
 
   useEffect(() => {
@@ -192,83 +193,83 @@ const ExamPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <div className="w-1/4 bg-white shadow-lg p-4">
-        <h2 className="text-xl font-bold mb-4">{examData?.ExamName}</h2>
-        <p className="mb-4">
-          <b>Số câu đã làm:</b> {Object.keys(answers).length}/
-          {calculateTotalQuestions(questions)}
-        </p>
-        <p className="mb-4 text-red-500 font-semibold">
-          <b>Thời gian còn lại:</b> {formatTime(remainingTime)}
-        </p>
-        <ul className="space-y-2">
-          {questions.map((question, index) => (
-            <li
-              key={index}
-              className={`p-2 rounded-lg cursor-pointer ${
-                currentQuestionIndex === index
+    <>
+      <Header />
+      <div className="flex min-h-screen bg-gray-100">
+        <div className="w-1/4 bg-white shadow-lg p-4">
+          <h2 className="text-xl font-bold mb-4">{examData?.ExamName}</h2>
+          <p className="mb-4">
+            <b>Số câu đã làm:</b> {Object.keys(answers).length}/
+            {calculateTotalQuestions(questions)}
+          </p>
+          <p className="mb-4 text-red-500 font-semibold">
+            <b>Thời gian còn lại:</b> {formatTime(remainingTime)}
+          </p>
+          <ul className="space-y-2">
+            {questions.map((question, index) => (
+              <li
+                key={index}
+                className={`p-2 rounded-lg cursor-pointer ${currentQuestionIndex === index
                   ? "bg-blue-300 text-white"
                   : "bg-gray-200"
-              }`}
-              onClick={() => {
-                setCurrentQuestionIndex(index);
-                scrollToTop();
-              }}
-            >
-              Câu {index + 1}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="w-3/4 p-8">
-        {loading ? (
-          <p>Đang tải câu hỏi...</p>
-        ) : (
-          <>
-            {renderQuestion()}
-            <div className="mt-8 flex justify-between">
-              <button
-                className={`px-4 py-2 rounded ${
-                  currentQuestionIndex === 0
+                  }`}
+                onClick={() => {
+                  setCurrentQuestionIndex(index);
+                  scrollToTop();
+                }}
+              >
+                Câu {index + 1}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="w-3/4 p-8">
+          {loading ? (
+            <p>Đang tải câu hỏi...</p>
+          ) : (
+            <>
+              {renderQuestion()}
+              <div className="mt-8 flex justify-between">
+                <button
+                  className={`px-4 py-2 rounded ${currentQuestionIndex === 0
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-                disabled={currentQuestionIndex === 0}
-                onClick={handlePrevious}
-              >
-                Previous
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${
-                  currentQuestionIndex === questions.length - 1
+                    }`}
+                  disabled={currentQuestionIndex === 0}
+                  onClick={handlePrevious}
+                >
+                  Previous
+                </button>
+                <button
+                  className={`px-4 py-2 rounded ${currentQuestionIndex === questions.length - 1
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-green-500 text-white hover:bg-green-600"
-                }`}
-                disabled={currentQuestionIndex === questions.length - 1}
-                onClick={handleNext}
-              >
-                Next
-              </button>
-            </div>
-            {currentQuestionIndex === questions.length - 1 && (
-              <div className="mt-4 text-center">
-                <button
-                  className="bg-red-500 text-white py-2 px-6 rounded"
-                  onClick={() => {
-                    if (window.confirm("Bạn chắc chắn muốn nộp bài?")) {
-                      handleSubmitExam();
-                    }
-                  }}
+                    }`}
+                  disabled={currentQuestionIndex === questions.length - 1}
+                  onClick={handleNext}
                 >
-                  Nộp bài
+                  Next
                 </button>
               </div>
-            )}
-          </>
-        )}
+              {currentQuestionIndex === questions.length - 1 && (
+                <div className="mt-4 text-center">
+                  <button
+                    className="bg-red-500 text-white py-2 px-6 rounded"
+                    onClick={() => {
+                      if (window.confirm("Bạn chắc chắn muốn nộp bài?")) {
+                        handleSubmitExam();
+                      }
+                    }}
+                  >
+                    Nộp bài
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
